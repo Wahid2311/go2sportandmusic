@@ -6,7 +6,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY =os.environ.get('SECRET_KEY')
 
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -111,7 +111,7 @@ REVOLUT_API_KEY =os.environ.get('REVOLUT_API_KEY', '')
 REVOLUT_PRODUCTION =True
 
 BASE_URL =os.environ.get('BASE_URL', 'http://localhost:8000')
-CSRF_TRUSTED_ORIGINS = [BASE_URL,'https://web-production-268f2.up.railway.app','https://go2sportandmusic.com']
+CSRF_TRUSTED_ORIGINS = [BASE_URL,'https://web-production-52414.up.railway.app','https://go2sportandmusic.com']
 
 AWS_ACCESS_KEY_ID =os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')
