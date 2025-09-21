@@ -648,9 +648,9 @@
                                     <span class="tickets-sold">{{ event.sold_tickets }} sold</span>
                                 </div>
                                 <div class="event-pricing">
-                                    From <span class="price">${{ event.lowest_price }}</span>
+                                    From <span class="price">£{{ event.lowest_price }}</span>
                                     <span class="price-divider">•</span>
-                                    To <span class="price">${{ event.highest_price }}</span>
+                                    To <span class="price">£{{ event.highest_price }}</span>
                                 </div>
                                 <div class="event-actions">
                                     {% if user.user_type == 'Reseller' %}
@@ -702,9 +702,9 @@
                                     <span class="tickets-sold">{{ event.sold_tickets }} sold</span>
                                 </div>
                                 <div class="event-pricing">
-                                    From <span class="price">${{ event.lowest_price }}</span>
+                                    From <span class="price">£{{ event.lowest_price }}</span>
                                     <span class="price-divider">•</span>
-                                    To <span class="price">${{ event.highest_price }}</span>
+                                    To <span class="price">£{{ event.highest_price }}</span>
                                 </div>
                                 <div class="event-actions">
                                     {% if user.user_type == 'Reseller' %}
