@@ -1,0 +1,42 @@
+{% extends base_template %}
+{% load static %}
+
+{% block title %} Update Profile {% endblock %}
+
+{% block dashboard_content %}
+
+<div class="container">
+    <div class="auth-container">
+        <h2 class="auth-title text-center">
+            <i class="bi bi-person-gear me-2"></i>Update Profile
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-4">
+                {% for field in form %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="col-12">
+                    <button type="submit" class="btn-auth">
+                        <i class="bi bi-save me-2"></i>Update Profile
+                    </button>
+                    <a href="{% url 'accounts:profile' %}" class="btn btn-outline-secondary mt-3">
+                        Cancel
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

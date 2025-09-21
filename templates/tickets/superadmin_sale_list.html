@@ -1,0 +1,160 @@
+
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% block title %} Superadmin Sales {% endblock %}
+{% block dashboard_content %}
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">All Sales</h1>
+        <div class="d-flex">
+            <input type="text" class="form-control me-2" placeholder="Search sales...">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-filter"></i> Filters
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">All Sales</a></li>
+                    <li><a class="dropdown-item" href="#">Paid to Sellers</a></li>
+                    <li><a class="dropdown-item" href="#">Pending Payout</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Sale ID</th>
+                        <th>Order ID</th>
+                        <th>Event</th>
+                        <th>Seller</th>
+                        <th>Amount</th>
+                        <th>Sale Date</th>
+                        <th>Payout Date</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td class="fw-bold text-primary">#{{ sale.id|slice:":8" }}</td>
+                        <td class="fw-bold">#{{ sale.order.id|slice:":8" }}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ sale.order.ticket.event.image_url }}" alt="{{ sale.order.ticket.event.name }}" class="rounded-2 me-2" width="40" height="30" style="object-fit: cover;">
+                                <span>{{ sale.order.ticket.event.name|truncatechars:20 }}</span>
+                            </div>
+                        </td>
+                        <td>{{ sale.seller.email }}</td>
+                        <td class="fw-bold">£{{ sale.amount }}</td>
+                        <td>{{ sale.created_at|date:"M d" }}</td>
+                        <td>
+                            {% if sale.payout_date %}
+                            <span class="badge bg-success">{{ sale.payout_date|date:"M d, Y" }}</span>
+                            {% else %}
+                            <span class="badge bg-warning">Pending</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="#" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-receipt"></i> Receipt
+                            </a>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5">
+                            <div class="mb-3">
+                                <i class="bi bi-currency-pound display-4 text-muted"></i>
+                            </div>
+                            <h4 class="h5">No sales found</h4>
+                            <p class="text-muted">All sales will appear here</p>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <!-- Summary Card -->
+    <div class="row mt-4">
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted small mb-1">Total Sales</h6>
+                            <h3 class="mb-0">£{{ total_sales|default:"0.00" }}</h3>
+                        </div>
+                        <div class="bg-primary p-3 rounded-circle">
+                            <i class="bi bi-currency-pound text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted small mb-1">Pending Payouts</h6>
+                            <h3 class="mb-0">£{{ pending_payouts|default:"0.00" }}</h3>
+                        </div>
+                        <div class="bg-warning p-3 rounded-circle">
+                            <i class="bi bi-clock-history text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-uppercase text-muted small mb-1">Completed Payouts</h6>
+                            <h3 class="mb-0">£{{ completed_payouts|default:"0.00" }}</h3>
+                        </div>
+                        <div class="bg-success p-3 rounded-circle">
+                            <i class="bi bi-check-circle text-white fs-4"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Pagination -->
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+{% endblock %}

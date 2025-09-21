@@ -1,0 +1,200 @@
+.auth-container {
+    max-width: 580px;
+    margin: 4rem auto;
+    padding: 2.5rem;
+    background: rgba(233, 245, 233, 0.98);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(13, 36, 27, 0.15);
+    border: 1px solid rgba(64, 145, 108, 0.2);
+}
+
+.auth-title {
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+.auth-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--gold-accents);
+}
+
+.form-label {
+    color: var(--primary-accent);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    padding: 14px 20px;
+    border: 2px solid rgba(64, 145, 108, 0.2);
+    border-radius: 10px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-control:focus {
+    border-color: var(--secondary-accent);
+    box-shadow: 0 0 0 3px var(--hover-glow);
+}
+
+.btn-auth {
+    background: var(--secondary-accent);
+    color: white;
+    padding: 14px 30px;
+    border-radius: 10px;
+    font-weight: 600;
+    border: none;
+    transition: all 0.3s;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-auth:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+.radio-select-group {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.radio-select {
+    padding: 1.5rem;
+    border: 2px solid rgba(64, 145, 108, 0.2);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+    position: relative;
+}
+
+.radio-select input[type="radio"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.radio-select .bi {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary-accent);
+}
+
+.radio-select:hover {
+    border-color: var(--highlight);
+}
+
+.radio-select input[type="radio"]:checked + .radio-content {
+    border-color: var(--highlight);
+    background: rgba(77, 147, 112, 0.08);
+}
+
+.conditional-field {
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.4s ease-in-out;
+}
+
+.conditional-field.active {
+    opacity: 1;
+    max-height: 500px;
+}
+
+.alert-messages {
+    position: fixed;
+    top: 100px;
+    right: 2rem;
+    z-index: 2000;
+    min-width: 300px;
+}
+
+.alert {
+    border-radius: 10px;
+    backdrop-filter: blur(8px);
+    border: 2px solid;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.alert-success {
+    background: rgba(77, 147, 112, 0.15);
+    border-color: var(--highlight);
+    color: var(--primary-dark);
+}
+
+.alert-error {
+    background: rgba(197, 166, 69, 0.15);
+    border-color: var(--gold-accents);
+    color: var(--primary-dark);
+}
+
+.autocomplete-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 1000;
+    margin-top: -10px;
+}
+
+.autocomplete-item {
+    display: block;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(13, 36, 27, 0.1);
+    color: var(--primary-dark);
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.autocomplete-item:hover {
+    background: rgba(77, 147, 112, 0.05);
+}
+
+.ac-event-name {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+}
+
+.ac-event-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: var(--primary-accent);
+}
+
+.contact-container {
+    max-width: 800px;
+    margin: 2rem auto;
+}
+
+.contact-container .form-label {
+    font-weight: 600;
+    color: var(--primary-accent);
+}
+
+.contact-container textarea {
+    resize: vertical;
+    min-height: 150px;
+}

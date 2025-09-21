@@ -1,0 +1,115 @@
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% load static %}
+
+{% block title %} Superadmin-accounts {% endblock %}
+
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'accounts/css/admin.css' %}">
+
+<div class="container admin-container">
+    <div class="d-flex justify-content-between align-items-center mb-5">
+        <h1 class="admin-main-title">
+            <i class="bi bi-people-fill"></i> User Accounts
+        </h1>
+        <a href="?filter=unverified_resellers" class="btn btn-admin-filter">
+            <i class="bi bi-funnel"></i> Show Unverified Resellers
+        </a>
+    </div>
+
+    <div class="row g-4">
+        {% for user in users %}
+        <div class="col-12">
+            <div class="user-card">
+                <div class="user-card-header">
+                    <span class="user-id">#{{ user.id }}</span>
+                    <span class="user-type-badge {{ user.user_type|lower }}">
+                        {{ user.user_type }}
+                    </span>
+                </div>
+                
+                <div class="user-card-body">
+                    <div class="user-info-item">
+                        <i class="bi bi-envelope"></i>
+                        <span>{{ user.email }}</span>
+                        <span class="verification-badge {% if user.is_verified %}verified{% else %}unverified{% endif %}">
+                            {% if user.is_verified %}
+                            <i class="bi bi-check-circle"></i> Verified
+                            {% else %}
+                            <i class="bi bi-x-circle"></i> Unverified
+                            {% endif %}
+                        </span>
+                    </div>
+                    
+                    <div class="row g-3 mt-2">
+                        <div class="col-md-4">
+                            <div class="user-info-item">
+                                <i class="bi bi-phone"></i>
+                                {{ user.phone|default:"Not provided" }}
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="user-info-item">
+                                <i class="bi bi-person-check"></i>
+                                Seller Status: 
+                                <span class="{% if user.verified_seller %}text-success{% else %}text-danger{% endif %}">
+                                    {{ user.verified_seller|yesno:"Verified,Unverified" }}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-4">
+                            <div class="user-info-item">
+                                <i class="bi bi-calendar"></i>
+                                Joined: {{ user.date_joined|date:"M d, Y" }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="user-card-actions">
+                    <a href="{% url 'accounts:superadmin_update_user' user.id %}" class="btn btn-admin-action">
+                        <i class="bi bi-pencil-square"></i> Edit
+                    </a>
+                    <form method="post" action="{% url 'accounts:superadmin_delete_user' user.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-admin-action btn-admin-delete">
+                            <i class="bi bi-trash3"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <nav class="admin-pagination mt-5">
+        <ul class="pagination justify-content-center">
+            {% if users.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ users.previous_page_number }}{% if request.GET.filter %}&filter={{ request.GET.filter }}{% endif %}">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+            
+            {% for num in users.paginator.page_range %}
+            <li class="page-item {% if num == users.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ num }}{% if request.GET.filter %}&filter={{ request.GET.filter }}{% endif %}">
+                    {{ num }}
+                </a>
+            </li>
+            {% endfor %}
+            
+            {% if users.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ users.next_page_number }}{% if request.GET.filter %}&filter={{ request.GET.filter }}{% endif %}">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+{% endblock %}

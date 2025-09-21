@@ -1,0 +1,621 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> Search Results </title>
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+    <link rel="stylesheet" href="{% static 'accounts/css/admin.css' %} ">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --primary-dark: #0d241b;
+        --primary-accent: #1d4532;
+        --secondary-accent: #2d6a4f;
+        --highlight: #4d9370;
+        --gold-accents: #c5a645;
+        --text-light: #f8f9fa;
+        --hover-glow: rgba(77, 147, 112, 0.2);
+        --header-height: 80px;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
+        font-family: 'Inter', sans-serif;
+        padding-top: var(--header-height);
+    }
+    .auth-container {
+        max-width: 580px;
+        margin: 4rem auto;
+        padding: 2.5rem;
+        background: rgba(233, 245, 233, 0.98);
+        border-radius: 20px;
+        box-shadow: 0 12px 40px rgba(13, 36, 27, 0.15);
+        border: 1px solid rgba(64, 145, 108, 0.2);
+    }
+
+    .auth-title {
+        color: var(--primary-dark);
+        font-weight: 700;
+        font-size: 2rem;
+        margin-bottom: 2rem;
+        position: relative;
+        padding-bottom: 0.5rem;
+    }
+
+    .auth-title::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--gold-accents);
+    }
+
+    .form-label {
+        color: var(--primary-accent);
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .form-control {
+        padding: 14px 20px;
+        border: 2px solid rgba(64, 145, 108, 0.2);
+        border-radius: 10px;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .form-control:focus {
+        border-color: var(--secondary-accent);
+        box-shadow: 0 0 0 3px var(--hover-glow);
+    }
+
+    .btn-auth {
+        background: var(--secondary-accent);
+        color: white;
+        padding: 14px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        transition: all 0.3s;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-auth:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+    }
+
+    .btn-auth:active {
+        transform: translateY(0);
+    }
+
+    .radio-select-group {
+        display: grid;
+        gap: 1rem;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .radio-select {
+        padding: 1.5rem;
+        border: 2px solid rgba(64, 145, 108, 0.2);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-align: center;
+        position: relative;
+    }
+
+    .radio-select input[type="radio"] {
+        position: absolute;
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .radio-select .bi {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+        color: var(--primary-accent);
+    }
+
+    .radio-select:hover {
+        border-color: var(--highlight);
+    }
+
+    .radio-select input[type="radio"]:checked + .radio-content {
+        border-color: var(--highlight);
+        background: rgba(77, 147, 112, 0.08);
+    }
+
+    .conditional-field {
+        opacity: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: all 0.4s ease-in-out;
+    }
+
+    .conditional-field.active {
+        opacity: 1;
+        max-height: 500px;
+    }
+
+    .alert-messages {
+        position: fixed;
+        top: 100px;
+        right: 2rem;
+        z-index: 2000;
+        min-width: 300px;
+    }
+
+    .alert {
+        border-radius: 10px;
+        backdrop-filter: blur(8px);
+        border: 2px solid;
+        padding: 1rem 1.5rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .alert-success {
+        background: rgba(77, 147, 112, 0.15);
+        border-color: var(--highlight);
+        color: var(--primary-dark);
+    }
+
+    .alert-error {
+        background: rgba(197, 166, 69, 0.15);
+        border-color: var(--gold-accents);
+        color: var(--primary-dark);
+    }
+
+    .autocomplete-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        z-index: 1000;
+        margin-top: -10px;
+    }
+
+    .autocomplete-item {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(13, 36, 27, 0.1);
+        color: var(--primary-dark);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .autocomplete-item:hover {
+        background: rgba(77, 147, 112, 0.05);
+    }
+
+    .ac-event-name {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    .ac-event-details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: var(--primary-accent);
+    }
+
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
+        background: linear-gradient(to right, #0d241b 0%, #1d4532 100%);
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        z-index: 2000;
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(64, 145, 108, 0.3);
+    }
+
+    .navbar {
+        padding: 0 2rem;
+        height: 100%;
+    }
+
+    .logo {
+        height: 45px;
+        transition: transform 0.3s, filter 0.3s;
+        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .logo:hover {
+        transform: translateY(-2px) scale(1.05);
+        filter: drop-shadow(0 4px 8px var(--hover-glow));
+    }
+
+    .nav-link {
+        color: var(--text-light) !important;
+        padding: 8px 24px !important;
+        margin: 0 8px;
+        transition: transform 0.3s;
+        background: transparent;
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 8px;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-3px);
+        border-color: var(--highlight);
+    }
+
+    .search-container {
+        position: relative;
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .search-bar {
+        width: 100%;
+        padding: 12px 48px 12px 24px;
+        border-radius: 8px;
+        border: 1px solid rgba(64, 145, 108, 0.3);
+        background: rgba(255, 255, 255, 0.9);
+        font-size: 0.9rem;
+        transition: box-shadow 0.3s, border-color 0.3s;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .search-bar:focus {
+        outline: none;
+        box-shadow: 0 4px 16px rgba(64, 145, 108, 0.2);
+        border-color: var(--secondary-accent);
+    }
+
+    .search-icon {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--primary-dark);
+    }
+
+    .footer {
+        background: var(--primary-dark);
+        color: var(--text-light);
+        margin-top: auto;
+        padding: 2rem 0;
+        border-top: 1px solid rgba(64, 145, 108, 0.1);
+    }
+
+    .footer-logo {
+        height: 40px;
+        opacity: 0.9;
+        transition: opacity 0.3s, transform 0.3s;
+    }
+
+    .footer-logo:hover {
+        opacity: 1;
+        transform: rotate(-5deg) scale(1.05);
+    }
+
+    .footer-link {
+        color: var(--text-light) !important;
+        text-decoration: none;
+        margin: 0 1.5rem;
+        position: relative;
+        padding-bottom: 4px;
+    }
+
+    .footer-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--gold-accents);
+        transition: width 0.3s;
+    }
+
+    .footer-link:hover::after {
+        width: 100%;
+    }
+
+    @media (max-width: 991px) {
+        body { padding-top: calc(var(--header-height) + 20px); }
+        .header {
+            border-radius: 0;
+        }
+        .navbar-collapse {
+            background: var(--primary-dark);
+            padding: 1rem;
+            margin-top: 12px;
+            border-radius: 8px;
+        }
+        .nav-link {
+            margin: 12px 5px;
+            text-align: center;
+            padding: 12px !important;
+            width: 100%;
+            max-width: 280px;
+        }
+        .search-bar {
+            margin: 1rem 0;
+        }
+    }
+</style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar navbar-expand-lg align-items-center">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'events:home' %}">
+                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="logo">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <div class="search-container me-auto">
+                        <input type="text" name="query" class="form-control search-bar navbar-search-input" placeholder="Search events..." data-behavior="search-autocomplete">
+                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <div id="navbar-search-results" class="autocomplete-results"></div>
+                    </div>
+                    <div class="d-flex ms-lg-auto mt-3 mt-lg-0">
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                            <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
+                            <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
+                        {% else %}
+                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                            <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
+                            <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="flex-grow-1 py-4">
+        {% if messages %}
+        <div class="alert-messages">
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="container admin-container">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <h1 class="admin-main-title">
+                    <i class="bi bi-search"></i> Search Results
+                </h1>
+                <div class="results-count">
+                    {{ paginator.count }} results found
+                </div>
+            </div>
+
+            <div class="row g-4">
+                {% for event in events %}
+                <div class="col-12">
+                    <div class="user-card event-card">
+                        <div class="user-card-header">
+                            <span class="user-id">#{{ event.event_id }}</span>
+                            <span class="user-type-badge {{ event.category }}">
+                                {{ event.get_category_display }}
+                            </span>
+                        </div>
+                        
+                        <div class="user-card-body">
+                            <div class="user-info-item">
+                                <i class="bi bi-ticket-perforated"></i>
+                                <span>{{ event.name }}     &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  {{ event.date }}:{{ event.time }}</span>
+                                <span class="verification-badge">
+                                    <i class="bi bi-clock"></i> {{ event.time_left }}
+                                </span>
+                            </div>
+                            
+                            <div class="row g-3 mt-2">
+                                <div class="col-md-4">
+                                    <div class="user-info-item">
+                                        <i class="bi bi-geo-alt"></i>
+                                        {{ event.stadium_name }}
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-4">
+                                    <div class="user-info-item">
+                                        <i class="bi bi-ticket-detailed"></i>
+                                        Tickets: Sold {{ event.sold_tickets }}/{{ event.total_tickets }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            
+                            <div class="event-actions">
+                                <a 
+                                    href="{% url 'events:create_listing' event.event_id %}" 
+                                    class="btn btn-admin-action"
+                                    style="
+                                    display: inline-block;
+                                    padding: .5rem 1rem;
+                                    font-size: 1rem;
+                                    font-weight: 400;
+                                    line-height: 1.5;
+                                    color: #fff;
+                                    background-color: #007bff;
+                                    border: 1px solid #007bff;
+                                    border-radius: .25rem;
+                                    text-decoration: none;
+                                    margin-right: .5rem;
+                                    "
+                                >
+                                <i class="bi bi-plus-circle"></i> Create Listing
+                                </a>
+
+                                <a 
+                                    href="{% url 'events:event_tickets' event.event_id %}" 
+                                    class="btn btn-admin-action"
+                                    style="
+                                    display: inline-block;
+                                    padding: .5rem 1rem;
+                                    font-size: 1rem;
+                                    font-weight: 400;
+                                    line-height: 1.5;
+                                    color: #fff;
+                                    background-color: #28a745;
+                                    border: 1px solid #28a745;
+                                    border-radius: .25rem;
+                                    text-decoration: none;
+                                    "
+                                >
+                                <i class="bi bi-ticket-detailed"></i> See Tickets
+                                </a>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <nav class="admin-pagination mt-5">
+                <ul class="pagination justify-content-center">
+                    {% if page_obj.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                            <i class="bi bi-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                    
+                    {% for num in page_obj.paginator.page_range %}
+                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                        <a class="page-link" href="?page={{ num }}">
+                            {{ num }}
+                        </a>
+                    </li>
+                    {% endfor %}
+                    
+                    {% if page_obj.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                            <i class="bi bi-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
+                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="footer-logo">
+                    <h6>A WORLD OF EVENTS. We connect people to make every event Precious.</h6>
+                    <div class="copyright mt-3">&copy; {% now 'Y' %} Go2Sport&Music. All rights reserved.</div>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
+                    <h6><i class="bi bi-geo-alt-fill"></i>UK London</h6>
+                    <h6><i class="bi bi-envelope"></i>&nbsp;Contact@go2sportandmusic.com</h6>
+                    <h6><i class="bi bi-phone"></i>+447359424931</h6>
+                </div>
+                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
+                    <a href="{% url 'events:home' %}" class="footer-link">Home</a>
+                    <a href="{% url 'events:privacy' %}" class="footer-link">Privacy Policy</a>
+                    <a href="{% url 'events:contact' %}" class="footer-link">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            const scrollY = window.scrollY;
+            const scale = 1 - Math.min(scrollY * 0.0005, 0.02);
+            header.style.transform = `scale(${scale})`;
+            header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        initSearchAutocomplete('.hero-search-input', '#hero-search-results');
+        initSearchAutocomplete('.navbar-search-input', '#navbar-search-results');
+        });
+
+        function initSearchAutocomplete(inputSelector, resultsContainer) {
+            const searchInput = document.querySelector(inputSelector);
+            const resultsDiv = document.querySelector(resultsContainer);
+
+            if (!searchInput) return;
+
+            let timeoutId;
+
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    const query = this.value.trim();
+                    
+                    if(query.length < 2) {
+                        resultsDiv.innerHTML = '';
+                        return;
+                    }
+
+                    fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`,{
+                        headers: {
+                        'X-Requested-With': 'XMLHttpRequest' 
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            resultsDiv.innerHTML = data.map(event => `
+                                <a href="${event.url}" class="autocomplete-item">
+                                    <div class="ac-event-name">${event.name}</div>
+                                    <div class="ac-event-details">
+                                        <span>${event.category}</span>
+                                        <span>${event.date}</span>
+                                        <span>$${event.min_price} - $${event.max_price}</span>
+                                    </div>
+                                </a>
+                            `).join('');
+                        })
+                        .catch(error => console.error('Error:', error));
+                }, 300);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target)) {
+                    resultsDiv.innerHTML = '';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

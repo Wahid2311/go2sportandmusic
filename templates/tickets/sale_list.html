@@ -1,0 +1,99 @@
+{% extends base_template %}
+{% block title %} Sales {% endblock %}
+{% block dashboard_content %}
+{% load static %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">My Sales</h1>
+    </div>
+    
+    {% if sales %}
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Event</th>
+                        <th>Tickets</th>
+                        <th>Amount</th>
+                        <th>Sale Date</th>
+                        <th>Payout Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <img src="{{ sale.order.ticket.event.image_url }}" alt="{{ sale.order.ticket.event.name }}" class="rounded-2" width="60" height="40" style="object-fit: cover;">
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-0">{{ sale.order.ticket.event.name }}</p>
+                                    <small class="text-muted">{{ sale.order.ticket.event.date|date:"M d, Y" }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ sale.order.ticket.number_of_tickets }} ticket{{ sale.order.ticket.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ sale.order.ticket.section.name }}, Row {{ sale.order.ticket.row }}</small>
+                        </td>
+                        <td class="fw-bold">£{{ sale.amount }}</td>
+                        <td>{{ sale.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            {% if sale.payout_date %}
+                            <span class="badge bg-success">Paid on {{ sale.payout_date|date:"M d, Y" }}</span>
+                            {% else %}
+                            <span class="badge bg-warning">Processing</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'events:privacy' %}" class="btn btn-sm btn-outline-primary">Details</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <img src="{% static 'images/empty-orders.png' %}" alt="No sales" class="img-fluid" style="max-height: 200px;">
+        </div>
+        <h3 class="h4 mb-3">You haven't made any sales yet</h3>
+        <p class="text-muted mb-4">List more tickets to start earning</p>
+        <a href="{% url 'events:all_events' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-plus-circle me-2"></i> Create New Listing
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

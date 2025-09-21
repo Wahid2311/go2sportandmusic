@@ -1,0 +1,186 @@
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% load static %}
+{% block title %} Create Event {% endblock %}
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'events/css/events.css' %}">
+<style>
+    .event-create-container {
+        max-width: 800px;
+        padding: 2.5rem;
+    }
+
+    .section-title {
+        color: var(--primary-dark);
+        font-size: 1.5rem;
+        border-bottom: 2px solid var(--gold-accents);
+        padding-bottom: 0.5rem;
+    }
+
+    .btn-add-section {
+        background: var(--secondary-accent);
+        color: white;
+        padding: 0.6rem 1.5rem;
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .btn-add-section:hover {
+        background: var(--highlight);
+        transform: translateY(-2px);
+    }
+
+    .section-card {
+        background: rgba(241, 245, 241, 0.3);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 2px dashed rgba(64, 145, 108, 0.2);
+        transition: all 0.3s;
+    }
+
+    .section-card:hover {
+        border-color: var(--highlight);
+        transform: translateY(-3px);
+    }
+
+    .color-picker {
+        height: 38px;
+        padding: 0.3rem;
+        cursor: pointer;
+        border-radius: 8px;
+    }
+
+    .btn-remove-section {
+        color: #dc3545;
+        width: 100%;
+        background: rgba(220, 53, 69, 0.1);
+        border-radius: 8px;
+        transition: all 0.3s;
+    }
+
+    .btn-remove-section:hover {
+        background: rgba(220, 53, 69, 0.2);
+    }
+
+</style>
+<div class="container">
+    <div class="auth-container event-create-container">
+        <h2 class="auth-title text-center mb-4">
+            <i class="bi bi-calendar-event"></i> Create New Event
+        </h2>
+
+        <form method="post" id="eventCreateForm">
+            {% csrf_token %}
+            
+            <div class="row g-4">
+                {% for field in form %}
+                    {% if field.name != 'sections' %}
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="form-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}
+                            <div class="invalid-feedback d-block">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+
+            <div class="sections-container mt-5">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="section-title">
+                        <i class="bi bi-grid"></i> Event Sections
+                    </h3>
+                    <button type="button" class="btn btn-add-section" id="addSectionBtn">
+                        <i class="bi bi-plus-circle"></i> Add Section
+                    </button>
+                </div>
+                
+                <div id="sectionsList">
+                </div>
+                
+                <template id="sectionTemplate">
+                    <div class="section-card">
+                        <div class="row g-3">
+                            <div class="col-md-5">
+                                <input type="text" name="section_name" 
+                                       class="form-control section-input"
+                                       placeholder="Section Name"
+                                       required>
+                            </div>
+                            <div class="col-md-5">
+                                <select name="section_color" class="form-control section-color" required>
+                                    {% for hex, label in section_colors %}
+                                    <option value="{{ hex }}" style="background-color: {{ hex }};">
+                                        {{ label }}
+                                    </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <button type="button" 
+                                        class="btn btn-remove-section"
+                                        onclick="this.closest('.section-card').remove()">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+            {{ form.sections }}
+
+            <div class="form-actions mt-5">
+                <button type="submit" class="btn-auth">
+                    <i class="bi bi-check-circle"></i> Create Event
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const addSectionBtn = document.getElementById('addSectionBtn');
+    const sectionsList = document.getElementById('sectionsList');
+    const template = document.getElementById('sectionTemplate');
+    const sectionsInput = document.querySelector('[name="sections"]');
+
+    function updateSectionsData() {
+        const sections = [];
+        document.querySelectorAll('.section-card').forEach(card => {
+            const sectionData = {
+                name: card.querySelector('[name="section_name"]').value,
+                color: card.querySelector('[name="section_color"]').value
+            };
+            const idInput = card.querySelector('[name="section_id"]');
+            if (idInput) {
+                sectionData.id = idInput.value;
+            }
+            
+            sections.push(sectionData);
+        });
+        sectionsInput.value = JSON.stringify(sections);
+
+    }
+
+     addSectionBtn.addEventListener('click', () => {
+        const clone = template.content.cloneNode(true);
+        sectionsList.appendChild(clone);
+        updateSectionsData();
+    });
+
+    sectionsList.addEventListener('input', (e) => {
+        if(e.target.matches('.section-input, .color-picker')) {
+            updateSectionsData();
+        }
+    });
+    
+    sectionsList.addEventListener('change', (e) => {
+        if (e.target.matches('.section-color')) {
+            updateSectionsData();
+        }
+    });
+</script>
+{% endblock %}
