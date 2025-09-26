@@ -979,10 +979,7 @@ class EventTicketListAPIView(View):
 
         tickets_data = []
         for ticket in tickets_page:
-            if is_reseller:
-                price_per_ticket = ticket.sell_price_for_reseller
-            else:
-                price_per_ticket = ticket.sell_price_for_normal
+            price_per_ticket = ticket.sell_price_for_normal
 
             tickets_data.append({
                 'ticket_id': str(ticket.ticket_id),
