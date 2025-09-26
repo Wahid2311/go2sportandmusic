@@ -903,6 +903,7 @@ class MyListingsAPIView(View):
                 'seats': ticket.seats,
                 'number_of_tickets': ticket.number_of_tickets,
                 'ticket_type': ticket.ticket_type,
+                'face_value':ticket.face_value,
                 'sell_price': float(ticket.sell_price),
                 'created_at': ticket.created_at.isoformat(),
                 'sold': ticket.sold,
