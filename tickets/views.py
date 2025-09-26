@@ -898,6 +898,7 @@ class MyListingsAPIView(View):
                     'time': ticket.event.time.strftime('%H:%M:%S'),
                 },
                 'section': ticket.section.name,
+                'section_id':ticket.section.id,
                 'row': ticket.row,
                 'seats': ticket.seats,
                 'number_of_tickets': ticket.number_of_tickets,
