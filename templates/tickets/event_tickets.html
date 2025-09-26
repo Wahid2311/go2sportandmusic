@@ -496,8 +496,8 @@
             <div class="col-12 text-center">
               <h1 class="fw-bold">{{ event.name }}</h1>
               {% if user.user_type == 'Reseller' %}
-              <a href="{% url 'events:create_listing' event.event_id %}" class="btn btn-event-action">
-              Create Listing
+              <a href="{% url 'events:create_listing' event.event_id %}" class="btn btn-primary">
+              Sell Tickets
               </a>
               {% endif %}
               <p class="text-muted">
