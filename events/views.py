@@ -30,50 +30,57 @@ class SuperAdminMixin(UserPassesTestMixin):
         messages.error(self.request, "Unauthorized access")
         return redirect(reverse('accounts:sign_in'))
 
-@method_decorator(csrf_exempt, name='dispatch')
-@method_decorator(api_login_required, name='dispatch')
 class EventCreateAPIView(View):
+    @method_decorator(csrf_exempt)
+    @method_decorator(api_login_required)
+    def dispatch(self, *args, **kwargs):
+        return super().dispatch(*args, **kwargs)
+
     def post(self, request):
         if not request.user.is_superadmin:
             return JsonResponse({'error': 'Only superadmins can create events'}, status=403)
-
+        
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
-
-        form_data = data.copy()
-        sections_data = form_data.pop('sections', [])
-
-        form = EventCreationForm(form_data)
-        if not form.is_valid():
-            return JsonResponse({'error': form.errors}, status=400)
-
+        
         try:
             with transaction.atomic():
-                event = form.save(commit=False)
-                event.superadmin = request.user
+                event = Event(
+                    superadmin=request.user,
+                    name=data.get('name'),
+                    category=data.get('category'),
+                    stadium_name=data.get('stadium_name'),
+                    stadium_image=data.get('stadium_image'),
+                    event_logo=data.get('event_logo'),
+                    date=data.get('date'),
+                    time=data.get('time'),
+                    normal_service_charge=data.get('normal_service_charge', 0),
+                    reseller_service_charge=data.get('reseller_service_charge', 0),
+                    total_tickets=data.get('total_tickets', 0),  
+                    sold_tickets=data.get('sold_tickets', 0),   
+                )
                 event.save()
-
+                
+                sections_data = data.get('sections', [])
                 for section_data in sections_data:
-                    section_form = SectionForm(section_data)
-                    if section_form.is_valid():
-                        EventSection.objects.create(
-                            event=event,
-                            name=section_form.cleaned_data['name'],
-                            color=section_form.cleaned_data['color']
-                        )
-                    else:
-                        return JsonResponse({'error': section_form.errors}, status=400)
-
+                    EventSection.objects.create(
+                        event=event,
+                        name=section_data.get('name'),
+                        color=section_data.get('color')
+                    )
+                
                 return JsonResponse({
                     'success': True,
                     'event_id': event.event_id,
-                    'message': 'Event created successfully'
+                    'message': 'Event created successfully',
+                    'total_tickets': event.total_tickets,
+                    'sold_tickets': event.sold_tickets
                 }, status=201)
-
+                
         except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
+            return JsonResponse({'error': f'Error creating event: {str(e)}'}, status=500)
 
 class EventCreateView(SuperAdminMixin, CreateView):
     model = Event
