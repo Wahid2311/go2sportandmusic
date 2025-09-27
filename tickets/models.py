@@ -118,7 +118,16 @@ class Ticket(models.Model):
         self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
         super().save(*args, **kwargs)
 
-        self.update_event_section_aggregates()
+        section = self.section
+        all_tickets = section.tickets.all()
+        
+        if all_tickets.exists():
+            prices = [float(t.sell_price) for t in all_tickets]
+            section.lower_price = min(prices)
+            section.upper_price = max(prices)
+            section.save()
+
+        #self.update_event_section_aggregates()
 
     def update_section_aggregates(self, section):
         all_section_tickets = Ticket.objects.filter(section=section)
