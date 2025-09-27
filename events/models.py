@@ -92,11 +92,12 @@ class Event(BaseModel):
 
     @property
     def lowest_price(self):
-        return self.sections.aggregate(Min('lower_price'))['lower_price__min'] or 0
-
+        return self.sections.exclude(lower_price=0).exclude(lower_price__isnull=True).aggregate(Min('lower_price'))['lower_price__min'] or 0
+    
     @property
     def highest_price(self):
-        return self.sections.aggregate(Max('upper_price'))['upper_price__max'] or 0
+        return self.sections.exclude(upper_price=0).exclude(upper_price__isnull=True).aggregate(Max('upper_price'))['upper_price__max'] or 0
+
 
     @property
     def is_expired(self):
