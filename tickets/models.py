@@ -119,6 +119,7 @@ class Ticket(models.Model):
         super().save(*args, **kwargs)
 
         section = self.section
+        event = self.event
         all_tickets = section.tickets.all()
         
         if all_tickets.exists():
