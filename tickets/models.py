@@ -126,7 +126,7 @@ class Ticket(models.Model):
         
         
         if all_tickets.exists():
-            prices = [float(t.sell_price) for t in all_tickets]
+            prices = [float(t.sell_price_for_normal) for t in all_tickets]
             section.lower_price = min(prices)
             section.upper_price = max(prices)
             section.save()
