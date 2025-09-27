@@ -116,6 +116,7 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         self.sell_price_for_normal = self.sell_price + (((self.sell_price*self.event.normal_service_charge)/100) or 0)
         self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
+        is_new = self.pk is None
         super().save(*args, **kwargs)
 
         section = self.section
@@ -123,13 +124,15 @@ class Ticket(models.Model):
         tot_tickets=event.total_tickets
         all_tickets = section.tickets.all()
         
+        
         if all_tickets.exists():
             prices = [float(t.sell_price) for t in all_tickets]
             section.lower_price = min(prices)
             section.upper_price = max(prices)
             section.save()
-        event.total_tickets = tot_tickets+sum(t.number_of_tickets for t in event.tickets.all())
-        event.save()
+        if is_new:
+            event.total_tickets = sum(t.number_of_tickets for t in event.tickets.all())
+            event.save()
 
         #self.update_event_section_aggregates()
 
