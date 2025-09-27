@@ -126,6 +126,7 @@ class Ticket(models.Model):
             section.lower_price = min(prices)
             section.upper_price = max(prices)
             section.save()
+        event.total_tickets += sum(t.number_of_tickets for t in event.tickets.all())
 
         #self.update_event_section_aggregates()
 
