@@ -133,13 +133,18 @@ class Ticket(models.Model):
         section = self.section
         event = self.event
         all_section_tickets = section.tickets.all()
-        all_prices = [ticket.sell_price for ticket in all_section_tickets]
-
-        section.total_tickets = sum(ticket.number_of_tickets for ticket in all_section_tickets)
-        section.lower_price = min(all_prices) if all_prices else 0
-        section.upper_price = max(all_prices) if all_prices else 0
+        
+        if all_section_tickets.exists():
+            all_prices = [float(ticket.sell_price) for ticket in all_section_tickets]
+            section.lower_price = min(all_prices)
+            section.upper_price = max(all_prices)
+            section.total_tickets = sum(ticket.number_of_tickets for ticket in all_section_tickets)
+        else:
+            section.lower_price = 0
+            section.upper_price = 0
+            section.total_tickets = 0
+        
         section.save()
-
         event.total_tickets = sum(t.number_of_tickets for t in event.tickets.all())
         event.save()
 
