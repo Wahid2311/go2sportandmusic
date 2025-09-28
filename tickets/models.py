@@ -94,14 +94,16 @@ class Ticket(models.Model):
     def delete(self, *args, **kwargs):
         event = self.event
         section = self.section
+        ticket_number=self.number_of_tickets
         super().delete(*args, **kwargs)
-        
-        event.total_tickets = Ticket.objects.filter(event=event).aggregate(
-            total=models.Sum('number_of_tickets')
-        )['total'] or 0
+        all_tickets = section.tickets.all()
+        prices = [float(t.sell_price_for_normal) for t in all_tickets]
+        section.lower_price = min(prices)
+        section.upper_price = max(prices)
+        section.save()
+        event.total_tickets -=ticket_number 
         event.save()
         
-        self.update_section_aggregates(section)
 
     def clean(self):
         if self.upload_choice == 'now' and not self.upload_file:
@@ -116,12 +118,11 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         self.sell_price_for_normal = self.sell_price + (((self.sell_price*self.event.normal_service_charge)/100) or 0)
         self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
-        is_new = True
+        is_new = self.pk is None
         super().save(*args, **kwargs)
 
         section = self.section
         event = self.event
-        tot_tickets=event.total_tickets
         all_tickets = section.tickets.all()
         
         
@@ -133,8 +134,6 @@ class Ticket(models.Model):
         if is_new:
             event.total_tickets += self.number_of_tickets
             event.save()
-
-        #self.update_event_section_aggregates()
 
     def update_section_aggregates(self, section):
         all_section_tickets = Ticket.objects.filter(section=section)
