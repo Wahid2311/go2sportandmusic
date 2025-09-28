@@ -116,7 +116,7 @@ class Ticket(models.Model):
     def save(self, *args, **kwargs):
         self.sell_price_for_normal = self.sell_price + (((self.sell_price*self.event.normal_service_charge)/100) or 0)
         self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
-        is_new = self.pk is None
+        is_new = True
         super().save(*args, **kwargs)
 
         section = self.section
