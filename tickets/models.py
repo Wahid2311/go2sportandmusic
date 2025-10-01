@@ -6,6 +6,9 @@ from django.contrib.postgres.fields import ArrayField
 import uuid
 from django.conf import settings
 from storages.backends.s3boto3 import S3Boto3Storage
+import logging
+
+logger = logging.getLogger(__name__) 
 
 class PdfStorage(S3Boto3Storage):
     location = 'tickets/pdfs'
@@ -119,6 +122,7 @@ class Ticket(models.Model):
         self.sell_price_for_normal = self.sell_price + (((self.sell_price*self.event.normal_service_charge)/100) or 0)
         self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
         is_new = self.pk is None
+        
         super().save(*args, **kwargs)
 
         section = self.section
@@ -132,8 +136,13 @@ class Ticket(models.Model):
             section.upper_price = max(prices)
             section.save()
         if is_new:
+            logger.info(f"This ticket is new")
+            logger.info(f"current total tickets {event.total_tickets}")
             event.total_tickets += self.number_of_tickets
+            logger.info(f"after adding,current total tickets {event.total_tickets}")
             event.save()
+        else:
+            logger.info(f"This ticket is updating")
 
     def update_section_aggregates(self, section):
         all_section_tickets = Ticket.objects.filter(section=section)
