@@ -136,6 +136,7 @@ class Ticket(models.Model):
             section.upper_price = max(prices)
             section.save()
         if is_new:
+            logger.info(f"For event {event.name}, For section {section.name} , For quantity {self.number_of_tickets}")
             logger.info(f"This ticket is new")
             logger.info(f"current total tickets {event.total_tickets}")
             event.total_tickets += self.number_of_tickets
@@ -143,6 +144,7 @@ class Ticket(models.Model):
             event.save()
         else:
             logger.info(f"This ticket is updating")
+            
 
     def update_section_aggregates(self, section):
         all_section_tickets = Ticket.objects.filter(section=section)
