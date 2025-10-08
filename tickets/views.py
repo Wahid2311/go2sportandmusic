@@ -657,7 +657,7 @@ class CreateListingAPIView(View):
                     ticket.event = event
                     ticket.save()
 
-                    self.send_notification_emails(ticket, request)
+                    #self.send_notification_emails(ticket, request)
 
                     return JsonResponse({
                         'success': True,
