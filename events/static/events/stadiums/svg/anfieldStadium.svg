@@ -1,0 +1,315 @@
+<svg viewBox="-245 -210 491 421" xmlns="http://www.w3.org/2000/svg">
+    <style>
+        .text-1 { font-size: 10px; font-weight: bold; font-family: Arial, sans-serif; }
+        .text-2 { font-size: 8px; font-weight: bold; font-family: Arial, sans-serif; }
+        .text-3 { font-size: 7px; font-weight: bold; font-family: Arial, sans-serif; }
+        .text-4 { font-size: 12px; font-weight: bold; font-family: Arial, sans-serif; }
+        .nc { fill: #4a90e2; stroke: #2c5282; stroke-width: 0.3; opacity: 0.8; }
+    </style>
+    <g id="pitch" opacity="1">
+        <g id="football-pitch" opacity="1" transform="matrix(1 0 0 1 -6.77 -31.751)">
+            <path fill="#BCCD9A" d="M-100-63.5h200v127h-200Z"></path>
+            <path fill="none" stroke="#fff" d="M-97.4-60.7H97.4V60.7H-97.4Z"></path>
+            <path fill="none" stroke="gray" d="M-98.8-62.3H98.8V62.3H-98.8Z"></path>
+            <path fill="none" stroke="#fff" d="M18.2 0a18.2 18.2 0 1 1-36.4 0 18.2 18.2 0 0 1 36.4 0Z"></path>
+            <path fill="#fff" stroke="#fff" d="M0-61.75v123.5"></path>
+            <path fill="#fff" stroke="#fff" d="M-97-41.5h40"></path>
+            <path fill="#fff" stroke="#fff" d="M-57-41.5v83"></path>
+            <path fill="#fff" stroke="#fff" d="M-57 41.5h-40"></path>
+            <path fill="#fff" stroke="#fff" d="M-97-20.3h16"></path>
+            <path fill="#fff" stroke="#fff" d="M-81-20.3v40.6"></path>
+            <path fill="#fff" stroke="#fff" d="M-81 20.3h-16"></path>
+            <path fill="#fff" stroke="#fff" d="M97-41.5H57"></path>
+            <path fill="#fff" stroke="#fff" d="M57-41.5v83"></path>
+            <path fill="#fff" stroke="#fff" d="M57 41.5h40"></path>
+            <path fill="#fff" stroke="#fff" d="M97-20.3H81"></path>
+            <path fill="#fff" stroke="#fff" d="M81-20.3v40.6"></path>
+            <path fill="#fff" stroke="#fff" d="M81 20.3h16"></path>
+        </g>
+    </g>
+    <g id="shapes" opacity="1">
+        <path d="M-96-178.5h33v18h-33Z" class="nc" data-block="CE3" data-section="longside-upper-tier"></path>
+        <path d="M-96-157.5h33v17h-33Z" class="nc" data-block="CE3" data-section="premier-club"></path>
+        <path d="M44-157.5h31v17H44Z" class="nc" data-block="CE7" data-section="premier-club"></path>
+        <path d="M44-178.5h31v18H44Z" class="nc" data-block="CE7" data-section="longside-upper-tier"></path>
+        <path d="M-59-178.5h31v18h-31Z" class="nc" data-block="CE4" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M-59-157.5h31v17h-31Z" class="nc" data-block="CE4" data-section="premier-club"
+            data-tags="centenary-club"></path>
+        <path d="M10-178.5h30v18H10Z" class="nc" data-block="CE6" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M10-157.5h30v17H10Z" class="nc" data-block="CE6" data-section="premier-club"
+            data-tags="centenary-club"></path>
+        <path d="M79-157.5h23v17H79Z" class="nc" data-block="CE8" data-section="longside-upper-tier"></path>
+        <path d="M79-178.5h23v18H79Z" class="nc" data-block="CE8" data-section="longside-upper-tier"></path>
+        <path d="M-127-178.5h27v18h-27Z" class="nc" data-block="CE2" data-section="longside-upper-tier"></path>
+        <path d="M-127-157.5h27v17h-27Z" class="nc" data-block="CE2" data-section="longside-upper-tier"></path>
+        <path d="M-25-157.5H7v17h-32Z" class="nc" data-block="CE5" data-section="premier-club"
+            data-tags="centenary-club"></path>
+        <path d="M-25-178.5H7v18h-32Z" class="nc" data-block="CE5" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M-96-137.5H75v9H-96Z" class="nc" data-section="centenary-club"
+            data-tags="vip-hospitality-package,premier-club"></path>
+        <path d="M-144-7.5h33v9h-33Z" class="nc" data-block="AL6" data-section="away-fans-section"></path>
+        <path d="M-144-20.5h33v9h-33Z" class="nc" data-block="AL6" data-section="anfield-road-lower"
+            data-tags="shortside-lower-tier"></path>
+        <path d="M-166-44.5h19v21h-19Z" class="nc" data-block="AM4" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229-44.5h59v21h-59Z" class="nc" data-block="AU4" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-166-20.5h19v22h-19Z" class="nc" data-block="AM5" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229-20.5h59v22h-59Z" class="nc" data-block="AU5" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-166-68.5h19v21h-19Z" class="nc" data-block="AM3" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229-68.5h59v21h-59Z" class="nc" data-block="AU3" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-166 5.5h19v21h-19Z" class="nc" data-block="AM6" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229 4.5h59v22h-59Z" class="nc" data-block="AU6" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-166 54.5h19v23h-19Z" class="nc"></path>
+        <path d="M-166 54.5h19v23h-19Z" class="nc" data-block="AM8" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229 54.5h59v23h-59Z" class="nc" data-block="AU8" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier"></path>
+        <path d="M-166 29.5h19v22h-19Z" class="nc" data-block="AM7" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229 29.5h59v22h-59Z" class="nc" data-block="AU7" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-166-91.5h19v20h-19Z" class="nc" data-block="AM2" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-229-91.5h59v20h-59Z" class="nc" data-block="AU2" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier,offsite-hospitality"></path>
+        <path d="M-229-121.5h59v27h-59Z" class="nc" data-block="AU1" data-section="anfield-road-upper"
+            data-tags="shortside-upper-tier"></path>
+        <path d="M-144-102.5h14v8h-14Z" class="nc" data-block="AL2" data-section="anfield-road-lower"
+            data-tags="shortside-lower-tier"></path>
+        <path d="M-144-68.5h33v21h-33Z" class="nc" data-block="AL4" data-section="anfield-road-lower"
+            data-tags="shortside-lower-tier"></path>
+        <path d="M-144-44.5h33v21h-33Z" class="nc" data-block="AL5" data-section="anfield-road-lower"
+            data-tags="shortside-lower-tier"></path>
+        <path d="M-144-91.5h33v20h-33Z" class="nc" data-block="AL3" data-section="anfield-road-lower"
+            data-tags="shortside-lower-tier"></path>
+        <path d="M-144 5.5h33v21h-33Z" class="nc" data-block="AL7" data-section="away-fans-section"></path>
+        <path d="M190-36.5h38v21h-38Z" class="nc" data-block="305" data-section="longside-lower-tier"></path>
+        <path d="M157-36.5h29v21h-29Z" class="nc" data-block="205" data-section="longside-lower-tier"></path>
+        <path d="M157 12.5h67v22h-67Z" class="nc" data-block="203" data-section="longside-lower-tier"></path>
+        <path d="M157-84.5h66v18h-66Z" class="nc" data-block="207" data-section="longside-lower-tier"></path>
+        <path d="M96-11.5h58v21H96Z" class="nc" data-block="104" data-section="longside-lower-tier"></path>
+        <path d="M96 12.5h58v22H96Z" class="nc" data-block="103" data-section="longside-lower-tier"></path>
+        <path d="M96-84.5h58v18H96Z" class="nc" data-block="107" data-section="longside-lower-tier"></path>
+        <path d="M96-36.5h58v21H96Z" class="nc" data-block="105" data-section="longside-lower-tier"></path>
+        <path d="M96-62.5h58v23H96Z" class="nc" data-block="106" data-section="longside-lower-tier"></path>
+        <path d="M47 33.5h21v44H47Z" class="nc" data-block="L8" data-section="longside-lower-tier"></path>
+        <path d="M-6 33.5h23v44H-6Z" class="nc" data-block="L6" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M-80 33.5h21v44h-21Z" class="nc" data-block="L3" data-section="longside-lower-tier"></path>
+        <path d="M20 33.5h24v44H20Z" class="nc" data-block="L7" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M-56 33.5h21v44h-21Z" class="nc" data-block="L4" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M96 54.5h25v37H96Z" class="nc" data-block="L10" data-section="longside-lower-tier"></path>
+        <path d="M-32 33.5h23v44h-23Z" class="nc" data-block="L5" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M-94 80.5h17v11h-17Z" class="nc" data-block="L11" data-section="vip-hospitality-package"
+            data-tags="anfield-code,vip-hospitality-package"></path>
+        <path d="M62 80.5h20v11H62Z" class="nc" data-block="L16" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package,anfield-beat"></path>
+        <path d="M-20 80.5H6v11h-26Z" class="nc" data-section="executive-lounge"></path>
+        <path d="M32 80.5h26v11H32Z" class="nc" data-block="L15" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package,anfield-beat"></path>
+        <path d="M10 80.5h19v11H10Z" class="nc" data-block="L14" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package,premium-level-hospitality"></path>
+        <path d="M-43 80.5h20v11h-20Z" class="nc" data-block="L13" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package,premium-level-hospitality"></path>
+        <path d="M-74 80.5h27v11h-27Z" class="nc" data-block="L12" data-section="vip-hospitality-package"
+            data-tags="anfield-code,vip-hospitality-package"></path>
+        <path d="M-77 94.5h27v18h-27Z" class="nc" data-block="M3" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M4.58 94.08h30v18h-30Z" class="nc" data-block="M6" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-47 94.5h27v18h-27Z" class="nc" data-block="M4" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M93 94.5h28v18H93Z" class="nc" data-block="M9" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M67 94.5h23v18H67Z" class="nc" data-block="M8" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-102 94.5h22v18h-22Z" class="nc" data-block="M2" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-17 94.5H2v18h-19Z" class="nc" data-block="M5" data-section="premium-level-hospitality"
+            data-tags="executive-lounge,vip-hospitality-package"></path>
+        <path d="M-137 94.5h32v18h-32Z" class="nc" data-block="M1" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M39 94.5h25v18H39Z" class="nc" data-block="M7" data-section="vip-hospitality-package"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M59 115.5h26v62H59Z" class="nc" data-block="U8" data-section="longside-upper-tier"></path>
+        <path d="M-18 115.5H5v62h-23Z" class="nc" data-block="U5" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M-98 115.5h22v62h-22Z" class="nc" data-block="U2" data-section="longside-upper-tier"></path>
+        <path d="M-73 115.5h25v62h-25Z" class="nc" data-block="U3" data-section="longside-upper-tier"></path>
+        <path d="M-45 115.5h23v62h-23Z" class="nc" data-block="U4" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M32 115.5h23v62H32Z" class="nc" data-block="U7" data-section="longside-upper-tier"></path>
+        <path d="M8 115.5h21v62H8Z" class="nc" data-block="U6" data-section="longside-upper-tier"
+            data-tags="longside-upper-tier-central"></path>
+        <path d="M-59-124.5h31v25h-31Z" class="nc" data-block="KJ" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M-96-124.5h33v25h-33Z" class="nc" data-block="KH" data-section="longside-lower-tier"></path>
+        <path d="M79-137.5h23v38H79Z" class="nc" data-block="KN" data-section="longside-lower-tier"></path>
+        <path d="M10-124.5h30v25H10Z" class="nc" data-block="KL" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M44-124.5h31v25H44Z" class="nc" data-block="KM" data-section="longside-lower-tier"></path>
+        <path d="M-25-124.5H7v25h-32Z" class="nc" data-block="KK" data-section="longside-lower-tier"
+            data-tags="longside-lower-tier-central"></path>
+        <path d="M125-178.5h-19v18h16.75Z" class="nc" data-block="CE9" data-section="longside-upper-tier"></path>
+        <path d="M106-140.5h13.79l2.21-17h-16Z" class="nc" data-block="CE9" data-section="longside-upper-tier"></path>
+        <path d="M-139.11-140.5h9.11v-17h-14Z" class="nc" data-block="CE1" data-section="longside-upper-tier"></path>
+        <path d="M-130-178.5h-20l4.94 18H-130Z" class="nc" data-block="CE1" data-section="longside-upper-tier"></path>
+        <path d="M141.07-90.5v-10h-20.1l-7.74 7.67H96v5.33h58v-3Z" class="nc" data-block="108"
+            data-section="longside-upper-tier"></path>
+        <path d="M141-115.5h-4.73l-12.27 12h17Z" class="nc" data-block="109" data-section="longside-upper-tier"></path>
+        <path d="M96 37.5v2.81h9.93l3.08 6.6h18.2v12.32L141 61.5v-24Z" class="nc" data-block="102"
+            data-section="longside-upper-tier"></path>
+        <path d="M-132 54.5h-12v11h.97v-.65Z" class="nc" data-block="AL9" data-section="away-fans-section"></path>
+        <path d="M-147-111.12h-6.08v-10.38H-166v25h19Z" class="nc" data-block="AM1" data-section="brodies-lounge"
+            data-tags="vip-hospitality-package"></path>
+        <path d="M-144 51.5h15.94L-111 35.72V29.5h-33Z" class="nc" data-block="AL8" data-section="away-fans-section">
+        </path>
+        <path d="M190-2.58h8.6V9.5h25.04V3.72H228V-11.5h-38Z" class="nc" data-block="304" data-section="longside-upper-tier">
+        </path>
+        <path d="M222.56-57.66v-4.84h-22v16.12H190v6.88h38v-18.16Z" class="nc" data-block="306"
+            data-section="longside-upper-tier"></path>
+        <path d="M186.3.57V-11.5H157v21h38V.57Z" class="nc" data-block="204" data-section="longside-upper-tier"></path>
+        <path d="M197-49.6v-12.9h-40v23h29.31v-10.1Z" class="nc" data-block="206" data-section="longside-upper-tier"></path>
+        <path d="M156.96 38.57H144v23.15l67 10.78v-35h-54.04Z" class="nc" data-block="202"
+            data-section="longside-upper-tier"></path>
+        <path d="M211-121.5h-57.92l-1.1 6.21H144v21.58h12.96v6.21H211Z" class="nc" data-block="208"
+            data-section="longside-upper-tier"></path>
+        <path d="M82.75 33.5H71v44.12h14.17V91.5H93V44.37Z" class="nc" data-block="L9"
+            data-section="longside-lower-tier"></path>
+        <path d="m-97.25 33.5-6.75 6.78V91.5h6.97V77.62H-83V33.5Z" class="nc" data-block="L2"
+            data-section="longside-lower-tier"></path>
+        <path d="M-137 71.6v19.9h29v-48Z" class="nc" data-block="L1" data-section="longside-lower-tier"></path>
+        <path d="M88 115.5v63h5.77L121 140.94V115.5Z" class="nc" data-block="U9" data-section="longside-upper-tier">
+        </path>
+        <path d="M-137 115.5v20.03l27.17 42.97h8.83v-63Z" class="nc" data-block="U1" data-section="longside-upper-tier">
+        </path>
+        <path d="M-127-137.5v31.49l3.72 6.51H-100v-38Z" class="nc" data-block="KG" data-section="longside-lower-tier">
+        </path>
+        <path d="M-152-137.5v22.73h17.53v9.27h4.47v-32Z" class="nc" data-block="al1" data-section="longside-lower-tier">
+        </path>
+        <path d="m117.6-122.47 2.03-15.03H106v35l19-19.97Z" class="nc" data-block="KP"
+            data-section="longside-lower-tier"></path>
+    </g>
+    <g id="text" opacity="1"><text fill="#050505" class="text-1" transform="matrix(1 0 0 1 -37.1579 192.8067)">MAIN
+            STAND</text><text fill="#050505" class="text-1" transform="matrix(1 0 0 1 -79.7152 -185.9302)">SIR KENNY
+            DALGLISH STAND</text><text fill="#000" class="text-2" transform="matrix(1 0 0 1 203 1.04)">304</text><text
+            fill="#000" class="text-2" transform="matrix(1 0 0 1 203 -24.96)">305</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 203 -49.96)">306</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 52.05)">202</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 24.05)">203</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 1.04)">204</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 -24.96)">205</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 -50.96)">206</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 -74.96)">207</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 161 -104.96)">208</text><text fill="#000" class="text-3"
+            transform="matrix(1 0 0 1 126 44.32)">102</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 24.05)">103</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 1.04)">104</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 -24.96)">105</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 -50.96)">106</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 -74.96)">107</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 120 -93.96)">108</text><text fill="#000" class="text-3"
+            transform="matrix(1 0 0 1 130 -105.68)">109</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 98 130.05)">U9</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 66 130.05)">U8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 38 130.05)">U7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 12 130.05)">U6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -13 130.05)">U5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -40 130.05)">U4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -40 130.05)">U4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -67 130.05)">U3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -93 130.05)">U2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -126 130.05)">U1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 101 105.04)">M9</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 72 105.04)">M8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 46 105.04)">M7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 15 105.04)">M6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -13 105.04)">M5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -39 105.04)">M4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -70 105.04)">M3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -97 105.04)">M2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -126 105.04)">M1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 65 88.04)">L16</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 39 88.04)">L15</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 13 88.04)">L14</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -13 88.04)">DB</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -39 88.04)">L13</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -67 88.04)">L12</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -91 88.04)">L11</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 101 65.05)">L10</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 77 65.05)">L9</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 53 65.05)">L8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 27 65.05)">L7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 0 65.05)">L6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -25 65.05)">L5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -49 65.05)">L4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -73 65.05)">L3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -98 65.05)">L2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -123 65.05)">L1</text><text fill="#000" class="text-2"
+            transform="matrix(0.98 0 0 0.98 -208 68.03)">AU8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 106 -116.96)">KP</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 84 -110.96)">KN</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 53 -110.96)">KM</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 21 -110.96)">KL</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -16 -110.96)">KK</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -49 -110.96)">KJ</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -85 -110.96)">KH</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -120 -110.96)">KG</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -151 -125.96)">AL1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 81 -147.96)">CE8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 51 -147.96)">CE7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 17 -147.96)">CE6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -17 -147.96)">CE5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -52 -147.96)">CE4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -88 -147.96)">CE3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -123 -147.96)">CE2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 105 -168.95)">CE9</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 81 -168.95)">CE8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 51 -168.95)">CE7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 17 -168.95)">CE6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -17 -168.95)">CE5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -52 -168.96)">CE4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -88 -168.95)">CE3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -88 -168.95)">CE3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -123 -168.95)">CE2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -147 -168.95)">CE1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 43.5)">AU7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -208 19.5)">AU6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 -5.5)">AU5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 -30.5)">AU4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 -53.5)">AU3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 -77.5)">AU2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -207 -103.5)">AU1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 -103.5)">AM1</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 -78.5)">AM2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 -54.5)">AM3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 -31.5)">AM4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 -6.5)">AM5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -165 18.5)">AM6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -164 43.5)">AM7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -164 68.5)">AM8</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 -78.5)">AL3</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 -55.5)">AL4</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 -31.5)">AL5</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -135.7957 -0.0376)">AL6</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 -13.5)">AL6</text><text fill="#000" class="text-3"
+            transform="matrix(1 0 0 1 -142 -96.5)">AL2</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 18.5)">AL7</text><text fill="#000" class="text-2"
+            transform="matrix(1 0 0 1 -136 41.5)">AL8</text><text fill="#000" class="text-3"
+            transform="matrix(1 0 0 1 -144 61.5)">AL9</text><text class="text-4"
+            transform="matrix(-0.0292 0.9994 -0.9995 -0.0292 231.1322 -35.8636)">KOP</text><text class="text-4"
+            transform="matrix(0.0188 -0.9997 0.9997 0.0188 -233.5274 20.5629)">ANFIELD ROAD</text></g>
+</svg>

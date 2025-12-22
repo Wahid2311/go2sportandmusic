@@ -34,6 +34,7 @@
         font-family: 'Inter', sans-serif;
         padding-top: var(--header-height);
     }
+    
     .auth-container {
         max-width: 580px;
         margin: 4rem auto;
@@ -104,6 +105,8 @@
         transform: translateY(0);
     }
 
+    /* Commented out unused radio select styles */
+    /*
     .radio-select-group {
         display: grid;
         gap: 1rem;
@@ -141,7 +144,10 @@
         border-color: var(--highlight);
         background: rgba(77, 147, 112, 0.08);
     }
+    */
 
+    /* Commented out unused conditional field styles */
+    /*
     .conditional-field {
         opacity: 0;
         max-height: 0;
@@ -153,6 +159,7 @@
         opacity: 1;
         max-height: 500px;
     }
+    */
 
     .alert-messages {
         position: fixed;
@@ -183,6 +190,8 @@
         color: var(--primary-dark);
     }
 
+    /* Commented out unused autocomplete styles */
+    /*
     .autocomplete-results {
         position: absolute;
         top: 100%;
@@ -219,7 +228,10 @@
         font-size: 0.9rem;
         color: var(--primary-accent);
     }
+    */
 
+    /* Commented out old header styles - now in partial */
+    /*
     .header {
         position: fixed;
         top: 0;
@@ -295,7 +307,10 @@
         transform: translateY(-50%);
         color: var(--primary-dark);
     }
+    */
 
+    /* Commented out old footer styles - now in partial */
+    /*
     .footer {
         background: var(--primary-dark);
         color: var(--text-light);
@@ -337,6 +352,7 @@
     .footer-link:hover::after {
         width: 100%;
     }
+    */
 
     /* Privacy Policy Styling */
     .privacy-container {
@@ -431,25 +447,6 @@
 
     @media (max-width: 991px) {
         body { padding-top: calc(var(--header-height) + 20px); }
-        .header {
-            border-radius: 0;
-        }
-        .navbar-collapse {
-            background: var(--primary-dark);
-            padding: 1rem;
-            margin-top: 12px;
-            border-radius: 8px;
-        }
-        .nav-link {
-            margin: 12px 5px;
-            text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
         .privacy-container {
             padding: 1.5rem;
             margin: 1rem;
@@ -461,38 +458,8 @@
 </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar navbar-expand-lg align-items-center">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'events:home' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="search-container me-auto">
-                        <input type="text" name="query" class="form-control search-bar navbar-search-input" placeholder="Search events..." data-behavior="search-autocomplete">
-                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <div id="navbar-search-results" class="autocomplete-results"></div>
-                    </div>
-                    <div class="d-flex ms-lg-auto mt-3 mt-lg-0">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
-                            <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
-                        {% else %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
-                            <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+    <!-- Include Header Partial -->
+    {% include 'partials/header.html' %}
 
     <main class="flex-grow-1 py-4">
         {% if messages %}
@@ -615,29 +582,13 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="footer-logo">
-                    <h6>A WORLD OF EVENTS. We connect people to make every event Precious.</h6>
-                    <div class="copyright mt-3">&copy; {% now 'Y' %} Go2Sport&Music. All rights reserved.</div>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <h6><i class="bi bi-geo-alt-fill"></i>UK London</h6>
-                    <h6><i class="bi bi-envelope"></i>&nbsp;Contact@go2sportandmusic.com</h6>
-                    <h6><i class="bi bi-phone"></i>+447359424931</h6>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <a href="{% url 'events:home' %}" class="footer-link">Home</a>
-                    <a href="{% url 'events:privacy' %}" class="footer-link">Privacy Policy</a>
-                    <a href="{% url 'events:contact' %}" class="footer-link">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    <!-- Include Footer Partial -->
+    {% include 'partials/footer.html' %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Commented out old header scripts - now in partial -->
+    <!--
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
@@ -700,5 +651,6 @@
             });
         }
     </script>
+    -->
 </body>
 </html>

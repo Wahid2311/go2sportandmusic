@@ -64,22 +64,36 @@
         <label class="form-label">{{ form.seats.label }}</label>
         {{ form.seats }}
       </div>
-      
-
-      <div class="col-12">
+      <div class="col-md-6">
         <label class="form-label">{{ form.ticket_type.label }}</label>
         {{ form.ticket_type }}
       </div>
 
+      <div class="col-md-6">
+        <label class="form-label">Sell Options</label>
+        <div class="d-flex align-items-center" style="height: 38px; gap: 20px;">
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="radio" name="sell_together" id="radio_altogether" value="true">
+            <label class="form-check-label" for="radio_altogether">Select Altogether</label>
+          </div>
+          <div class="form-check mb-0">
+            <input class="form-check-input" type="radio" name="sell_together" id="radio_limit" value="false">
+            <label class="form-check-label" for="radio_limit">Select Limit</label>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="col-12">
         <h5 class="checkbox-group-title">{{ form.benefits_and_Restrictions.label }}</h5>
         <div class="checkbox-grid restrictions-grid">
-            {% for checkbox in form.benefits_and_Restrictions %}
-            <div class="form-check">
-                {{ checkbox.tag }}
-                <label class="form-check-label">{{ checkbox.choice_label }}</label>
-            </div>
-            {% endfor %}
+          {% for checkbox in form.benefits_and_Restrictions %}
+          <div class="form-check">
+            {{ checkbox.tag }}
+            <label class="form-check-label">{{ checkbox.choice_label }}</label>
+          </div>
+          {% endfor %}
         </div>
       </div>
 
@@ -94,64 +108,65 @@
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-  const uploadChoice = document.querySelector('[name="upload_choice"]');
-  const conditionalFields = document.querySelectorAll('.conditional-field');
-  const sectionSelect = document.querySelector('[name="section"]');
-  const priceRangeEl = document.getElementById('price-range');
-  const sellInput = document.querySelector('[name="sell_price"]');
-  const projNormal = document.getElementById('proj-normal');
-  const projReseller = document.getElementById('proj-reseller');
+    const uploadChoice = document.querySelector('[name="upload_choice"]');
+    const conditionalFields = document.querySelectorAll('.conditional-field');
+    const sectionSelect = document.querySelector('[name="section"]');
+    const priceRangeEl = document.getElementById('price-range');
+    const sellInput = document.querySelector('[name="sell_price"]');
+    const projNormal = document.getElementById('proj-normal');
+    const projReseller = document.getElementById('proj-reseller');
 
-  function toggleUploadFields() {
-    const val = uploadChoice.value;
-    conditionalFields.forEach(el => {
-      const shouldShow = el.dataset.conditional === `upload-choice-${val}`;
-      el.classList.toggle('active', shouldShow);
-      el.style.display = shouldShow ? 'block' : 'none';
-    });
-  }
-
-  uploadChoice.addEventListener('change', toggleUploadFields);
-  toggleUploadFields();
-  
-  async function fetchSectionPrices() {
-    const id = sectionSelect.value;
-    if (!id) {
-      priceRangeEl.textContent = '–';
-      return;
+    function toggleUploadFields() {
+      const val = uploadChoice.value;
+      conditionalFields.forEach(el => {
+        const shouldShow = el.dataset.conditional === `upload-choice-${val}`;
+        el.classList.toggle('active', shouldShow);
+        el.style.display = shouldShow ? 'block' : 'none';
+      });
     }
-    try {
-      const res = await fetch(`/get-section-prices/?section_id=${id}`);
-      const data = await res.json();
-      priceRangeEl.textContent = `$${data.lower_price} – $${data.upper_price}`;
-    } catch (e) {
-      priceRangeEl.textContent = 'Error';
+
+    uploadChoice.addEventListener('change', toggleUploadFields);
+    toggleUploadFields();
+
+    async function fetchSectionPrices() {
+      const id = sectionSelect.value;
+      if (!id) {
+        priceRangeEl.textContent = '–';
+        return;
+      }
+      try {
+        const res = await fetch(`/get-section-prices/?section_id=${id}`);
+        const data = await res.json();
+        priceRangeEl.textContent = `$${data.lower_price} – $${data.upper_price}`;
+      } catch (e) {
+        priceRangeEl.textContent = 'Error';
+      }
     }
-  }
-  sectionSelect.addEventListener('change', fetchSectionPrices);
-  fetchSectionPrices();
+    sectionSelect.addEventListener('change', fetchSectionPrices);
+    fetchSectionPrices();
 
 
-  async function fetchPrices() {
-    const url = window.location.pathname;
-    const parts = url.split('/');
-    event_id=parseInt(parts[2],10)
-    const price = parseFloat(sellInput.value);
+    async function fetchPrices() {
+      const url = window.location.pathname;
+      const parts = url.split('/');
+      event_id = parseInt(parts[2], 10)
+      const price = parseFloat(sellInput.value);
 
-    if (isNaN(price)) price = 0;
-    projNormal.textContent = '0.00';
-    projReseller.textContent = '0.00';
-    try {
-      const res = await fetch(`/get-event-prices/?event_id=${event_id}`);
-      const data = await res.json();
-      projNormal.textContent = `${parseInt(price,10)+(parseInt(data.normal_price, 10)*parseInt(price,10))/100}`;
-      projReseller.textContent = `${parseInt(price,10)+(parseInt(data.reseller_price, 10)*parseInt(price,10))/100}`;
-    } catch (e) {
+      if (isNaN(price)) price = 0;
+      projNormal.textContent = '0.00';
+      projReseller.textContent = '0.00';
+      try {
+        const res = await fetch(`/get-event-prices/?event_id=${event_id}`);
+        const data = await res.json();
+        projNormal.textContent = `${parseInt(price, 10) + (parseInt(data.normal_price, 10) * parseInt(price, 10)) / 100}`;
+        projReseller.textContent = `${parseInt(price, 10) + (parseInt(data.reseller_price, 10) * parseInt(price, 10)) / 100}`;
+      } catch (e) {
+      }
     }
-  }
-  sellInput.addEventListener('change', fetchPrices);
-  fetchPrices();
-  
-});
+    sellInput.addEventListener('change', fetchPrices);
+    fetchPrices();
+
+  });
 </script>
+
 {% endblock %}

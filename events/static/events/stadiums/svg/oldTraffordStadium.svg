@@ -1,0 +1,499 @@
+<svg viewBox="-222 -185 444 371" xmlns="http://www.w3.org/2000/svg">
+ <style>
+       .text-1 { font-size: 5px !important; }
+       .text-2 { font-size: 5px !important; }
+       .text-3 { font-size: 5px !important; }
+       .text-4 { font-size: 5px !important; }
+       .text-5 { font-size: 5px !important; }
+       .text-6 { font-size: 7px !important; }
+       .text-7 { font-size: 8px !important; }
+       .text-8 { font-size: 9px !important; }
+       .text-9 { font-size: 8px !important; }
+    </style>
+    <g id="pitch" opacity="1">
+        <g id="football-pitch" opacity="1" transform="matrix(0.95 0 0 0.95 0.1694 31.1484)">
+            <path fill="#BCCD9A" d="M-100-63.5h200v127h-200Z"></path>
+            <path fill="none" stroke="#fff" d="M-97.4-60.7H97.4V60.7H-97.4Z"></path>
+            <path fill="none" stroke="gray" d="M-98.8-62.3H98.8V62.3H-98.8Z"></path>
+            <path fill="none" stroke="#fff"
+                d="M18.2 0c0 10.0516-8.1484 18.2-18.2 18.2S-18.2 10.0516-18.2 0-10.0516-18.2 0-18.2 18.2-10.0516 18.2 0Z">
+            </path>
+            <path fill="#fff" stroke="#fff" d="M0-61.75v123.5"></path>
+            <path fill="#fff" stroke="#fff" d="M-97-41.5h40"></path>
+            <path fill="#fff" stroke="#fff" d="M-57-41.5v83"></path>
+            <path fill="#fff" stroke="#fff" d="M-57 41.5h-40"></path>
+            <path fill="#fff" stroke="#fff" d="M-97-20.3h16"></path>
+            <path fill="#fff" stroke="#fff" d="M-81-20.3v40.6"></path>
+            <path fill="#fff" stroke="#fff" d="M-81 20.3h-16"></path>
+            <path fill="#fff" stroke="#fff" d="M97-41.5H57"></path>
+            <path fill="#fff" stroke="#fff" d="M57-41.5v83"></path>
+            <path fill="#fff" stroke="#fff" d="M57 41.5h40"></path>
+            <path fill="#fff" stroke="#fff" d="M97-20.3H81"></path>
+            <path fill="#fff" stroke="#fff" d="M81-20.3v40.6"></path>
+            <path fill="#fff" stroke="#fff" d="M81 20.3h16"></path>
+        </g>
+    </g>
+    <g id="shapes" opacity="1">
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M33.1 146.35H12.9v3.3h14.5v8.5h13.4v-11.8Z" data-block="sth126"
+            data-section="longside-lower-tier" data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M30.1 143.85v-2.7H12.9v3.5h17.2Z" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M34.1 127.45h-1.5v17.2h19.8v-17.2Z" data-block="sth126" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-29-63.65h-1.4v22.1h19.8v-22.1Z" data-block="N1408" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-32.9-63.65h-19.7v22.1h21.1v-22.1Z" data-block="N1409" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-32.9-107.75v-11.8h9.2v-18.4h-23.4v30.2Z" data-block="n3406"
+            data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M34.1-119.55v11.8h14.4v-30.2H24.6v18.4Z" data-block="n3403"
+            data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-92.6-145.65H93.2v4.8H-92.6Z"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9 69.35h5v21.6h-5Z" data-block="e133"
+            data-tags="away-fans-section,east-stand-lower,shortside-lower,shortside-upper,vip-hospitality-package">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9 47.15h5v20.5h-5Z" data-block="e134"
+            data-tags="away-fans-section,east-stand-lower,shortside-lower,shortside-upper,vip-hospitality-package">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M117.2 69.35h9.9v21.6h-9.9Z" data-block="e133" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4 31.75h30.3v18.9h-30.3Z" data-block="e333" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4 75.35h30.3v15.7h-30.3Z" data-block="e331" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1 76.15h30.8v14.8h-30.8Z" data-block="e233" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4 52.35h30.3v21.4h-30.3Z" data-block="e332" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4-30.65h30.3v18.1h-30.3Z" data-block="e336" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1 3.15h30.8v17.7h-30.8Z" data-block="e237" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1-14.45h30.8v15.9h-30.8Z" data-block="e238" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4-10.95h30.3v20.5h-30.3Z" data-block="e335" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1 58.05h30.8v16.5h-30.8Z" data-block="e234" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1 40.75h30.8v15.7h-30.8Z" data-block="e235" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1 22.45h30.8v16.6h-30.8Z" data-block="e236" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M171.4 11.25h30.3v18.9h-30.3Z" data-block="e334" data-section="shortside-upper-tier"
+            data-tags="east-stand-upper,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M117.2 47.15h9.9v20.5h-9.9Z" data-block="e134" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9 3.15h23.2v16.2h-23.2Z" data-block="e136" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M117.2 23.95h9.9v21.6h-9.9Z" data-block="e135" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9-30.65h23.2v14.6h-23.2Z" data-block="e138" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9-14.45h23.2v15.9h-23.2Z" data-block="e137" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.9 23.95h5v21.6h-5Z" data-block="e135"
+            data-tags="away-fans-section,east-stand-lower,shortside-lower,shortside-upper,vip-hospitality-package">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.1-30.65h30.8v14.6h-30.8Z" data-block="e239" data-section="shortside-lower-tier"
+            data-tags="east-stand-lower,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9-15.25h30v11.6h-30Z" data-block="W202" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6-11.35h21.8v18.5h-21.8Z" data-block="w102" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-200.3 74.05h30.2v17.9h-30.2Z" data-block="W3106" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6 9.05h21.8v20.5h-21.8Z" data-block="w103" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6 51.35h21.8v20h-21.8Z" data-block="w105" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6 73.15h21.8v18.8h-21.8Z" data-block="w106" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6 31.35h21.8v18.1h-21.8Z" data-block="w104" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9 78.85h30v13.1h-30Z" data-block="FAMW208" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-200.3 52.25h30.2v20h-30.2Z" data-block="W3105" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9 32.35h30v12.1h-30Z" data-block="W205" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9-1.85h30v15.5h-30Z" data-block="W203" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M 200.3-11.35h30.2v19.4h-30.2Z" data-block="W3102" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9-30.75h30v13.7h-30Z" data-block="W201" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9 15.45h30v15h-30Z" data-block="W204" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-200.3-30.75h30.2v17.6h-30.2Z" data-block="W3101" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-124.6-30.75h21.8v17.6h-21.8Z" data-block="w101" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9 46.25h30v14.7h-30Z" data-block="FAMW206" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-159.9 62.75h30v14.2h-30Z" data-block="FAMW207" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-200.3 31.35h30.2v19.1h-30.2Z" data-block="W3104" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-200.3 9.95h30.2v19.6h-30.2Z" data-block="W3103" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M12.9 150.35H26v7.8H12.9Z" data-block="sth126" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-9.2 141.15H9.3v8.5H-9.2Z" data-section="longside-lower-tier"
+            data-tags="away-fans-section,shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-9.2 150.55H9.3v7.6H-9.2Z" data-block="sth123" data-section="longside-lower-tier"
+            data-tags="away-fans-section,shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-50.9 141.15h18.8v17h-18.8Z" data-block="sth121" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M42.3 146.35h15.5v11.8H42.3Z" data-block="sth127" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M75.5 142.35h18.4v15.8H75.5Z" data-block="sth229" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M75.5 127.45h18.4v13.5H75.5Z" data-block="sth128" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-30.5 141.15h19.8v17h-19.8Z" data-block="sth122" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M59.2 146.35h13.9v11.8H59.2Z" data-block="sth228" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M34.1 101.65h18.3v22.4H34.1Z" data-block="sth126" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M1.2 127.45h28.9v11H1.2Z" data-block="sth125" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-30.5 127.45H-.3v11h-30.2Z" data-block="sth124" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-50.9 127.45h18.8v11h-18.8Z" data-block="sth123" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M53.9 127.45h19.3v17.2H53.9Z" data-block="sth127" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M53.9 101.65h18.5v22.4H53.9Z" data-block="sth127" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-30.5 101.65h18.6v22.4h-18.6Z" data-block="sth124" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M12.9 101.65h19.7v22.4H12.9Z" data-block="sth125" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-93.2 127.45h19.6v30.7h-19.6Z" data-block="sth121" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M73.9 101.65h20v22.4h-20Z" data-block="sth128" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-93.2 101.65h19.6v22.4h-19.6Z" data-block="sth121" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-72.1 101.65h18.9v22.4h-18.9Z" data-block="sth122" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-51.7 101.65H-32v22.4h-19.7Z" data-block="sth123" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-72.1 127.45h18v30.7h-18Z" data-block="sth122" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-bobby-charlton-stand"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M17.5-116.95h14.6v9.2H17.5Z" data-section="vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-15.3-116.95H-.6v9.2h-14.7Z" data-section="vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-31.4-116.95h14.7v9.2h-14.7Z" data-section="vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M.7-116.95h15.5v9.2H.7Z" data-section="vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M73-63.65h20.2v22.1H73Z" data-block="N1403" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-9.6-63.65H9.6v22.1H-9.6Z" data-block="N1407" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M10.7-96.95h19.4v16H10.7Z" data-block="N2406" data-section="manchester-suite"
+            data-tags="shortside-lower,shortside-upper,vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-92.6-117.65h19.7v9.9h-19.7Z" data-block="n3408" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-92.6-137.95h19.7v18.5h-19.7Z" data-block="n3408" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-9.6-96.95H9.6v16H-9.6Z" data-block="N2407" data-section="manchester-suite"
+            data-tags="shortside-lower,shortside-upper,vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M10.7-63.65h21.4v22.1H10.7Z" data-block="N1406" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-93.78-96.95h19.7v28.9h-19.7Z" data-block="N2412" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-71.8-63.65h18.1v22.1h-18.1Z" data-block="N1410" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M53.5-63.65h18.4v22.1H53.5Z" data-block="N1404" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-92.6-63.65h19.7v22.1h-19.7Z" data-block="N1411" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M33.1-63.65h19.3v22.1H33.1Z" data-block="N1405" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-71.8-163.45h23.6v15h-23.6Z" data-block="N4407" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-71.8-137.95h23.6v30.2h-23.6Z" data-block="n3407" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-9.6-77.75H9.6v9.7H-9.6Z" data-block="N1407" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-29-77.75h18.4v9.7H-29Z" data-block="N1408" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-29-96.95h18.4v16H-29Z" data-block="N2408" data-section="manchester-suite"
+            data-tags="shortside-lower,shortside-upper,vip-hospitality-package"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M53.5-96.95h18.4v28.9H53.5Z" data-block="N2404" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-92.6-163.45h19.7v15h-19.7Z" data-block="N4408" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M34.1-96.95h18.4v28.9H34.1Z" data-block="N2405" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-22.7-137.95H.8v18.4h-23.5Z" data-block="n3405" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M10.7-77.75h19.4v9.7H10.7Z" data-block="N1406" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-71.8-96.95h18.1v28.9h-18.1Z" data-block="N2410" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-52.6-96.95h19.7v28.9h-19.7Z" data-block="N2409" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M24.6-163.45h23.9v15H24.6Z" data-block="N4403" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M1.9-163.45h21.7v15H1.9Z" data-block="N4404" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-22.7-163.45H.8v15h-23.5Z" data-block="N4405" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-47.1-163.45h23.4v15h-23.4Z" data-block="N4406" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M49.6-163.45h22.3v15H49.6Z" data-block="N4402" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M49.6-137.95h22.3v30.2H49.6Z" data-block="n3402" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M1.9-137.95h21.7v18.4H1.9Z" data-block="n3404" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M73-163.45h20.2v15H73Z" data-block="N4401" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-3"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M73-96.95h20.2v28.9H73Z" data-block="N2403" data-section="longside-lower-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M73-137.95h21.8v30.2H73Z" data-block="n3401" data-section="longside-upper-tier"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M98.4 165.75H-96.8c-38.8 0-70.4-31.6-70.4-70.4v-128.8c0-38.8 31.6-70.4 70.4-70.4H98.3c38.8 0 70.4 31.6 70.4 70.4v128.8c0 38.8-31.5 70.4-70.3 70.4M-96.8-99.35c-36.4 0-66 29.6-66 66v128.8c0 36.4 29.6 66 66 66H98.3c36.4 0 66-29.6 66-66v-128.9c0-36.4-29.6-66-66-66H-96.8Z">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m-200.4-36.45 16 1.2c0-6.7.7-13.4 2.3-20l-15.8-4.1c-1.6 7.5-2.5 15.2-2.5 22.9"
+            data-block="NW3434" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m-145.6-115.83-4.6-7.4c-3.267 2.079-9.9 6.3-18.3 14.4l5.4 6.1c5.4-5.2 11.2-9.6 17.5-13.1"
+            data-block="NW3435" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-157.82-97.53c4.9-4.8 10.3-9 16.1-12.5l-3.3-5.4c-6.2 3.5-12 7.8-17.3 12.9z"
+            data-block="NW3435" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-102.3-107.75h5.5v-13.3c-23.6.2-44.9 9.9-60.4 25.4l7.3 8.1c12.3-12.1 29.1-20.2 47.6-20.2"
+            data-block="NW3428" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M-182.3-35.45h13c-.1-1.4-.2-3-.2-4.5 0-17.7 6.8-33.7 18-45.7l-7.4-8.2c-14.4 15.2-23.2 35.8-23.4 58.4"
+            data-block="NW3433" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-96.9-121.85v-18.2c-9.3.4-18.3 1.9-26.9 4.5l4.1 16.6c7-1.8 14.4-2.9 22-2.9z"
+            data-block="NW3427" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m-148.11-124.42 8.7 14c5.7-3.3 11.8-5.8 18.1-7.6l-4-16.5c-8 2.3-15.7 5.8-22.8 10.1"
+            data-block="NW3429" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="m-186.7-67.15-.5-.2.2-.5c1.5-4.3 3.3-8.3 5.3-12l-7.2-4.5c-3.7 7.3-6.5 15.1-8.5 22.9l15.8 4.2c.6-2.3 1.3-4.5 2.1-6.7-1.8-.9-5.2-2.3-7.2-3.2"
+            data-block="NW3432" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M-165.7-88.45c-1.8-1.7-3.8-3.7-5.3-5.1-2.9 3.4-5.5 7-7.8 10.9-2.7 4.4-5.4 10.6-6.9 14.6 2 .9 4.9 2.1 6.6 2.8 1.3-3.4 4.1-9.2 5.9-12.5 2.2-3.8 4.7-7.3 7.5-10.7"
+            data-block="N3436" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="m-171.017-94.95.4-.5.5.5c1.4 1.4 3.7 3.6 5.7 5.5.7426-.891 2.25-2.7 4.8-5.1.3-.1.5-.3.7-.5l-11.8-12c-7 6.1-12.4 12.7-16.6 20.4l7.2 4.6c2.6-4.7 5.6-8.9 9.1-12.9"
+            data-block="NW3431" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M97.3-68.75c10 0 19.1 4.5 25.2 11.5l19.2-21.4c-11.7-11.3-27.4-18.4-44.9-18.7v28.6Z"
+            data-block="N2401" data-section="quadrants-tier-1"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M130.8-35.65h31c-1.1-16-7.9-30.4-18.4-41.3L124-55.45c4.2 5.5 6.7 12.4 6.8 19.8"
+            data-block="N2401" data-section="quadrants-tier-1"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M96.9-67.45v31.9h32.6c-.2-17.6-14.6-31.8-32.2-31.8-.1-.1-.3-.1-.4-.1" data-block="N1401"
+            data-section="quadrants-tier-1" data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-95.5-70.05v-26.7c-17.4.3-33.2 7.4-44.9 18.7l18.6 20.8c6.1-7.8 15.6-12.8 26.3-12.8"
+            data-block="N2412" data-section="quadrants-tier-1"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-129-36.55c0-7 2.1-13.5 5.8-18.8l-18.9-21c-10.5 10.9-17.2 25.3-18.4 41.3h31.5Z"
+            data-block="N2413" data-section="quadrants-tier-1"
+            data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-123-35.05h27.5v-33.7c-17.8 0-32.2 14.5-32.2 32.2v1.5Z" data-block="N1413"
+            data-section="quadrants-tier-1" data-tags="shortside-lower,shortside-upper,sir-alex-ferguson-stand-tier-1">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m-106.1 124.35-15.7 28.6c8.2 4.1 17.4 6.7 27 7.4l-.1-33.6c-3.9-.2-7.7-1-11.2-2.4"
+            data-block="FAMW212" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M-108.8 123.05c-.1-.1-.3-.1-.4-.2-.3-.2-.6-.3-.9-.5-.2-.1-.3-.2-.5-.3-.3-.2-.5-.3-.8-.5-.2-.1-.3-.2-.5-.3-.3-.2-.5-.3-.8-.5-.1-.1-.3-.2-.4-.3-.3-.2-.5-.4-.8-.6-.1-.1-.3-.2-.4-.3-.3-.2-.5-.4-.8-.6-.1 0-.1-.1-.2-.1-.7-.6-1.3-1.2-1.9-1.8l-23.8 22.1c5.1 5.1 10.9 9.5 17.4 12.9l15.6-28.5c-.2-.2-.5-.3-.8-.5"
+            data-block="FAMW211" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M-125.7 95.35c.3 4.6 1.6 9 3.6 12.8.2.4.4.8.7 1.2v.1c.2.4.5.8.7 1.1l.1.1c.2.4.5.7.7 1.1l.1.1c.3.4.5.7.8 1l.1.1c.3.3.5.7.8 1l.1.1c.3.3.6.7.9 1l.1.1c.3.3.6.7 1 1 3.5 3.4 7.7 6 12.3 7.5h.1c.4.1.9.3 1.3.4h.1c.4.1.9.2 1.3.3h.1c.4.1.9.2 1.4.3h.1c.5.1.9.2 1.4.2h.1c.5.1.9.1 1.4.2h.1c.5 0 1 .1 1.5.1v-30.1Z"
+            data-block="WL0" data-section="stretford-end" data-tags="shortside-lower,shortside-upper,west-stand-lower">
+        </path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M-127 95.35h-34.6c.8 7.8 2.8 15.3 5.9 22.2l30.4-13.6c-.9-2.7-1.5-5.6-1.7-8.6"
+            data-block="FAMW209" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M-121.1 112.25c-.3-.4-.5-.8-.7-1.1l-.1-.1c-.2-.4-.4-.7-.7-1.1 0-.1-.1-.1-.1-.2l-.6-1.2s0-.1-.1-.1l-.6-1.2v-.1c-.2-.4-.4-.9-.6-1.3l-30.3 13.5c3.3 6.8 7.5 13 12.6 18.4l23.8-22.1c-.9-1.1-1.8-2.2-2.6-3.4"
+            data-block="FAMW210" data-section="stretford-end"
+            data-tags="shortside-lower,shortside-upper,west-stand-lower"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M129.6 95.85c-.2 3.1-.9 6.1-1.9 8.9l27.1 12.1c2.9-6.5 4.9-13.6 5.6-21.1h-30.8Z"
+            data-block="e232" data-section="away-fans-section"
+            data-tags="away-fan-sections,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m110 123.75 15.2 27.7c9.8-5 22.8-19.9 28.8-32.9l-27-12.1c-3.4 7.7-9.4 13.9-17 17.3"
+            data-block="e231" data-section="away-fans-section"
+            data-tags="away-fan-sections,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M96.8 126.75v30.8c9.2-.7 21.6-2.8 26.8-4.9-4.7-8.5-15.4-28.1-15.4-28.1-3.5 1.3-7.4 2.1-11.4 2.2"
+            data-block="e230" data-section="away-fans-section"
+            data-tags="/away-section,shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M127.2 95.85H96.8v29.7c16.6-.3 30.2-13.3 31.5-29.7z" data-block="e132"
+            data-section="away-fans-section" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M201.7-35.25h-16c0-6.7-.7-13.4-2.3-20l15.8-4.1c1.6 7.5 2.5 16.4 2.5 24.1"
+            data-block="NE3417" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m147.5-115.95 4.6-7.4c3.267 2.079 9.9 6.3 18.3 14.4l-5.4 6.1c-5.3-5.2-11.2-9.6-17.5-13.1"
+            data-block="NE3428" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M159.6-96.95c-4.9-4.8-10.3-9-16.1-12.5l3.3-5.4c6.2 3.5 12 7.8 17.3 12.9z"
+            data-block="NE3428" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M103.5-107.75H98v-13.3c23.6.2 44.9 9.9 60.4 25.4l-7.3 8.1c-12.3-12.1-29-20.2-47.6-20.2"
+            data-block="NE3424" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M183.6-35.25h-12.1c.1-1.4 0-3.1 0-4.6 0-17.7-7.5-33.8-18.7-45.8l7.4-8.2c14.3 15.2 23.2 36 23.4 58.6"
+            data-block="NE3418" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="M98.1-121.85v-18.2c9.3.4 18.3 1.9 26.9 4.5l-4.1 16.6c-7-1.8-14.4-2.9-22-2.9z"
+            data-block="NE3424" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8" d="m150.1-124.55-8.7 14c-5.7-3.3-11.8-5.8-18.1-7.6l4-16.5c8 2.3 15.6 5.8 22.8 10.1"
+            data-block="NE3422" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="m187.9-67.15.5-.2-.2-.5c-1.5-4.3-3.3-8.3-5.3-12l7.2-4.5c3.7 7.3 6.5 15.1 8.5 22.9l-15.8 4.2c-.6-2.3-1.3-4.5-2.1-6.7 1.9-.9 5.2-2.3 7.2-3.2"
+            data-block="NE3419" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="M167-88.45c1.8-1.7 3.8-3.7 5.3-5.1 2.9 3.4 5.5 7 7.8 10.9 2.7 4.4 5.4 10.6 6.9 14.6-2 .9-4.9 2.1-6.6 2.8-1.3-3.4-4.1-9.2-5.9-12.5-2.3-3.8-4.7-7.3-7.5-10.7"
+            data-block="NE3426" data-section="quadrants-tier-2"></path>
+        <path fill="none" stroke="#000" stroke-width="0.8"
+            d="m172.7-94.95-.4-.5-.5.5c-1.4 1.4-3.7 3.6-5.7 5.5-.7425-.891-2.25-2.7-4.8-5.1-.3-.1-.5-.3-.7-.5l11.8-12c7 6.1 12.4 12.7 16.6 20.4l-7.2 4.6c-2.6-4.7-5.6-8.9-9.1-12.9"
+            data-block="NE3420" data-section="quadrants-tier-2" data-tags="shortside-lower,shortside-upper"></path>
+    </g>
+    <g id="text" opacity="1"><text class="text-1" transform="matrix(1 0 0 1 -124.02 -43.47)">N1413</text><text
+            class="text-1" transform="matrix(1 0 0 1 -156.16 -45.66)">N2413</text><text class="text-1"
+            transform="matrix(1 0 0 1 -129.16 -75.3)">N2412</text><text class="text-2"
+            transform="matrix(0.3704 -0.9279 0.9279 0.3704 -171.3932 -52.9448)">NW3433</text><text class="text-3"
+            transform="matrix(0.63 -0.7699 0.7699 0.63 -182.28 -87.92)">NW3431</text><text class="text-4"
+            transform="matrix(0.91 0.2597 -0.2597 0.91 -196.94 -63.03)">NW3432</text><text class="text-2"
+            transform="matrix(0.9599 -0.2502 0.2502 0.9599 -135.42 -102.95)">NW3428</text><text class="text-2"
+            transform="matrix(0.8499 -0.4001 0.4001 0.8499 -142.82 -117.6)">NW3429</text><text class="text-2"
+            transform="matrix(1 0 0 1 -119.48 -127.33)">NW3427</text><text class="text-2"
+            transform="matrix(1 0 0 1 -15.66 -110.93)">Salford Suite</text><text class="text-2"
+            transform="matrix(1 0 0 1 -21.66 -87.52)">Manchester Suite</text><text class="text-2"
+            transform="matrix(1 0 0 1 -28.32 -71.65)">N1408</text><text class="text-2"
+            transform="matrix(1 0 0 1 -7.98 -71.65)">N1407</text><text class="text-2"
+            transform="matrix(1 0 0 1 11.72 -71.65)">N1406</text><text class="text-2"
+            transform="matrix(1 0 0 1 -90.69 -152.28)">N4408</text><text class="text-5"
+            transform="matrix(1 0 0 1 -68.94 -152.97)">N4407</text><text class="text-5"
+            transform="matrix(1 0 0 1 -45.85 -153.3)">N4406</text><text class="text-5"
+            transform="matrix(1 0 0 1 -21.21 -153.65)">N4405</text><text class="text-5"
+            transform="matrix(1 0 0 1 1.81 -153.65)">N4404</text><text class="text-5"
+            transform="matrix(1 0 0 1 25.67 -153.65)">N4403</text><text class="text-5"
+            transform="matrix(1 0 0 1 50.54 -153.65)">N4402</text><text class="text-5"
+            transform="matrix(1 0 0 1 74.04 -153.65)">N4401</text><text class="text-2"
+            transform="matrix(1 0 0 1 -91.7 -126.95)">N3408</text><text class="text-5"
+            transform="matrix(1 0 0 1 -70.38 -125.95)">N3407</text><text class="text-5"
+            transform="matrix(1 0 0 1 -45.83 -126.54)">N3406</text><text class="text-5"
+            transform="matrix(1 0 0 1 -21.21 -126.54)">N3405</text><text class="text-5"
+            transform="matrix(1 0 0 1 2.81 -126.54)">N3404</text><text class="text-5"
+            transform="matrix(1 0 0 1 26.29 -126.78)">N3403</text><text class="text-5"
+            transform="matrix(1 0 0 1 50.31 -126.47)">N3402</text><text class="text-5"
+            transform="matrix(1 0 0 1 74.04 -126.15)">N3401</text><text class="text-2"
+            transform="matrix(1 0 0 1 -91.7 -79.68)">N2412</text><text class="text-2"
+            transform="matrix(1 0 0 1 -71.42 -79.68)">N2410</text><text class="text-2"
+            transform="matrix(1 0 0 1 -50.94 -79.68)">N2409</text><text class="text-2"
+            transform="matrix(1 0 0 1 34.69 -81.28)">N2405</text><text class="text-2"
+            transform="matrix(1 0 0 1 53.67 -81.59)">N2404</text><text class="text-2"
+            transform="matrix(1 0 0 1 74.67 -81.26)">N2403</text><text class="text-5"
+            transform="matrix(1 0 0 1 -91.7 -50.76)">N1411</text><text class="text-5"
+            transform="matrix(1 0 0 1 -72.08 -50.76)">N1410</text><text class="text-5"
+            transform="matrix(1 0 0 1 -51.58 -50.76)">N1409</text><text class="text-5"
+            transform="matrix(1 0 0 1 -30.69 -50.76)">N1408</text><text class="text-5"
+            transform="matrix(1 0 0 1 -9.64 -50.76)">N1407</text><text class="text-5"
+            transform="matrix(1 0 0 1 11.27 -50.76)">N1406</text><text class="text-5"
+            transform="matrix(1 0 0 1 32.86 -50.76)">N1405</text><text class="text-2"
+            transform="matrix(1 0 0 1 54.54 -51.4)">N1404</text><text class="text-5"
+            transform="matrix(1 0 0 1 73.25 -51.62)">N1403</text><text class="text-4"
+            transform="matrix(0.0697 -0.82 0.82 0.0697 -190.48 -38.1)">NE3434</text><text class="text-2"
+            transform="matrix(0.5481 -0.8137 0.8137 0.5481 -178.014 -71.1694)">NE3436</text><text class="text-5"
+            transform="matrix(0.6624 -0.7375 0.7375 0.6624 -2692.1653 698.2232)">NE3424</text><text class="text-5"
+            transform="matrix(0.9301 0.3196 -0.3196 0.9301 116.64 -109.29)">NE3423</text><text class="text-5"
+            transform="matrix(0.4818 0.8761 -0.8761 0.4818 170.6003 -88.227)">NE3425</text><text class="text-2"
+            transform="matrix(0.8005 0.5985 -0.5985 0.8005 145.848 -109.5805)">NE3428</text><text class="text-4"
+            transform="matrix(0.9099 -0.3198 0.3198 0.9099 184.2 -57.81)">NE3419</text><text class="text-2"
+            transform="matrix(0.0652 0.9895 -0.9895 0.0652 190.6035 -56.184)">NE3417</text><text class="text-5"
+            transform="matrix(0.3827 0.9237 -0.9237 0.3827 169.761 -75.4617)">NE3418</text><text class="text-6"
+            transform="matrix(1 0 0 1 102.41 -76.84)">N2401</text><text class="text-6"
+            transform="matrix(1 0 0 1 132.31 -45.64)">N2401</text><text class="text-6"
+            transform="matrix(1 0 0 1 99.74 -44.66)">N1401</text><text class="text-6"
+            transform="matrix(-0.0299 0.99 -0.99 -0.0299 119.67 70.86)">E133</text><text class="text-6"
+            transform="matrix(-0.0299 0.99 -0.99 -0.0299 120.23 47.73)">E134</text><text class="text-6"
+            transform="matrix(0.0058 0.9999 -0.9999 0.0058 119.3852 25.208)">E135</text><text class="text-6"
+            transform="matrix(1 0 0 1 106.76 13.99)">E136</text><text class="text-6"
+            transform="matrix(1 0 0 1 106.76 -3.03)">E137</text><text class="text-6"
+            transform="matrix(1 0 0 1 106.33 -20.28)">E138</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.03 -17.85)">E336</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.64 3.05)">E335</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.33 23.95)">E334</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.33 45.57)">E333</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.03 66.35)">E332</text><text class="text-7"
+            transform="matrix(1 0 0 1 173.33 86.78)">E331</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 -20.04)">E239</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 -4.36)">E238</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 13.99)">E237</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 33.99)">E236</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 51.66)">E235</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 68.78)">E234</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 86.03)">E233</text><text class="text-6"
+            transform="matrix(1 0 0 1 99.74 110.79)">E132</text><text class="text-6"
+            transform="matrix(1 0 0 1 135.08 104.28)">E232</text><text class="text-6"
+            transform="matrix(1 0 0 1 120.99 128.9)">E231</text><text class="text-6"
+            transform="matrix(1 0 0 1 97.41 144.66)">E230</text><text class="text-4"
+            transform="matrix(1 0 0 1 77.16 150.79)">STH229</text><text class="text-3"
+            transform="matrix(1 0 0 1 60.3 153.16)">STH228</text><text class="text-4"
+            transform="matrix(1 0 0 1 42.41 153.39)">STH227</text><text class="text-2"
+            transform="matrix(1 0 0 1 29.24 157.39)">226</text><text class="text-2"
+            transform="matrix(1 0 0 1 29.24 151.39)">STH</text><text class="text-3"
+            transform="matrix(1 0 0 1 13.27 154.97)">STH226</text><text class="text-4"
+            transform="matrix(1 0 0 1 -9.15 155.67)">STH 223</text><text class="text-2"
+            transform="matrix(1 0 0 1 -31.09 151.79)">STH222</text><text class="text-4"
+            transform="matrix(1 0 0 1 -50.13 150.79)">STH221</text><text class="text-2"
+            transform="matrix(1 0 0 1 75.5 136.79)">STH128</text><text class="text-2"
+            transform="matrix(1 0 0 1 54.31 136.79)">STH127</text><text class="text-2"
+            transform="matrix(1 0 0 1 32.31 136.79)">STH126</text><text class="text-8"
+            transform="matrix(1 0 0 1 1.95 135.37)">STH125</text><text class="text-8"
+            transform="matrix(1 0 0 1 -29.07 135.52)">STH124</text><text class="text-4"
+            transform="matrix(1 0 0 1 -49.69 134.79)">STH123</text><text class="text-2"
+            transform="matrix(1 0 0 1 -72.38 143.43)">STH122</text><text class="text-2"
+            transform="matrix(1 0 0 1 -92.69 143.43)">STH121</text><text class="text-2"
+            transform="matrix(1 0 0 1 74.31 114.79)">STH128</text><text class="text-2"
+            transform="matrix(1 0 0 1 53.31 114.79)">STH127</text><text class="text-2"
+            transform="matrix(1 0 0 1 33.31 114.79)">STH126</text><text class="text-2"
+            transform="matrix(1 0 0 1 13.31 114.79)">STH125</text><text class="text-2"
+            transform="matrix(1 0 0 1 -30.69 114.79)">STH124</text><text class="text-2"
+            transform="matrix(1 0 0 1 -52.13 114.79)">STH123</text><text class="text-2"
+            transform="matrix(1 0 0 1 -72.38 114.79)">STH122</text><text class="text-2"
+            transform="matrix(1 0 0 1 -92.69 114.79)">STH121</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 -20.28)">W101</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 -0.34)">W102</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 21.35)">W103</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 42.35)">W104</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 62.66)">W105</text><text class="text-8"
+            transform="matrix(1 0 0 1 -123 84.91)">W106</text><text class="text-6"
+            transform="matrix(1 0 0 1 -114.84 108.51)">WL0</text><text class="text-5"
+            transform="matrix(0.6347 -0.7725 0.7725 0.6347 -129.614 148.079)">FAMW211</text><text class="text-5"
+            transform="matrix(0.8224 -0.5687 0.5687 0.8224 -148.85 130.2821)">FAMW210</text><text class="text-5"
+            transform="matrix(0.3302 -0.8699 0.8699 0.3302 -109.46 155.39)">FAMW212</text><text class="text-5"
+            transform="matrix(1 0 0 1 -158.69 103.06)">FAMW209</text><text class="text-2"
+            transform="matrix(1 0 0 1 -156.94 87.03)">FAMW208</text><text class="text-2"
+            transform="matrix(1 0 0 1 -156.94 71.03)">FAMW207</text><text class="text-2"
+            transform="matrix(1 0 0 1 -156.94 55.03)">FAMW206</text><text class="text-6"
+            transform="matrix(1 0 0 1 -156 40.91)">W205</text><text class="text-6"
+            transform="matrix(1 0 0 1 -156 24.91)">W204</text><text class="text-6"
+            transform="matrix(1 0 0 1 -156 8.91)">W203</text><text class="text-6"
+            transform="matrix(1 0 0 1 -156 -7.09)">W202</text><text class="text-6"
+            transform="matrix(1 0 0 1 -156 -21.09)">W201</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 -18.97)">W3101</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 0.91)">W3102</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 22.1)">W3103</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 43.91)">W3104</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 64.91)">W3105</text><text class="text-6"
+            transform="matrix(1 0 0 1 -198 84.91)">W3106</text><text class="text-4"
+            transform="matrix(0.6913 -0.5882 0.5882 0.6913 -157.4921 -99.5401)">NW3435</text><text class="text-2"
+            transform="matrix(0.9202 0.3286 -0.3286 0.9202 124.1788 -123.4751)">NE3422</text><text class="text-2"
+            transform="matrix(0.9799 0.1102 -0.1102 0.9799 99.97 -127.36)">NE3424</text><text class="text-4"
+            transform="matrix(0.7496 -0.55 0.55 0.7496 -163.85 -106.6)">NW3430</text><text class="text-4"
+            transform="matrix(0.7401 0.6196 -0.6196 0.7401 153.15 -115.46)">NE3421</text><text class="text-9"
+            transform="matrix(1 0 0 1 -70.1056 -171.4093)">SIR ALEX FERGUSON STAND</text><text class="text-9"
+            transform="matrix(-0.0032 -0.9999 0.9999 -0.0032 -205.925 74.3153)">STRETFORD END</text><text class="text-9"
+            transform="matrix(-0.0032 0.9999 -0.9999 -0.0032 206.986 2.1045)">EAST STAND</text><text class="text-9"
+            transform="matrix(1 0 0 1 -36.272 176.6088)">SOUTH STAND</text></g>
+</svg>

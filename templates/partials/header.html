@@ -1,0 +1,440 @@
+{% load static %}
+<!-- Header Styles -->
+<style>
+    /* White Header with improved styling */
+    .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: var(--header-height);
+        background: white;
+        border-radius: 0 0 12px 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        z-index: 2000;
+        border-bottom: 1px solid rgba(64, 145, 108, 0.1);
+    }
+
+    .navbar {
+        padding: 0 2rem;
+        height: 100%;
+    }
+
+    .logo {
+        height: 45px;
+        transition: transform 0.3s, filter 0.3s;
+        border-radius: 50%;
+        overflow: hidden;
+    }
+
+    .logo:hover {
+        transform: translateY(-2px) scale(1.05);
+    }
+
+    .nav-link {
+        color: var(--primary-dark) !important;
+        padding: 8px 20px !important;
+        margin: 0 4px;
+        transition: all 0.3s;
+        background: transparent;
+        border: 1px solid rgba(64, 145, 108, 0.2);
+        border-radius: 8px;
+        font-weight: 500;
+    }
+
+    .nav-link:hover {
+        transform: translateY(-2px);
+        border-color: var(--highlight);
+        background: rgba(77, 147, 112, 0.05);
+        box-shadow: 0 4px 12px rgba(77, 147, 112, 0.15);
+    }
+
+    /* Search Trigger aligned to right */
+    .search-trigger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px 14px !important;
+        border: 1px solid rgba(64, 145, 108, 0.2);
+        border-radius: 8px;
+        color: var(--primary-dark);
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-right: 6px;
+    }
+
+    .search-trigger:hover {
+        background: rgba(77, 147, 112, 0.2);
+        transform: scale(1.05);
+    }
+
+    .search-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(8px);
+        z-index: 3000;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .search-overlay.active {
+        display: flex;
+        align-items: start;
+        padding-top: 4rem;
+        justify-content: center;
+        opacity: 1;
+    }
+
+    .search-modal {
+        position: relative;
+        width: 90%;
+        max-width: 600px;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+    }
+
+    .search-overlay.active .search-modal {
+        transform: scale(1);
+    }
+
+    .search-modal-input {
+        width: 100%;
+        padding: 20px 60px 20px 24px;
+        border-radius: 12px;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+    }
+
+    .search-modal-input:focus {
+        outline: none;
+        box-shadow: 0 12px 40px rgba(64, 145, 108, 0.4);
+        border: none;
+    }
+
+    .btn-search-modal {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: var(--highlight);
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        font-size: 1.2rem;
+        transition: all 0.3s;
+    }
+
+    .btn-search-modal:hover {
+        background: var(--secondary-accent);
+        transform: translateY(-50%) scale(1.05);
+    }
+
+    .close-search {
+        position: absolute;
+        top: -50px;
+        right: 0;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 2rem;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.3s;
+    }
+
+    .close-search:hover {
+        opacity: 1;
+    }
+
+    .autocomplete-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        margin-top: -10px;
+        max-height: 300px;
+        overflow-y: auto;
+    }
+
+    .autocomplete-item {
+        display: block;
+        padding: 1rem;
+        border-bottom: 1px solid rgba(13, 36, 27, 0.1);
+        color: var(--primary-dark);
+        text-decoration: none;
+        transition: all 0.2s;
+    }
+
+    .autocomplete-item:hover {
+        background: rgba(77, 147, 112, 0.05);
+    }
+
+    .ac-event-name {
+        font-weight: 600;
+        margin-bottom: 0.3rem;
+    }
+
+    .ac-event-details {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        color: var(--primary-accent);
+    }
+
+    /* Loading and empty states */
+    .no-results {
+        padding: 1rem;
+        text-align: center;
+        color: var(--primary-accent);
+        font-style: italic;
+    }
+
+    .loading-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem;
+    }
+
+    .spinner {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgba(77, 147, 112, 0.3);
+        border-radius: 50%;
+        border-top-color: var(--highlight);
+        animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    @media (max-width: 991px) {
+        .header {
+            border-radius: 0;
+        }
+
+        .navbar-collapse {
+            background: white;
+            padding: 1rem;
+            margin-top: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .nav-link {
+            margin: 8px 5px;
+            text-align: center;
+            padding: 12px !important;
+            width: 100%;
+            max-width: 280px;
+        }
+
+        .search-trigger {
+            margin: 8px auto;
+            width: 100%;
+            max-width: 280px;
+        }
+    }
+</style>
+
+<!-- Header HTML -->
+<header class="header">
+    <nav class="navbar navbar-expand-lg align-items-center">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'events:home' %}">
+                <img src="{% static 'images/newLogo.png' %}" alt="Go2Events" class="logo">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex ms-lg-auto mt-3 mt-lg-0 align-items-center">
+                    <div class="search-trigger" id="searchTrigger">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                    <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
+                    <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
+                    {% else %}
+                    <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                    <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
+                    <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+    <button class="close-search" id="closeSearch">
+        <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="search-modal">
+        <div id="navbar-search-results" class="autocomplete-results"></div>
+        <form action="{% url 'events:search_results' %}">
+            <input type="text" name="query" class="form-control search-modal-input"
+                placeholder="Search events, stadiums, or categories..." data-behavior="search-autocomplete"
+                id="searchModalInput" />
+            <button type="submit" class="btn-search-modal">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Header Scripts -->
+<script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchTrigger = document.getElementById('searchTrigger');
+        const searchOverlay = document.getElementById('searchOverlay');
+        const closeSearch = document.getElementById('closeSearch');
+        const searchModalInput = document.getElementById('searchModalInput');
+
+        // Open search overlay
+        if (searchTrigger) {
+            searchTrigger.addEventListener('click', function () {
+                searchOverlay.classList.add('active');
+                setTimeout(() => {
+                    if (searchModalInput) searchModalInput.focus();
+                }, 300);
+            });
+        }
+
+        // Close search overlay
+        if (closeSearch) {
+            closeSearch.addEventListener('click', function () {
+                searchOverlay.classList.remove('active');
+            });
+        }
+
+        // Close on escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+                searchOverlay.classList.remove('active');
+            }
+        });
+
+        // Close on overlay click
+        if (searchOverlay) {
+            searchOverlay.addEventListener('click', function (e) {
+                if (e.target === searchOverlay) {
+                    searchOverlay.classList.remove('active');
+                }
+            });
+        }
+
+        // Initialize search autocomplete
+        initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+    });
+
+    // Search autocomplete function with loading states
+    function initSearchAutocomplete(inputSelector, resultsContainer) {
+        const searchInput = document.querySelector(inputSelector);
+        const resultsDiv = document.querySelector(resultsContainer);
+
+        if (!searchInput) return;
+
+        let timeoutId;
+        let isLoading = false;
+
+        searchInput.addEventListener('input', function (e) {
+            clearTimeout(timeoutId);
+
+            const query = this.value.trim();
+
+            if (query.length < 2) {
+                resultsDiv.innerHTML = '';
+                isLoading = false;
+                return;
+            }
+
+            // Show loading spinner
+            isLoading = true;
+            resultsDiv.innerHTML = `
+                <div class="loading-spinner">
+                    <div class="spinner"></div>
+                </div>
+            `;
+
+            timeoutId = setTimeout(() => {
+                fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`, {
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        isLoading = false;
+
+                        if (data.length === 0) {
+                            resultsDiv.innerHTML = `
+                                <div class="no-results">
+                                    No events found matching "${query}"
+                                </div>
+                            `;
+                        } else {
+                            resultsDiv.innerHTML = data.map(event => `
+                                <a href="${event.url}" class="autocomplete-item">
+                                    <div class="ac-event-name">${event.name}</div>
+                                    <div class="ac-event-details">
+                                        <span>${event.category}</span>
+                                        <span>${event.date}</span>
+                                        <span>$${event.min_price} - $${event.max_price}</span>
+                                    </div>
+                                </a>
+                            `).join('');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        isLoading = false;
+                        resultsDiv.innerHTML = `
+                            <div class="no-results">
+                                Error loading search results
+                            </div>
+                        `;
+                    });
+            }, 300);
+        });
+
+        // Clear results when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+                resultsDiv.innerHTML = '';
+                isLoading = false;
+            }
+        });
+
+        // Clear results when input is cleared
+        searchInput.addEventListener('change', function (e) {
+            if (this.value.trim() === '') {
+                resultsDiv.innerHTML = '';
+                isLoading = false;
+            }
+        });
+    }
+</script>

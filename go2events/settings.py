@@ -1,6 +1,9 @@
 from pathlib import Path
 import dj_database_url
 import os
+from dotenv import load_dotenv 
+
+load_dotenv(Path(__file__).resolve().parent.parent / '.env')
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -111,7 +114,7 @@ REVOLUT_API_KEY =os.environ.get('REVOLUT_API_KEY', '')
 REVOLUT_PRODUCTION =True
 
 BASE_URL =os.environ.get('BASE_URL', 'http://localhost:8000')
-CSRF_TRUSTED_ORIGINS = [BASE_URL,'https://web-production-52414.up.railway.app','https://go2sportandmusic.com']
+CSRF_TRUSTED_ORIGINS = [BASE_URL, 'https://web-production-f679c.up.railway.app']
 
 AWS_ACCESS_KEY_ID =os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')

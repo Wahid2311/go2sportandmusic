@@ -176,14 +176,48 @@ This action was performed by {self.request.user.email}'''
         except Exception as e:
             messages.error(f'Failed to send deletion email: {str(e)}')
 
-class SuperadminEventListView(SuperAdminMixin, ListView):
-    model = Event
-    template_name = 'events/superadmin_event_list.html'
-    paginate_by = 10
-    context_object_name = 'events'
-
-    def get_queryset(self):
-        return Event.objects.filter(superadmin=self.request.user).order_by('-date', '-time')
+class SuperadminEventListView(SuperAdminMixin, View):
+    def get(self, request):
+        events = Event.objects.filter(superadmin=request.user).order_by('-date', '-time')
+        
+        page = int(request.GET.get('page', 1))
+        per_page = int(request.GET.get('per_page', 10))
+        
+        paginator = Paginator(events, per_page)
+        
+        try:
+            events_page = paginator.page(page)
+        except (EmptyPage, PageNotAnInteger):
+            events_page = paginator.page(1)
+            
+        if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+            events_data = []
+            for event in events_page:
+                events_data.append({
+                    'event_id': event.event_id,
+                    'name': event.name,
+                    'category': event.category,
+                    'stadium_name': event.stadium_name,
+                    'date': event.date.isoformat(),
+                    'time': event.time.strftime('%H:%M:%S'),
+                    'min_price': float(event.sections.aggregate(Min('lower_price'))['lower_price__min'] or 0),
+                    'max_price': float(event.sections.aggregate(Max('upper_price'))['upper_price__max'] or 0),
+                    'total_tickets': event.total_tickets,
+                    'sold_tickets': event.sold_tickets,
+                    'total_sold_price': float(event.total_sold_price or 0),
+                })
+                
+            return JsonResponse({
+                'events': events_data,
+                'page': page,
+                'total_pages': paginator.num_pages,
+                'total_events': paginator.count
+            })
+            
+        return render(request, 'events/superadmin_event_list.html', {
+            'events': events_page,
+            'page_obj': events_page
+        })
 
 class ExpiredEventListView(SuperAdminMixin, ListView):
     template_name = 'events/expired_events.html'

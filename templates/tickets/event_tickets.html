@@ -1,40 +1,47 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>  {{ event.name }} Tickets  </title>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
-    <link rel="stylesheet" href="{% static 'tickets/css/tickets.css' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> {{ event.name }} Tickets </title>
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+  <link rel="stylesheet" href="{% static 'tickets/css/tickets.css' %}">
+  <link rel="stylesheet" href="{% static 'events/css/svg-stadium.css' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <!-- FlipDown Countdown Timer CSS -->
+  <link rel="stylesheet" href="https://pbutcher.uk/flipdown/css/flipdown/flipdown.css">
+  <style>
     :root {
-        --primary-dark: #0d241b;
-        --primary-accent: #1d4532;
-        --secondary-accent: #2d6a4f;
-        --highlight: #4d9370;
-        --gold-accents: #c5a645;
-        --text-light: #f8f9fa;
-        --hover-glow: rgba(77, 147, 112, 0.2);
-        --header-height: 80px;
+      --primary-dark: #0d241b;
+      --primary-accent: #1d4532;
+      --secondary-accent: #2d6a4f;
+      --highlight: #4d9370;
+      --gold-accents: #c5a645;
+      --text-light: #f8f9fa;
+      --hover-glow: rgba(77, 147, 112, 0.2);
+      --header-height: 80px;
     }
 
     body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
-        font-family: 'Inter', sans-serif;
-        padding-top: var(--header-height);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
+      font-family: 'Inter', sans-serif;
+      padding-top: var(--header-height);
     }
+
+    /* UNUSED AUTH STYLES - MOVED TO PARTIALS */
+    /*
     .auth-container {
         max-width: 580px;
         margin: 4rem auto;
@@ -154,36 +161,39 @@
         opacity: 1;
         max-height: 500px;
     }
+    */
 
     .alert-messages {
-        position: fixed;
-        top: 100px;
-        right: 2rem;
-        z-index: 2000;
-        min-width: 300px;
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      z-index: 2000;
+      min-width: 300px;
     }
 
     .alert {
-        border-radius: 10px;
-        backdrop-filter: blur(8px);
-        border: 2px solid;
-        padding: 1rem 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      border: 2px solid;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .alert-success {
-        background: rgba(77, 147, 112, 0.15);
-        border-color: var(--highlight);
-        color: var(--primary-dark);
+      background: rgba(77, 147, 112, 0.15);
+      border-color: var(--highlight);
+      color: var(--primary-dark);
     }
 
     .alert-error {
-        background: rgba(197, 166, 69, 0.15);
-        border-color: var(--gold-accents);
-        color: var(--primary-dark);
+      background: rgba(197, 166, 69, 0.15);
+      border-color: var(--gold-accents);
+      color: var(--primary-dark);
     }
 
+    /* UNUSED AUTOCOMPLETE STYLES - MOVED TO PARTIALS/HEADER.HTML */
+    /*
     .autocomplete-results {
         position: absolute;
         top: 100%;
@@ -220,7 +230,10 @@
         font-size: 0.9rem;
         color: var(--primary-accent);
     }
+    */
 
+    /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
+    /*
     .header {
         position: fixed;
         top: 0;
@@ -296,7 +309,10 @@
         transform: translateY(-50%);
         color: var(--primary-dark);
     }
+    */
 
+    /* UNUSED FOOTER STYLES - MOVED TO PARTIALS/FOOTER.HTML */
+    /*
     .footer {
         background: var(--primary-dark);
         color: var(--text-light);
@@ -338,9 +354,15 @@
     .footer-link:hover::after {
         width: 100%;
     }
+    */
 
     @media (max-width: 991px) {
-        body { padding-top: calc(var(--header-height) + 20px); }
+      body {
+        padding-top: calc(var(--header-height) + 20px);
+      }
+
+      /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
+      /*
         .header {
             border-radius: 0;
         }
@@ -360,290 +382,876 @@
         .search-bar {
             margin: 1rem 0;
         }
+        */
     }
 
 
-  .filter-sidebar {
-    background: #fff;
-    border-radius: 12px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  .filter-section {
-    margin-bottom: 1.5rem;
-  }
-  .filter-section h6 {
-    font-weight: 600;
-    color: var(--primary-accent);
-    margin-bottom: .75rem;
-  }
-  .filter-section .btn-number {
-    width: 40px;
-    height: 40px;
-    margin: .25rem;
-    border: 2px solid var(--highlight);
-    border-radius: 8px;
-    background: transparent;
-    font-weight: 600;
-  }
-  .filter-section .btn-number.active {
-    background: var(--highlight);
-    color: #fff;
-  }
-  .price-range-inputs input {
-    width: 100%;
-    margin-bottom: .5rem;
-  }
-  .section-list .section-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: .5rem;
-  }
-  .section-color-box {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    margin-right: .5rem;
-  }
+    /* New Filter Bar Styles */
+    .filter-bar {
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 0.5rem 1rem !important;
+      /* Force smaller padding */
+    }
 
-  .tickets-container {
-    max-height: 80vh;
-    overflow-y: auto;
-  }
-  .ticket-card {
-    border: 2px solid;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    background: #e0dcdc;
-    position: relative;
-    padding: 1rem;
-    transition: transform .2s;
-  }
-  .ticket-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 24px rgba(13,36,27,0.15);
-  }
-  .ticket-card .section-bar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 6px;
-    width: 100%;
-    border-top-left-radius:12px;
-    border-top-right-radius:12px;
-  }
-  .ticket-details {
-    margin-top: .5rem;
-  }
+    .btn-number {
+      width: 30px;
+      height: 30px;
+      font-size: 0.85rem;
+      border: 1px solid var(--highlight);
+      border-radius: 6px;
+      background: transparent;
+      font-weight: 500;
+      color: var(--primary-accent);
+      transition: all 0.2s;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-  .stadium-image {
-    width: 100%;
-    border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  }
-</style>
+    .btn-number:hover {
+      background: rgba(77, 147, 112, 0.1);
+    }
+
+    .btn-number.active {
+      background: var(--highlight);
+      color: #fff;
+    }
+
+    /* Section Filter Styles */
+    .section-item {
+      cursor: pointer;
+      transition: all 0.2s;
+      background: #fff;
+      font-size: 0.85rem;
+    }
+
+    .section-item:hover {
+      background: #f8f9fa;
+      border-color: var(--highlight) !important;
+    }
+
+    .tickets-container {
+      max-height: 75vh;
+      overflow-y: auto;
+    }
+
+    .ticket-card {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      background: #e0dcdc;
+      position: relative;
+      padding: 0.75rem;
+      transition: all .2s;
+      cursor: pointer;
+    }
+
+    .ticket-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(13, 36, 27, 0.1);
+    }
+
+    .ticket-card.expanded {
+      background: #fff;
+      border-color: var(--highlight);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .expanded-details {
+      display: none;
+      margin-top: 0.75rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .ticket-card.expanded .expanded-details {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(-5px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ticket-card .section-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 4px;
+      /* Slightly thinner */
+      width: 100%;
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+    }
+
+    .ticket-details {
+      margin-top: 0.25rem;
+    }
+
+    .stadium-image {
+      width: 100%;
+    }
+
+    .section-checkbox:checked+span+span,
+    .badge input:checked~span {
+      font-weight: 600;
+    }
+
+    .badge input:checked {
+      accent-color: #007bff;
+    }
+
+    .badge input:checked~span:nth-child(3) {
+      color: #007bff;
+    }
+
+    /* Skeleton Loading Animation */
+    @keyframes shimmer {
+      0% {
+        background-position: -200% 0;
+      }
+
+      100% {
+        background-position: 200% 0;
+      }
+    }
+
+    .skeleton {
+      background: #e0e0e0;
+      background-image: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 4px;
+    }
+
+    .ticket-skeleton {
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+      background: white;
+      padding: 0.75rem;
+      position: relative;
+      height: 90px;
+    }
+
+    .ticket-skeleton .bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      border-radius: 8px 8px 0 0;
+    }
+
+    .skeleton-text {
+      height: 12px;
+      margin-bottom: 8px;
+    }
+
+    .skeleton-title {
+      height: 16px;
+      width: 60%;
+      margin-bottom: 12px;
+    }
+
+    .skeleton-badge {
+      height: 14px;
+      width: 40px;
+      border-radius: 10px;
+      display: inline-block;
+    }
+
+    .skeleton-price {
+      height: 18px;
+      width: 50px;
+      float: right;
+    }
+
+    .stadium-skeleton {
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      min-height: 400px;
+    }
+  </style>
 </head>
+
 <body>
-    <header class="header">
-        <nav class="navbar navbar-expand-lg align-items-center">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'events:home' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="search-container me-auto">
-                        <input type="text" name="query" class="form-control search-bar navbar-search-input" placeholder="Search events..." data-behavior="search-autocomplete">
-                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <div id="navbar-search-results" class="autocomplete-results"></div>
-                    </div>
-                    <div class="d-flex ms-lg-auto mt-3 mt-lg-0">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
-                            <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
-                        {% else %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
-                            <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+  {% include "partials/header.html" %}
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+  <main class="flex-grow-1 p-2">
+    {% if messages %}
+    <div class="alert-messages">
+      {% for message in messages %}
+      <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %} py-2 px-3 mb-2 small">
+        {{ message }}
+        <button type="button" class="btn-close btn-sm" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
-        <div class="container-fluid">
-          <div class="row gy-4">
-            <div class="col-12 text-center">
-              <h1 class="fw-bold">{{ event.name }}</h1>
-              {% if user.user_type == 'Reseller' %}
-              <a href="{% url 'events:create_listing' event.event_id %}" class="btn btn-primary">
-              Sell Tickets
-              </a>
-              {% endif %}
-              <p class="text-muted">
+    <div class="container-fluid">
+      <div class="row gy-2">
+        <div class="col-12">
+          <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+            <!-- Event Info -->
+            <div class="d-flex flex-column">
+              <h1 class="fw-bold mb-0 fs-3">{{ event.name }}</h1>
+              <p class="text-muted mb-0" style="font-size: 0.8rem;">
                 {{ event.date }} &middot; {{ event.time }} &middot; {{ event.stadium_name }}
               </p>
-              <h2 style="color:rgb(86, 124, 10)">Time Left: {{ event.time_left }}</h2>
-            </div>
-            <div class="col-lg-4">
-              <div class="filter-sidebar">
-                <div class="filter-section">
-                  <h6>Number of tickets</h6>
-                    <button class="btn-number" data-filter="number_of_tickets" data-value="1">1</button>
-                    <button class="btn-number" data-filter="number_of_tickets" data-value="2">2</button>
-                    <button class="btn-number" data-filter="number_of_tickets" data-value="3">3</button>
-                    <button class="btn-number" data-filter="number_of_tickets" data-value="4">4</button>
-                    <button class="btn-number" data-filter="number_of_tickets" data-value="5">5</button>
-                  <button class="btn-number" data-filter="number_of_tickets" data-value="5+">5+</button>
-                </div>
-                <div class="filter-section">
-                  <h6>Price per ticket</h6>
-                  <div class="price-range-inputs">
-                    <input type="number" class="form-control" id="min_price" placeholder="Min" />
-                    <input type="number" class="form-control" id="max_price" placeholder="Max" />
-                  </div>
-                </div>
-                <div class="filter-section">
-                  <h6>Ticket Type</h6>
-                  {% for key,label in ticket_types.items %}
-                  <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="{{ key }}"
-                          id="type_{{ forloop.counter }}" data-filter="ticket_type">
-                    <label class="form-check-label" for="type_{{ forloop.counter }}">{{ label }}</label>
-                  </div>
-                  {% endfor %}
-                </div>
-                <div class="filter-section">
-                  <h6>Sections</h6>
-                  {% for sec in sections %}
-                  <div class="section-item">
-                    <div class="section-color-box" style="background: {{ sec.color }}"></div>
-                    <div class="form-check mb-0">
-                      <input class="form-check-input" type="checkbox" value="{{ sec.id }}"
-                            id="sec_{{ forloop.counter }}" data-filter="section">
-                      <label class="form-check-label" for="sec_{{ forloop.counter }}">{{ sec.name }}</label>
-                    </div>
-                  </div>
-                  {% endfor %}
-                </div>
-              </div>
+
             </div>
 
-            <div class="col-lg-4">
-              <div class="tickets-container" id="ticketsList">
-                {% include 'tickets/_ticket_list.html' %}
-              </div>
-            </div>
+            <!-- Right Side: Countdown Timer + Button -->
+            <div class="d-flex align-items-center gap-2">
 
-            <div class="col-lg-4 text-center">
-              <img src="{{ event.stadium_image }}" alt="Stadium" class="stadium-image">
+              {% if user.user_type == 'Reseller' %}
+              <a href="{% url 'events:create_listing' event.event_id %}" class="btn btn-primary btn-sm py-1 px-2"
+                style="font-size: 0.8rem;">
+                Sell Tickets
+              </a>
+              {% endif %}
             </div>
           </div>
         </div>
-        </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="footer-logo">
-                    <h6>A WORLD OF EVENTS. We connect people to make every event Precious.</h6>
-                    <div class="copyright mt-3">&copy; {% now 'Y' %} Go2Sport&Music. All rights reserved.</div>
+        <!-- Top Filter Bar -->
+        <div class="col-12 mb-2">
+          <div class="filter-bar d-flex flex-wrap align-items-center gap-3 bg-white rounded shadow-sm border">
+            <div style="width: 260px; height: 60px; overflow: hidden;">
+              <div class="countdown-container" id="countdown-container" data-timestamp="{{ event.event_timestamp }}"
+                style="transform: scale(0.5); transform-origin: top left;">
+                <div id="flipdown" class="flipdown"></div>
+              </div>
+            </div>
+            <!-- Number of Tickets -->
+            <div class="filter-group d-flex align-items-center gap-2">
+              <span class="fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">Qty:</span>
+              <div class="d-flex gap-1">
+                <button class="btn-number" data-filter="number_of_tickets" data-value="1">1</button>
+                <button class="btn-number" data-filter="number_of_tickets" data-value="2">2</button>
+                <button class="btn-number" data-filter="number_of_tickets" data-value="3">3</button>
+                <button class="btn-number" data-filter="number_of_tickets" data-value="4">4</button>
+                <button class="btn-number" data-filter="number_of_tickets" data-value="5">5</button>
+                <button class="btn-number" data-filter="number_of_tickets" data-value="5+">5+</button>
+              </div>
+            </div>
+
+            <div class="vr my-1"></div>
+
+            <!-- Price Range -->
+            <div class="filter-group d-flex align-items-center gap-2">
+              <span class="fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">Price:</span>
+              <div class="d-flex align-items-center gap-1" style="max-width: 160px;">
+                <input type="number" class="form-control form-control-sm py-1" id="min_price" placeholder="Min"
+                  style="font-size: 0.8rem;">
+                <span class="text-muted small">-</span>
+                <input type="number" class="form-control form-control-sm py-1" id="max_price" placeholder="Max"
+                  style="font-size: 0.8rem;">
+              </div>
+            </div>
+
+            <div class="vr my-1"></div>
+
+            <!-- Ticket Type -->
+            <div class="filter-group d-flex align-items-center gap-2">
+              <span class="fw-bold text-muted text-uppercase" style="font-size: 0.7rem;">Type:</span>
+              <div class="d-flex align-items-center gap-2">
+                {% for key,label in ticket_types.items %}
+                <div class="form-check mb-0">
+                  <input class="form-check-input" type="checkbox" value="{{ key }}" id="type_{{ forloop.counter }}"
+                    data-filter="ticket_type" style="width: 0.9em; height: 0.9em;">
+                  <label class="form-check-label" for="type_{{ forloop.counter }}" style="font-size: 0.8rem;">
+                    {{ label }}</label>
                 </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <h6><i class="bi bi-geo-alt-fill"></i>UK London</h6>
-                    <h6><i class="bi bi-envelope"></i>&nbsp;Contact@go2sportandmusic.com</h6>
-                    <h6><i class="bi bi-phone"></i>+447359424931</h6>
+                {% endfor %}
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-4 order-lg-1 order-2">
+          <div class="tickets-container" id="ticketsList">
+            <!-- SKELETON LOADERS -->
+            {% for i in "123456" %}
+            <div class="ticket-skeleton">
+              <div class="bar skeleton"></div>
+              <div class="d-flex justify-content-between mb-2 mt-2">
+                <div class="skeleton skeleton-title"></div>
+                <div class="skeleton skeleton-price"></div>
+              </div>
+              <div class="d-flex gap-2">
+                <div class="skeleton skeleton-badge"></div>
+                <div class="skeleton skeleton-text" style="width: 80px;"></div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <div class="col-lg-8 order-lg-2 order-1 d-flex flex-column position-relative" style="height: 75vh;">
+          <!-- Interactive SVG Stadium Map Container -->
+          <div class="svg-stadium-container mb-2 flex-grow-1" id="svg-stadium-container"
+            style="display: flex; justify-content: center; align-items: center; max-height: 60vh; width: 100%;"
+            data-stadium-name="{{ event.stadium_name }}" data-svg-base-path="{% static 'events/stadiums/svg/' %}"
+            data-fallback-image="{{ event.stadium_image }}">
+            <div class="skeleton stadium-skeleton"></div>
+          </div>
+
+
+          <div class="d-flex flex-wrap justify-content-center gap-2 mt-auto py-2 z-1"
+            style="position: sticky; bottom: 0;">
+
+            {% for sec in sections %}
+            <label for="sec_{{ forloop.counter }}" class="badge rounded-pill d-flex align-items-center px-3 py-2"
+              style="cursor:pointer; background: {{ sec.color }}70;">
+
+              <input id="sec_{{ forloop.counter }}" type="checkbox" class="me-2 section-checkbox" value="{{ sec.id }}"
+                data-filter="section" style="width:14px; height:14px;">
+
+              <span class="me-2"
+                style="display:inline-block; width:10px; height:10px; background:{{ sec.color }};"></span>
+
+              <span class="text-black" style="font-size:0.8rem;">{{ sec.name }}</span>
+
+            </label>
+            {% endfor %}
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  {% include "partials/footer.html" %}
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script src="https://pbutcher.uk/flipdown/js/flipdown/flipdown.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var container = document.getElementById('countdown-container');
+      var eventTimestamp = container ? parseInt(container.dataset.timestamp, 10) : 0;
+
+
+      if (eventTimestamp && eventTimestamp > 0 && typeof FlipDown !== 'undefined') {
+        var flipdown = new FlipDown(eventTimestamp)
+          .start()
+          .ifEnded(function () {
+            document.getElementById('flipdown').innerHTML = '<span style="color: #4d9370; font-weight: bold; font-size: 2rem;">Event Started!</span>';
+          });
+      } else {
+        console.warn('FlipDown not initialized. Timestamp:', eventTimestamp, 'FlipDown defined:', typeof FlipDown !== 'undefined');
+      }
+    });
+  </script>
+
+  <script>
+    const FILTERS = {};
+    const ticketsUrl = "{% url 'events:event_tickets' event.event_id %}";
+    let allTickets = [];
+
+    // Function to render the ticket list
+    function renderTicketList(tickets) {
+      const ticketsListContainer = document.getElementById('ticketsList');
+      if (tickets.length === 0) {
+        ticketsListContainer.innerHTML = '<div class="alert alert-info text-center small py-2">No tickets found matching your criteria.</div>';
+        return;
+      }
+
+      const html = tickets.map(ticket => `
+        <div class="ticket-card" onclick="this.classList.toggle('expanded')">
+          <div class="section-bar" style="background-color: ${ticket.section.color}"></div>
+          
+          <div class="ticket-details">
+            <!-- Header (Always Visible) -->
+            <div class="d-flex justify-content-between align-items-center mb-1">
+               <h6 class="fw-bold mb-0 text-dark" style="font-size: 0.9rem;">${ticket.section.name}</h6>
+               <span class="fw-bold text-primary" style="font-size: 1rem;">£${ticket.price_per_ticket}</span>
+            </div>
+            
+            <div class="d-flex justify-content-between text-muted small" style="font-size: 0.75rem;">
+               <span>
+                  <span class="badge bg-secondary me-1" style="font-size: 0.7rem; padding: 0.35em 0.5em;">${ticket.row ? 'Row ' + ticket.row : 'Row N/A'}</span>
+                  ${ticket.number_of_tickets} tickets
+               </span>
+               <span class="text-capitalize">${ticket.ticket_type.replace('-', ' ')}</span>
+            </div>
+
+            <!-- Expanded Details (Hidden by default) -->
+            <div class="expanded-details">
+                <div class="row g-2 mb-3 small text-muted">
+                    <div class="col-6">
+                        <span class="d-block fw-bold text-dark">Total</span>
+                        <span>£${ticket.total_price.toFixed(2)}</span>
+                    </div>
+                    <div class="col-6">
+                        <span class="d-block fw-bold text-dark">Face Value</span>
+                        <span>£${ticket.face_value.toFixed(2)}</span>
+                    </div>
+                    
+                    ${ticket.seats && ticket.seats.length ? `
+                    <div class="col-12 mt-1">
+                         <span class="fw-bold text-dark">Seats:</span> ${ticket.seats.join(', ')}
+                    </div>
+                    ` : ''}
+                    
+                    ${ticket.benefits_and_Restrictions && ticket.benefits_and_Restrictions.length ? `
+                    <div class="col-12 mt-2">
+                        <div class="d-flex flex-wrap gap-1">
+                             ${ticket.benefits_and_Restrictions.map(b =>
+        `<span class="badge bg-light text-dark border" style="font-weight: normal; font-size: 0.65rem;">${b.replace(/_/g, ' ')}</span>`
+      ).join('')}
+                        </div>
+                    </div>
+                    ` : ''}
                 </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <a href="{% url 'events:home' %}" class="footer-link">Home</a>
-                    <a href="{% url 'events:privacy' %}" class="footer-link">Privacy Policy</a>
-                    <a href="{% url 'events:contact' %}" class="footer-link">Contact Us</a>
+                
+       ${ticket.sell_together
+          ? `
+              <!-- SELL TOGETHER = TRUE -->
+              <div class="youll-pay-section d-flex justify-content-between align-items-center py-3 px-3 mb-3"
+                             style="background:#f8f9fa; border-radius:8px;">
+                     <div>
+                            <span class="text-muted" style="font-size:0.8rem;">You'll pay</span>
+                            <div class="d-flex align-items-baseline">
+                                   <span class="fw-bold text-dark" style="font-size:1.25rem;">
+                                          €${ticket.price_per_ticket}
+                                   </span>
+                                   <span class="text-muted ms-1" style="font-size:0.8rem;">total</span>
+                            </div>
+                     </div>
+
+                     <div class="text-end">
+                            <span class="text-primary d-block" style="font-size:0.75rem;">
+                                   Sold together
+                            </span>
+                            <span class="fw-semibold text-dark" style="font-size:0.9rem;">
+                                   ${ticket.number_of_tickets} tickets
+                            </span>
+                     </div>
+              </div>
+       `
+          : `
+              <!-- SELL TOGETHER = FALSE -->
+              <div class="youll-pay-section d-flex justify-content-between align-items-center py-3 px-3 mb-3"
+                             style="background:#f8f9fa; border-radius:8px;">
+                     <div>
+                            <span class="text-muted" style="font-size:0.8rem;">You'll pay</span>
+                            <div class="d-flex align-items-baseline">
+                                   <span class="fw-bold text-dark" style="font-size:1.25rem;">
+                                          €${ticket.price_per_ticket}
+                                   </span>
+                                   <span class="text-muted ms-1" style="font-size:0.8rem;">each</span>
+                            </div>
+                     </div>
+
+                     <div class="text-end">
+                            <span class="text-primary d-block" style="font-size:0.75rem;">
+                                   Quantity
+                            </span>
+                            <select class="form-select form-select-sm quantity-select"
+                                                        style="min-width:120px; font-size:0.85rem;"
+                                                        onclick="event.stopPropagation()"
+                                                        onchange="event.stopPropagation()">
+                                   ${Array.from(
+            { length: ticket.number_of_tickets },
+            (_, i) =>
+              `<option value="${i + 1}">
+                                                        ${i + 1} ticket${i + 1 > 1 ? 's' : ''}
+                                                  </option>`
+          ).join('')}
+                            </select>
+                     </div>
+              </div>
+       `
+        }
+                 
+
+                <!-- Action Button -->
+                <div onclick="event.stopPropagation()">
+                {% if user.is_authenticated and user.user_type != 'Reseller' %}
+                  <form action="/tickets/${ticket.ticket_id}/buy/" method="post">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <button type="submit" class="btn btn-primary w-100 btn-sm py-2 fw-bold" style="font-size: 0.9rem;">
+                        Buy Now
+                    </button>
+                  </form>
+                {% elif not user.is_authenticated %}
+                  <a href="{% url 'accounts:sign_in' %}?next={{ request.path }}" class="btn btn-outline-primary w-100 btn-sm py-2" style="font-size: 0.9rem;">Login to Buy</a>
+                {% else %}
+                   <button disabled class="btn btn-secondary w-100 btn-sm py-2" style="font-size: 0.9rem;">Resellers cannot buy</button>
+                {% endif %}
+                </div>
+                
+                <!-- Ticket Info Section -->
+                <div class="ticket-info-section mt-3" style="border-top: 1px solid rgba(0,0,0,0.1); padding-top: 1rem;">
+                    
+                    <!-- Dynamic Ticket Type Info -->
+                    ${(() => {
+          const ticketType = ticket.ticket_type;
+          if (ticketType === 'mobile-transfer') {
+            return `
+                            <div class="info-block d-flex align-items-start mb-3">
+                                <div class="info-icon me-3" style="color: #6366f1; font-size: 1.2rem;">
+                                    <i class="bi bi-phone"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">Mobile Transfer</h6>
+                                    <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                                        You'll need an iPhone or Android smartphone to scan your tickets at the gate (we will email you the info). Your mobile tickets will be ready by: <span class="fw-bold text-primary">Today</span>
+                                    </p>
+                                </div>
+                            </div>`;
+          } else if (ticketType === 'e-ticket') {
+            return `
+                            <div class="info-block d-flex align-items-start mb-3">
+                                <div class="info-icon me-3" style="color: #6366f1; font-size: 1.2rem;">
+                                    <i class="bi bi-qr-code"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">E-Ticket</h6>
+                                    <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                                        Your e-tickets will be sent to your email. Print them out or show them on your phone at the venue entrance. Ready by: <span class="fw-bold text-primary">Today</span>
+                                    </p>
+                                </div>
+                            </div>`;
+          } else {
+            return `
+                            <div class="info-block d-flex align-items-start mb-3">
+                                <div class="info-icon me-3" style="color: #6366f1; font-size: 1.2rem;">
+                                    <i class="bi bi-ticket-perforated"></i>
+                                </div>
+                                <div>
+                                    <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">Paper Ticket</h6>
+                                    <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                                        Physical tickets will be shipped to your address. Please ensure your shipping details are correct. Delivery time varies by location.
+                                    </p>
+                                </div>
+                            </div>`;
+          }
+        })()}
+                    
+                    <!-- Prices Info  -->
+                    <div class="info-block d-flex align-items-start mb-3">
+                        <div class="info-icon me-3" style="color: #6366f1; font-size: 1.2rem;">
+                            <i class="bi bi-tag"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">Prices</h6>
+                            <p class="text-muted mb-0" style="font-size: 0.75rem; line-height: 1.4;">
+                                Prices are set by sellers. Prices exclude fees.<br>
+                                Prices may vary from face value.<br>
+                                Face value: <span class="fw-semibold">€${ticket.face_value.toFixed(2)}</span> per ticket.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <!-- 100% Guarantee  -->
+                    <div class="info-block d-flex align-items-start mb-3">
+                        <div class="info-icon me-3" style="color: #ec4899; font-size: 1.2rem;">
+                            <i class="bi bi-shield-check"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">100% guarantee</h6>
+                            <ul class="text-muted mb-0 ps-3" style="font-size: 0.75rem; line-height: 1.6;">
+                                <li><span class="fw-bold text-dark">We back every order</span></li>
+                                <li><span class="fw-bold text-dark">Tickets are original</span> and will arrive in time for the event</li>
+                                <li><span class="fw-bold text-dark">Full refund if the event is cancelled</span> and not rescheduled</li>
+                                <li><span class="fw-bold text-dark">Customer service all the way</span> out to your seat</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Secure Payment  -->
+                    <div class="info-block d-flex align-items-start">
+                        <div class="info-icon me-3" style="color: #10b981; font-size: 1.2rem;">
+                            <i class="bi bi-building"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1" style="font-size: 0.85rem;">Secure payment</h6>
+                            <p class="text-muted mb-2" style="font-size: 0.75rem;">
+                                We accept the most secure payment methods
+                            </p>
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <span style="font-size: 1.5rem; color: #1a1f71; font-weight: bold; font-style: italic;">VISA</span>
+                                <span style="font-size: 1.2rem;">
+                                    <svg width="30" height="20" viewBox="0 0 30 20"><circle cx="10" cy="10" r="8" fill="#eb001b"/><circle cx="20" cy="10" r="8" fill="#f79e1b"/><path d="M15 3.5a8 8 0 0 0 0 13" fill="#ff5f00"/></svg>
+                                </span>
+                                <span style="font-size: 0.7rem; background: #006fcf; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold;">AMEX</span>
+                                <span style="font-size: 0.7rem; background: #003087; color: white; padding: 2px 6px; border-radius: 3px; font-weight: bold;">PayPal</span>
+                            </div>
+                        </div>
+                    </div>
+                    
                 </div>
             </div>
+          </div>
         </div>
-    </footer>
+      `).join('');
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      const FILTERS = {};
-          const ticketsUrl = "{% url 'events:event_tickets' event.event_id %}";
+      ticketsListContainer.innerHTML = html;
+    }
 
-          function buildQuery() {
-            const params = new URLSearchParams();
-            for (let key in FILTERS) {
-              FILTERS[key].forEach(val => params.append(key, val));
+    // Function to filter tickets client-side
+    function filterTicketsLocal() {
+      let filtered = allTickets;
+
+      // Filter by number of tickets
+      if (FILTERS['number_of_tickets'] && FILTERS['number_of_tickets'].length > 0) {
+        const val = FILTERS['number_of_tickets'][0];
+        if (val === '5+') {
+          filtered = filtered.filter(t => t.number_of_tickets >= 5);
+        } else {
+          filtered = filtered.filter(t => t.number_of_tickets == parseInt(val));
+        }
+      }
+
+      // Filter by price range
+      const minPrice = FILTERS['min_price'] ? parseFloat(FILTERS['min_price'][0]) : null;
+      const maxPrice = FILTERS['max_price'] ? parseFloat(FILTERS['max_price'][0]) : null;
+
+      if (minPrice !== null && !isNaN(minPrice)) {
+        filtered = filtered.filter(t => t.price_per_ticket >= minPrice);
+      }
+      if (maxPrice !== null && !isNaN(maxPrice)) {
+        filtered = filtered.filter(t => t.price_per_ticket <= maxPrice);
+      }
+
+      // Filter by ticket type
+      if (FILTERS['ticket_type'] && FILTERS['ticket_type'].length > 0) {
+        filtered = filtered.filter(t => FILTERS['ticket_type'].includes(t.ticket_type));
+      }
+
+      // Filter by section
+      if (FILTERS['section'] && FILTERS['section'].length > 0) {
+        // Convert filter values to integers for comparison if needed, based on ticket.section.id type
+        const sections = FILTERS['section'].map(s => parseInt(s));
+        filtered = filtered.filter(t => sections.includes(t.section.id));
+      }
+
+      renderTicketList(filtered);
+    }
+
+
+    // Function to fetch all tickets once
+    async function fetchAllTickets() {
+
+      const apiUrl = '/api/events/{{ event.event_id }}/tickets/';
+
+      try {
+        const res = await fetch(apiUrl);
+        const data = await res.json();
+        allTickets = data.tickets || [];
+
+        // Initial render
+        renderTicketList(allTickets);
+
+        return data;
+      } catch (e) {
+        console.error("Failed to fetch tickets:", e);
+        document.getElementById('ticketsList').innerHTML = '<div class="alert alert-danger">Failed to load tickets.</div>';
+        return null;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      const apiData = await fetchAllTickets();
+
+      document.querySelectorAll('.btn-number').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const key = btn.dataset.filter;
+          const val = btn.dataset.value;
+
+          if (btn.classList.contains('active')) {
+            delete FILTERS[key];
+            btn.classList.remove('active');
+          } else {
+            FILTERS[key] = [val];
+            document.querySelectorAll(`.btn-number[data-filter="${key}"]`)
+              .forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+          }
+          filterTicketsLocal();
+        });
+      });
+
+      let priceTimer;
+      ['min_price', 'max_price'].forEach(id => {
+        document.getElementById(id).addEventListener('input', e => {
+          clearTimeout(priceTimer);
+          priceTimer = setTimeout(() => {
+            FILTERS['min_price'] = [document.getElementById('min_price').value];
+            FILTERS['max_price'] = [document.getElementById('max_price').value];
+            filterTicketsLocal();
+          }, 300);
+        });
+      });
+
+      document.querySelectorAll('[data-filter]:not(.btn-number)').forEach(cb => {
+        cb.addEventListener('change', () => {
+          const key = cb.dataset.filter;
+          FILTERS[key] = Array.from(document.querySelectorAll(`[data-filter="${key}"]:checked`))
+            .map(i => i.value);
+          filterTicketsLocal();
+        });
+      });
+
+      (async function initSVGViewer() {
+        if (!apiData) return;
+
+        try {
+          const container = document.getElementById('svg-stadium-container');
+
+          if (!container || !container.dataset.stadiumName) {
+            // console.log("No stadium data found, skipping SVG map.");
+            return;
+          }
+
+          container.style.display = 'block';
+
+          const stadiumName = container.dataset.stadiumName;
+          const basePath = container.dataset.svgBasePath;
+          const fallbackImage = container.dataset.fallbackImage;
+
+          function getSvgFilename(name) {
+            const nameLower = name.toLowerCase().trim();
+            const MAPPING = {
+              'villa park': 'villaParkStadium',
+              'old trafford': 'oldTraffordStadium',
+              'emirates': 'emiratesStadium',
+              'emirates stadium': 'emiratesStadium',
+              'anfield': 'anfieldStadium',
+              'elland': 'ellandStadium',
+              'elland road': 'ellandStadium',
+              'tottenham': 'tottenhamHotspurStadium',
+              'spurs': 'tottenhamHotspurStadium',
+              'hill dickinson': 'hillDickinsonStadium',
+              'san siro': 'sanSiro',
+              'molineux': 'molineux',
+              'craven cottage': 'cravenCottage',
+              'etihad': 'etihadStadium',
+              'etihad stadium': 'etihadStadium',
+              'santiago bernabeu': 'santiagoBernabeuStadium',
+              'santiago bernab\u00e9u stadium': 'santiagoBernabeuStadium',
+              'riyadh metropolitano': 'riyadhMetropolitanoStadium',
+              'riyadh metropolitano stadium': 'riyadhMetropolitanoStadium',
+            };
+
+            if (MAPPING[nameLower]) return MAPPING[nameLower] + '.svg';
+
+            let camelName = nameLower
+              .replace(/[^a-zA-Z0-9]+(.)/g, (m, chr) => chr.toUpperCase())
+              .replace(/^[A-Z]/, c => c.toLowerCase());
+
+            if (camelName.endsWith('Stadium')) {
+              return camelName + '.svg';
             }
-            return params.toString();
+            return camelName + 'Stadium.svg';
           }
 
-          async function loadTickets() {
-            const qs = buildQuery();
-            const res = await fetch(ticketsUrl + (qs ? '?' + qs : ''),{
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest'
-                }});
+          const filename = getSvgFilename(stadiumName);
+          const svgUrl = basePath + filename;
 
-            const html = await res.text();
-            document.getElementById('ticketsList').innerHTML = html;
+          const stadiumKey = filename.replace('.svg', '');
+
+          // console.log('Stadium:', stadiumName);
+          // console.log('SVG URL target:', svgUrl);
+
+          const showFallbackImage = (reason) => {
+            console.warn('Handling fallback image. Reason:', reason);
+            if (fallbackImage) {
+              container.innerHTML = `
+                    <img src="${fallbackImage}" alt="${stadiumName}" class="stadium-image mb-2" style="width: 100%; border-radius: 12px;">
+                 `;
+            } else {
+              container.innerHTML = '<div class="alert alert-warning small">No stadium map available.</div>';
+            }
+          };
+
+          const script = document.createElement('script');
+          script.src = "{% static 'events/js/svg-viewer.js' %}";
+
+          script.onload = function () {
+            const viewer = {
+              container: container,
+              stadiumKey: stadiumKey,
+              sectionsData: apiData.filters.sections,
+              svgUrl: svgUrl,
+
+              async init() {
+                try {
+                  // console.log('Fetching SVG from:', this.svgUrl);
+                  const svgResponse = await fetch(this.svgUrl, { method: 'GET' }); // Should be GET to get content
+
+                  if (!svgResponse.ok) {
+                    throw new Error(`SVG file not found: ${this.svgUrl}`);
+                  }
+
+                  const svgContent = await svgResponse.text();
+
+                  if (!svgContent.trim().startsWith('<svg')) {
+                    throw new Error('Fetched content is not a valid SVG');
+                  }
+
+                  this.container.innerHTML = svgContent;
+                  console.log('SVG loaded successfully');
+
+                  window.stadiumViewer = new StadiumSVGViewer(
+                    'svg-stadium-container',
+                    this.stadiumKey,
+                    this.sectionsData,
+                    function (selectedSectionIds) {
+                      FILTERS['section'] = selectedSectionIds.map(String);
+                      document.querySelectorAll('[data-filter="section"]').forEach(cb => {
+                        cb.checked = selectedSectionIds.includes(parseInt(cb.value));
+                      });
+                      filterTicketsLocal();
+                    }
+                  );
+                } catch (error) {
+                  showFallbackImage(error.message);
+                }
+              }
+            };
+
+            viewer.init();
+          };
+
+          script.onerror = function () {
+            console.error('Failed to load svg-viewer.js');
+            showFallbackImage('Script load error');
+          };
+
+          document.head.appendChild(script);
+        } catch (error) {
+          console.error('Init error:', error);
+          const c = document.getElementById('svg-stadium-container');
+          if (c && c.innerHTML.includes('Loading')) {
+            if (c.dataset.fallbackImage) {
+              c.innerHTML = `<img src="${c.dataset.fallbackImage}" class="stadium-image w-100">`;
+            }
           }
+        }
+      })();
+    });
+  </script>
 
-          document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.btn-number').forEach(btn => {
-              btn.addEventListener('click', () => {
-                const key = btn.dataset.filter;
-                const val = btn.dataset.value;
-                FILTERS[key] = [val];
-                loadTickets();
-                document.querySelectorAll(`.btn-number[data-filter="${key}"]`)
-                        .forEach(b=> b.classList.remove('active'));
-                btn.classList.add('active');
-              });
-            });
-
-            let priceTimer;
-            ['min_price','max_price'].forEach(id => {
-              document.getElementById(id).addEventListener('input', e => {
-                clearTimeout(priceTimer);
-                priceTimer = setTimeout(() => {
-                  FILTERS['min_price'] = [e.target.id==='min_price'?e.target.value:''];
-                  FILTERS['max_price'] = [e.target.id==='max_price'?e.target.value:''];
-                  loadTickets();
-                }, 300);
-              });
-            });
-
-            document.querySelectorAll('[data-filter]:not(.btn-number)').forEach(cb => {
-              cb.addEventListener('change', () => {
-                const key = cb.dataset.filter;
-                FILTERS[key] = Array.from(document.querySelectorAll(`[data-filter="${key}"]:checked`))
-                                    .map(i=> i.value);
-                loadTickets();
-              });
-            });
-            setInterval(loadTickets, 1000);
-          });
-    </script>
+  <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+  <!--
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
@@ -653,6 +1261,10 @@
             header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
         });
     </script>
+    -->
+
+  <!-- UNUSED SEARCH AUTOCOMPLETE SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+  <!--
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         initSearchAutocomplete('.hero-search-input', '#hero-search-results');
@@ -706,5 +1318,7 @@
             });
         }
     </script>
+    -->
 </body>
+
 </html>

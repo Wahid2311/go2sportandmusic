@@ -1,0 +1,145 @@
+/* SVG Stadium Viewer Styles */
+.svg-stadium-container {
+    width: 80%;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.svg-stadium-container svg {
+    width: 80%;
+    height: auto;
+    display: block;
+}
+
+/* Section hover and selection states */
+.svg-stadium-container #shapes path {
+    transition: all 0.2s ease;
+}
+
+.svg-stadium-container #shapes path:hover {
+    opacity: 0.8;
+    filter: brightness(1.1);
+}
+
+.svg-stadium-container #shapes path.selected {
+    stroke: #FFD700 !important;
+    /* Gold highlight */
+    stroke-width: 3px !important;
+    opacity: 1 !important;
+    filter: drop-shadow(0 0 4px rgba(0, 0, 0, 0.5));
+    z-index: 10;
+}
+
+/* Stadium text labels */
+.svg-stadium-container text {
+    pointer-events: none;
+    user-select: none;
+}
+
+/* Legend styles */
+.stadium-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    border-radius: 6px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.legend-item:hover {
+    background: #f0f0f0;
+}
+
+.legend-item.active {
+    background: #e0e0e0;
+    font-weight: 600;
+    border: 1px solid #000;
+}
+
+.legend-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.legend-name {
+    font-size: 14px;
+}
+
+/* Fallback message */
+.stadium-fallback {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.stadium-fallback img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Loading state */
+.svg-stadium-loading {
+    height: 70%;
+    text-align: center;
+    padding: 60px 20px;
+    color: #999;
+}
+
+.svg-stadium-loading::after {
+    content: '...';
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+
+    0%,
+    20% {
+        content: '.';
+    }
+
+    40% {
+        content: '..';
+    }
+
+    60%,
+    100% {
+        content: '...';
+    }
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    .svg-stadium-container {
+        padding: 10px;
+    }
+
+    .stadium-legend {
+        gap: 10px;
+    }
+
+    .legend-item {
+        font-size: 12px;
+        padding: 6px 10px;
+    }
+
+    .legend-color {
+        width: 16px;
+        height: 16px;
+    }
+}

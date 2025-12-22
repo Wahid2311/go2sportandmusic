@@ -44,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     last_name = models.CharField(max_length=50, validators=[
         RegexValidator(r'^[a-zA-Z ]*$', 'Only letters and spaces are allowed')
     ])
-    phone = PhoneNumberField(region='US', unique=True)
+    phone = PhoneNumberField(region='US', unique=True , blank = True , null = True)
     user_type = models.CharField(max_length=10, choices=USER_TYPE_CHOICES)
     
     country = models.CharField(max_length=50, null=True, blank=True)

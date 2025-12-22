@@ -8,7 +8,7 @@
         background: white;
         border-radius: 12px;
         overflow: hidden;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         transition: all 0.3s;
     }
 
@@ -31,42 +31,59 @@
     <div class="row g-4">
         {% for event in events %}
         <div class="col-12">
-            <div class="user-card event-card">
+            <div class="user-card event-card" data-event-id="{{ event.event_id }}">
                 <div class="user-card-header">
                     <span class="user-id">#{{ event.event_id }}</span>
                     <span class="user-type-badge {{ event.category }}">
                         {{ event.get_category_display }}
                     </span>
                 </div>
-                
+
                 <div class="user-card-body">
-                    <div class="user-info-item">
-                        <i class="bi bi-ticket-perforated"></i>
-                        <span>{{ event.name }}</span>
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div>
+                            <h5 class="fw-bold mb-1" style="font-size: 1.1rem;">{{ event.name }}</h5>
+                            <div class="text-muted small">
+                                <i class="bi bi-calendar-event me-1"></i> {{ event.date }}
+                                <span class="mx-1">&middot;</span>
+                                <i class="bi bi-clock me-1"></i> {{ event.time }}
+                            </div>
+                        </div>
                         <span class="verification-badge">
                             <i class="bi bi-clock"></i> {{ event.time_left }}
                         </span>
                     </div>
-                    
-                    <div class="row g-3 mt-2">
-                        <div class="col-md-4">
-                            <div class="user-info-item">
-                                <i class="bi bi-geo-alt"></i>
-                                {{ event.stadium_name }}
+
+                    <div class="row g-2 mt-2 border-top pt-2">
+                        <div class="col-md-3 col-6">
+                            <div class="user-info-item small" title="Stadium">
+                                <i class="bi bi-geo-alt text-secondary"></i>
+                                <span class="text-truncate d-inline-block align-bottom" style="max-width: 200px;">
+                                    {{ event.stadium_name }}</span>
                             </div>
                         </div>
-                        
-                        <div class="col-md-4">
-                            <div class="user-info-item">
-                                <i class="bi bi-ticket-detailed"></i>
-                                Tickets: {{ event.sold_tickets }}/{{ event.total_tickets }}
+                        <div class="col-md-3 col-6">
+                            <div class="user-info-item small" title="Price Range">
+                                <i class="bi bi-tag text-secondary"></i>
+                                {% if event.lowest_price == 0 and event.highest_price == 0 %}
+                                <span class="text-muted">Not Set</span>
+                                {% else %}
+                                ${{ event.lowest_price }} - ${{ event.highest_price }}
+                                {% endif %}
                             </div>
                         </div>
-                        
-                        <div class="col-md-4">
-                            <div class="user-info-item">
+
+                        <div class="col-md-3 col-6">
+                            <div class="user-info-item small" title="Sold / Total">
+                                <i class="bi bi-ticket-detailed text-secondary"></i>
+                                {{ event.sold_tickets }} / {{ event.total_tickets }}
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-6">
+                            <div class="user-info-item small fw-bold text-success" title="Total Revenue">
                                 <i class="bi bi-cash"></i>
-                                Total Sales: ${{ event.total_sold_price }}
+                                ${{ event.total_sold_price }}
                             </div>
                         </div>
                     </div>
@@ -78,8 +95,8 @@
                     </a>
                     <form method="post" action="{% url 'events:event_delete' event.pk %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-admin-action btn-admin-delete" 
-                                onclick="return confirm('Are you sure you want to delete this event?')">
+                        <button type="submit" class="btn btn-admin-action btn-admin-delete"
+                            onclick="return confirm('Are you sure you want to delete this event?')">
                             <i class="bi bi-trash3"></i> Delete
                         </button>
                     </form>
@@ -98,7 +115,7 @@
                 </a>
             </li>
             {% endif %}
-            
+
             {% for num in page_obj.paginator.page_range %}
             <li class="page-item {% if num == page_obj.number %}active{% endif %}">
                 <a class="page-link" href="?page={{ num }}">
@@ -106,7 +123,7 @@
                 </a>
             </li>
             {% endfor %}
-            
+
             {% if page_obj.has_next %}
             <li class="page-item">
                 <a class="page-link" href="?page={{ page_obj.next_page_number }}">

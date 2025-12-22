@@ -1,0 +1,570 @@
+<svg viewBox="-334 -292 668 584" xmlns="http://www.w3.org/2000/svg">
+
+ <style>
+       .text-1 { font-size: 8px !important; }
+       .text-2 { font-size: 8px !important; }
+       .text-3 { font-size: 8px !important; }
+       .text-4 { font-size: 8px !important; }
+       .text-5 { font-size: 8px !important; }
+       .text-6 { font-size: 7px !important; }
+       .text-7 { font-size: 8px !important; }
+       .text-8 { font-size: 9px !important; }
+       .text-9 { font-size: 8px !important; }
+    </style>
+  <g id="pitch" opacity="1">
+    <g id="football-pitch" opacity="1" transform="matrix(1.21 0 0 1.21 -0.402 -3.888)">
+      <path fill="#BCCD9A" d="M-100-63.5h200v127h-200Z"></path>
+      <path fill="none" stroke="#fff" d="M-97.4-60.7H97.4V60.7H-97.4Z"></path>
+      <path fill="none" stroke="gray" d="M-98.8-62.3H98.8V62.3H-98.8Z"></path>
+      <path fill="none" stroke="#fff" d="M18.2 0a18.2 18.2 0 1 1-36.4 0 18.2 18.2 0 0 1 36.4 0Z"></path>
+      <path fill="#fff" stroke="#fff" d="M0-61.75v123.5"></path>
+      <path fill="#fff" stroke="#fff" d="M-97-41.5h40"></path>
+      <path fill="#fff" stroke="#fff" d="M-57-41.5v83"></path>
+      <path fill="#fff" stroke="#fff" d="M-57 41.5h-40"></path>
+      <path fill="#fff" stroke="#fff" d="M-97-20.3h16"></path>
+      <path fill="#fff" stroke="#fff" d="M-81-20.3v40.6"></path>
+      <path fill="#fff" stroke="#fff" d="M-81 20.3h-16"></path>
+      <path fill="#fff" stroke="#fff" d="M97-41.5H57"></path>
+      <path fill="#fff" stroke="#fff" d="M57-41.5v83"></path>
+      <path fill="#fff" stroke="#fff" d="M57 41.5h40"></path>
+      <path fill="#fff" stroke="#fff" d="M97-20.3H81"></path>
+      <path fill="#fff" stroke="#fff" d="M81-20.3v40.6"></path>
+      <path fill="#fff" stroke="#fff" d="M81 20.3h16"></path>
+    </g>
+  </g>
+  <g id="shapes" opacity="1">
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-151.8-228s-22.1 1.9-36.5 8.8l-9.1-25.6c19.9-11.2 42.8-10.3 42.8-10.3z" data-block="610" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-190.4-218.1s-22 6.8-33 20.4l-16.6-18.5c24.8-22.9 40.2-27.3 40.2-27.3z" data-block="612" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-269.6-173.7 23 12.2c8.7-24 21.6-34.8 21.6-34.8l-16.2-17.9s-19.6 18.7-28.4 40.5" data-block="614" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-257.9-121.8-24.2-3.3s0-28.2 12-45.7l22.6 11.5Z" data-block="616" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-247.8 161.9-20.3 10.2c-10.2-14.8-12.6-45.6-12.6-45.6l22.4-3.5c-.1.1 3.8 27.9 10.5 38.9" data-block="630" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-224.2 197.4-15.2 16.7c-18.9-15.8-27.3-40-27.3-40l19.7-10c-.1 0 3.1 12.7 22.8 33.3" data-block="632" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m237.9 214.9-14.3-15.8s16-19.8 20.5-35l21.9 11.5c-16.4 31.1-28.1 39.3-28.1 39.3" data-block="631" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m266.6 173.1-22.2-11.5 11-38.8 25 5.7c-.4 19.8-13.8 44.6-13.8 44.6" data-block="629" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m280.9 125.2-25.4-5.2 5.2-36.8 25.4 2.2c-.1-.1-1.3 21.6-5.2 39.8" data-block="627" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M281.4-125.8 257-122s-4.2-23.9-12.2-38l23.8-11.2c11.3 24 12.8 45.4 12.8 45.4" data-block="615" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m267.9-173.2-24.2 11s-11.4-24.6-23.1-33.2l17.8-19.6c22 23.1 29.5 41.8 29.5 41.8" data-block="613" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m237.5-216.8-18 20.3s-22.3-17.6-32.8-21l10.7-27.5c28.1 11.2 40.1 28.2 40.1 28.2" data-block="611" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M185-218.5c-14.9-7.2-36.4-9.4-36.4-9.4l2.9-26.7s14.2-1.2 43.7 9.6z" data-block="609" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-132.2-195.6-31.5 3.5-4.7-27.9c21.4-7.2 34.5-5.2 34.5-5.2z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-166.1-191.5s-14.2 2.5-24.1 10.1l-14.8-24.8c12.4-10.3 33.5-13.8 33.5-13.8z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-192.6-179.4s-12.5 6.1-17.9 17.9l-21.6-16.6c11.9-18.9 25.1-25.8 25.1-25.8z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-222.9923-132.9915-24.1277-7.5036c4.3585-25.6371 12.9112-34.2888 12.9112-34.2888l21.7492 15.1758s-9.794 17.5913-10.5327 26.6166" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-229.2-98.9-25.5-2.9s-1.2-14.4 6.6-36.8l23.8 9.5Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-209.5 158.1-23 17.3s-12.8-12.7-16-34.9l26.6-8.5Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-184.3 181.1-16.7 25.4s-20.3-14.6-30-28.4l22.4-17.6c14.1 15.7 24.3 20.6 24.3 20.6" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m198.6 209-17.1-29.5 22.8-19.6 23.6 18.6c-10.6 22.9-29.3 30.5-29.3 30.5" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m228.6 176.1-22.5-18.2 12-25.7 24 9.3c-1.1 15.7-13.5 34.6-13.5 34.6" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m252.4-101.8-28.1 4.6-4.1-33.8 24.4-8.2c7.8 11.4 7.8 37.4 7.8 37.4" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m243.4-141.5-24.1 8.3s-3.4-17.8-11.6-27.7l19.5-14.4c13.1 15.1 16.2 33.8 16.2 33.8" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m225.6-177-20.1 14.8s-6.5-10-17.6-18.6l13.2-22.4c19.4 10 24.5 26.2 24.5 26.2" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m185-180.9-24.5-11 6.1-26.3c13.4-.6 31.8 13 31.8 13z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-161.5-160.5s-13.8 3.6-21.3 12.1l-14.4-16.8c.7-7.4 24.3-17.5 24.3-17.5z" data-block="412" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-215.6-135.8 15.6 7.9 15.2-18.9-14.3-16.2c-10.7 6.1-16.5 27.2-16.5 27.2" data-block="414" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-207.1-101.2-16.5-4.1s1.5-18.8 7-27.6l15.6 8.1Z" data-block="416" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-199.1 124.8-14.9 6.6c-7.9-9.6-7.9-26.4-7.9-26.4l16-3.6s2 16.2 6.8 23.4" data-block="430" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-182.3 145.9-13.7 13.4c-15.9-16.4-16.7-25.3-16.7-25.3l15.2-7.5s3 11.7 15.2 19.4" data-block="432" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m178.7 146.2 13.5 14.5c13.9-10.7 18.6-25.2 18.6-25.2l-17.2-9.2c0-.1-6.9 15.6-14.9 19.9" data-block="431" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m218.3-104.2-17.9 2.9-4.9-23.2 16.3-8.6c7 7.5 6.5 28.9 6.5 28.9" data-block="415" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m211.8-135.4-17.9 8.4-12.8-22.3 14.2-13.9c12.3 12.2 16.5 27.8 16.5 27.8" data-block="413" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M193.1-164.8 179.8-151s-11.3-9.8-20.8-10.7l7.8-21.5c17.3 5.8 26.3 18.4 26.3 18.4" data-block="411" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m155.3-162.8-8.8-2.7 4.5-20.8c6.6-.3 12.3 2.8 12.3 2.8z" data-block="411" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-157.1-156.9s-20.6 6-33.1 30.6l11.9 6.1c5.4-15.4 27-24.1 27-24.1z" data-block="312" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-186.7-76.9-13.3-2.2s-1.4-40.2 9.1-44.9l11.3 6.6c-4.3 4.9-7.1 40.5-7.1 40.5" data-block="314" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-177.1 117.8-13 5.3s-5.5-1.3-9.7-45.8l13.2-2.1c5 39.6 9.5 42.6 9.5 42.6" data-block="324" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m188.5 123.3-13.4-6.9S186.4 93.2 184 74l14.9 3.2c1.1 27.5-10.4 46.1-10.4 46.1" data-block="323" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M198.9-79.2 184-77.1s.7-28.5-7.2-40.3l13.2-6.5c11.3 17.5 8.9 44.7 8.9 44.7" data-block="313" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m189-126.7-14 7.2s-6.4-19.7-28.6-27.4l5.8-14c27.7 9.7 36.8 34.2 36.8 34.2" data-block="311" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-139.1-141.8s-24.7 2.8-34.4 27.2l11.8 8.4c10.2-15.9 28-22.9 28-22.9z" data-block="210" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-142.6 139c-29.3-14.2-32.5-27.8-32.5-27.8l14.8-6.7s4.4 10.2 23.7 20.3z" data-block="226" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M158.7 100.5c-5.5 18-22.3 24.8-22.3 24.8l5.7 13.7s15.9-4 30.4-32.8z" data-block="225" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m173 104.7-13.2-6.2 5.7-26.7 13 2.5c3.4 13.9-2 25.1-5.5 30.4" data-block="223" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m179.2-77-14.8 1.8s0-15.5-6.5-30.5l11.8-8c11.3 13.3 9.5 36.7 9.5 36.7" data-block="211" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M156.4-107.8s-2.7-13.5-22.2-20.9l4.7-13.6c25 5 30.8 25.7 30.8 25.7z" data-block="209" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-125.8-84.7-29.3-19.2c12.5-24.8 36.4-24.1 36.4-24.1l6.2 36.2Z" data-block="110" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-128.9 86.9.5 1-5.2 5.5 5 4.7 5.8-7.6 1.1.4-12.1 29.7s-17.6-3.9-24.4-24.2" data-block="126" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M133.3 121.6 119.5 86l2.2-1.9 34.4 15.7c-5.7 15.1-22.8 21.8-22.8 21.8" data-block="125" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M161.1-73.3 125-67.5l-1-15.1 31.6-17.8c8.4 17.6 5.5 27.1 5.5 27.1" data-block="111" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M123-84.1s-.1-8.5-12-8.9l4.2-35.7c33.5 1.4 40.5 26.2 40.5 26.2z" data-block="109" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-48.1 230.9h29.8v13h-29.8Z" data-block="644" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-16.2 230.9H-3v13h-13.2Z" data-block="646" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-1 230.9h11.8v13H-1Z" data-block="645" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M12.7 230.9h31.2V243H12.7Z" data-block="643" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M263.9-39.4h24.5V.1h-24.5Z" data-block="621" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-260-19.2h26.1V18H-260Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-1.4-231h16.7v29.6H-1.4Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-19.6-231h15.5v29.1h-15.5Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-51.1 170.3h29.8V186h-29.8Z" data-block="442" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-19.4 170.3h16.1v16.1h-16.1Z" data-block="444" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-2 170.3h16.6V186H-2Z" data-block="443" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M15.9 170.3h29.9V186H15.9Z" data-block="441" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-2.2-196h35.1v21.1H-2.2Z" data-block="401" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-35.1-196H-4v21.1h-31.1Z" class="selected" data-block="402" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-205.9-36.2h15.7V-.4h-15.7Z" data-block="318" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M33.8 151.8h27.8V167H33.8Z" data-block="333" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-.6-171.8H14v16H-.6Z" data-block="301" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-186.8-43.8h14.8v24.7h-14.8Z" data-block="216" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-186.8-15.8h14.8v28h-14.8Z" data-block="218" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-45 134.5h20.2v13.9H-45Z" data-block="234" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M20.9 134.5h20.3V149H20.9Z" data-block="233" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M48.2-151.5h21.5v14.2H48.2Z" data-block="203" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M20.4-152.2h26v14.8h-26Z" data-block="201" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-.6-152.2h19.5v14.8H-.6Z" data-block="200" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-22.5-152.2h20.3v14.8h-20.3Z" data-block="200" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-48.8-152.2h24.5v14.8h-24.5Z" data-block="202" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-15 97.1h27.5v31.2H-15Z"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-2.2-135.1h28.1V-98H-2.2Z" data-block="101" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-114.4-232.7-34.7 3.9-3-26.3 36-3.9Z" data-block="608" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-262.9-80.9-24.2-2.3 4.3-39.4 24.9 3.9Z" data-block="618" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-264.4-40.8-24.7-1.1 1.8-39 24.4 2.1Z" data-block="620" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-264.9.2h-25.7l1.5-40.1 24.7 1.2Z" data-block="622" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-264.4 40.4-25.4 1.8-1.3-40h26.7Z" data-block="624" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-263.6 81-23.3 1.9-2.9-38.8 24.9-1.1Z" data-block="626" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-259.1 120.8-22 2.9-5.2-38.4 23.1-2.4Z" data-block="628" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-202.5 215.1-12.2 19-22.4-18.5 15-16.9Z" data-block="634" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-190.7 279.8-28.4-23.9 27.2-55.1 16.8 7.4Z"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-143.6 237.2-34.1-5.3 2.7-12.1 32.4 5.2Z" data-block="636" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-159 250.9-22.2-2.6 3.1-12.3 20.8 3.4Z" data-block="702" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-105 239.8-36.1-2.8 1-12 35.1 3.2Z" data-block="638" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-120 255.1-36.6-3.1 1.6-12.2 36.4 4.1Z" data-block="704" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-78.1 257.9-39.9-2.7 1.9-11.3 39.3 2.1Z" data-block="706" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-37.1 259.4-38.1-1.2V246l38.1 1Z" data-block="708" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-18.6 260h-16.6v-13l18.6.3Z" data-block="710" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-76.9 241.8-26.3-1.3V228l27.1 2Z" data-block="640" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-50.1 243.9-25.1-1.8 1.1-12.1h24Z" data-block="642" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M31 260h-47.6l1.6-13h46Z" data-block="709" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m71 258.3-38.1.9v-12.3L71 246Z" data-block="707" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m70 242-24.1 1.3-.4-12.5 24.1-.8Z" data-block="641" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M113.1 255.6 73.2 258v-11.9l38.7-1.9Z" data-block="705" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m152.2 252.5-35.8 2.7-2-11 36.2-3.7Z" data-block="703" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m177.2 248.9-22.2 2.9-1.9-12.4 21.2-4Z" data-block="701" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M98.5 240.9 72.4 242l-.9-12 26.4-1.1Z" data-block="639" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m136.9 238.1-35.9 2.4-.3-12.6 35.2-2.1Z" data-block="637" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m173.9 232.2-34.9 5.4-1.1-12.4 33.7-5Z" data-block="635" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m218.5 256.3-30.6 23.5-16.3-71.9 17.2-6.7Z"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m235.8 216.9-21.4 16.9-5.8-7.8-1.7 1.6-5.6-11.2 20.7-15.2Z" data-block="633" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m286.6 83.2-26-2.3 2.8-37.9 24.9 1.1Z" data-block="625" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m288.9 42-25-1.2V2h25Z" data-block="623" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m288.4-42-24.6 1-.9-39.2 22.4-2.3Z" data-block="619" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m284.9-84.6-22.5 2.8-4.7-38.2 23.7-2.9Z" data-block="617" data-section="category-3" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m147-228.3-35.1-4.8 1.2-25.2 36.4 3.7Z" data-block="607" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m109.9-233.4-35.5-1.4 1.5-25.9 35.1 1.8Z" data-block="605" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m72.5-235.7-35.5-.4 1-26 35.1 1Z" data-block="603" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M34.9-236.1H.5l-.6-26h35Z" data-block="601" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-2.7-236.1h-34.5l-.7-26h35.7Z" data-block="602" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-39.7-236.2-35.5 1.1-.9-27h36.4Z" data-block="604" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-77.4-234.4-35.1 1.4-1.9-26.2 35.5-2Z" data-block="606" data-section="category-2-lateral" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-95.6-198.1-33.5 2.5-1.8-29.3 34.3-3.5Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-232.7-58.8-26-2 3.8-38.1 25 4Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-233.9-21h-25.3l1.3-37.8 25.2 3.2Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-232.7 57-25.7 1.6-.8-37.5 25.3-1.3Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-229 95.9-27.2 3.2-2.2-37.9 26-2.1Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-222.9 129-26.6 10-6-37.6 26.5-3Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-148.8 221.1-25.4-3.8 4.5-25.4 34.6 4.2v11.8l-12.2-1.4Z" data-block="536" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-113 224.5-33.8-2.7 1.8-12.9 13.1 1.5-1-13.3 39.8 2v11.8l-20.2-1.2Z" data-block="538" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-75.8 226.9-35.2-2.1.1-12.9 19.4 1.4.9-13.5 33.5.3v12.8l-18.2-.2Z" data-block="540" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-36.9 228-37.2-1.2 1.4-12.4h16.8l.3-13.6 34.3 1.3v11.1l-15.6-.3Z" data-block="542" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-3.3 228h-31.3v-13l15.7.5v-13.4h15.6Z" data-block="544" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M30.2 228H-1v-25.9h16.2V215h15Z" data-block="543" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m50.1 214.5 18.3-.4 1.6 13.1-38.1.8v-14H16.4l.1-12.1 33.9-1.1Z" data-block="541" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m87.1 212.5 18.3-.4 1.6 13.1-35.2 1.6-.7-14.8H53.4l.1-12.1 33.9-1.1Z" data-block="539" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m129.8 209.9 11.6-.9 1.2 13.8-33.8 2.4-.5-14.7-19.4.5v-12.1l39.2-2.4Z" data-block="537" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m170.8 217.5-26.5 4.1-1.3-15-12.1 1.6-1.1-12.3 36.6-5.8Z" data-block="535" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m242.6 139-24.5-9.5 6.8-32.5 24.7 4.9Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m250.5 98.7-25.6-4.5 3.1-35.4 26.3 2.3Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M254.8 58.8 228 56.6l1.3-37.2 26.7 1.7Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M256 17.8h-26.7v-36.3L256-19Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M256-21.4h-26.7L228-57.3l28-1.5Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m256-61.6-28.1 2.1-2.1-34.9 27.7-4Z" data-block="514" data-section="category-2-fondo" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,categoria-2-cat2-fondo"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m158-192.5-29.6-3.5 1.1-29.8 33.8 7.2Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m124.1-196-34.3-2.4 1.6-31 35.4 3.6Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m87.6-198.4-34.7-2.7V-231l36.9 1.4Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m17-201.9 33.9 1.1.9-30.2H17Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-22.5-202-33.9 2-.5-29.8 34.4-.4Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-58.9-200.1-33.5 2-2.1-30.8 35.6-.9Z" data-block="512" data-section="category-1" data-tags="cat-2,categor-a-2--cat2----lateral,shortside-lower,shortside-upper,longside-upper-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-69.8-173.8-28.7 2-1.6-20.7 30.3-1.3Z" data-block="406" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-102-171.8-32.6 3.5-2.2-21.2 33.3-2Z" data-block="408" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-136.8-167-13.2 2.3-3.7-23.3h13.6Z" data-block="410" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-152.8-164-7 1.2-10.2-19.9 12.4-4.3Z" data-block="412" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper,shortside-middle-tier"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-212.3-68.6-15.1-1.6 3.8-32.4 15.9 4.5Z" data-block="418" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-214.9-35.2h-13.7l1.1-32 14.8 2Z" data-block="420" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-214.9-1.1h-14.3v-31.1l14.3.7Z" data-block="422" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-213 32-16.2.6V1.5h14.5Z" data-block="424" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-210.6 65.5-15.9 1.4-2-31.8h15.5Z" data-block="426" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-206.9 99.1-16.3 2.9-3.3-32.2 16.5-1.1Z" data-block="428" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-167.7 157.2-8.6 16.9-17.6-12.9 12.8-14.2Z" data-block="434" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-159.2 184.4-14.4-6.2 8.9-20.1 12.3 4.6Z" data-block="433" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-119.4 189.2-37.3-4.7 7.3-21.4 31.6 4.2Z" data-block="436" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-86.9 193.1-30.2-3.3 1.9-23.1 28.8 2.1Z" data-block="438" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-52.9 185.6-15.3-.4-.3 8.1h-16.7l1.1-24.5 31.6 2.1Z" data-block="440" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m80.4 191.6-16.2.3-.3-6.1-16.5.2v-16.2h32Z" data-block="439" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m112.5 189.7-29.6 2.2-1.3-21.8 29.2-2Z" data-block="437" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m152.6 184.9-37.2 4.4-2.9-21.7 32.4-3.1Z" data-block="435" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m171.8 177.8-17.4 6.6-7-21.1 13.5-6.1Z" data-block="433" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m190.9 161.8-17.7 13.4-9.4-18.3 13.3-9Z" data-block="433" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m211.8 132.2-17-8.2 7.1-22.7 15.5 2.5Z" data-block="429" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m218.5 101.3-16.6-3.1 4.5-30.9 15.3 2Z" data-block="427" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m222.3 67.3-15.9-2.1.7-31.7 16.5 1.8Z" data-block="425" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m223.9 31.9-16.8-.7.8-30h17.4Z" data-block="423" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M225.3-1.1h-18.2v-30.8h17.2Z" data-block="421" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M224.3-34.3h-17.7l-1.8-31.5 17-1.2Z" data-block="419" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m221.4-69.1-17.2 1.6-3.2-32.1 17.3-2.2Z" data-block="417" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m144.2-165.5-8.5-2.7 1.2-20.4 11.7.8Z" data-block="409" data-section="category-1-superior" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m131.9-168.8-31.9-3 2.1-20 32.1 2.9Z" data-block="407" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M98.1-172.4 68-174.1l1-20.4 30.8 2.1Z" data-block="405" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m66-174.2-31.1-.7.5-21.1 31.5.9Z" data-block="403" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-37.2-175.2-30.5 1.4-.4-20.2 30.9-1.6Z" data-block="404" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-116.1-151.1-13.2 1.3-1-15.5 13.5-1.7Z" data-block="310" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-131.6-149.2-17.1 4-5.5-12.4 20.9-6.2Z" data-block="310" data-section="category-1-superior" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-190.2-38.1h-14.5l4.2-38.8 13.8 2.3Z" data-block="316" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-190.2 37.1-14.3.4-1.4-35.5h15.7Z" data-block="320" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-187 72.8-13.8 2.4-3.1-36.4h14.2Z" data-block="322" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-166 132.1-10.7 11.6-12.4-18.2 13-6.3Z" data-block="326" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-155.1 156.8-19.1-12 10.6-10.8 14.2 8.5Z" data-block="326" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-127.4 162.7-25.6-5.1 6.3-15.1 21 4.5Z" data-block="328" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-100.2 164.8-24.9-2 2-15.8 24.4 2.2Z" data-block="330" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-67.8 167.3-30.2-2.4 1-16.1 29.7 2.1Z" data-block="332" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-36.6 167.3h-29.5v-16.4l30 .9Z" data-block="334" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-2 167.3h-32v-15.5l32 1.4Z" data-block="336" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M31.9 167.3h-32v-14.4l32-1.1Z" data-block="335" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M94.6 165.1 64.2 167l.6-16 29.8-1.7Z" data-block="331" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m122.4 162.6-24.6 1.9-.5-15.5 25.1-.8Z" data-block="329" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m150.9 158.2-25.6 4.4-.8-14.4 19.9-4.5Z" data-block="327" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m153.6 156.9 18.9-10.7-10.5-10.7-14.6 7.7Z" data-block="325" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m174.37 143.952-9.894-11.322 9.894-14.382 12.954 7.242Z" data-block="325" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M199.6 75 184 71.8l3.3-33.6 14.1 1.3Z" data-block="321" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m202 36.8-14.7-.7.7-35.2 14.4.6Z" data-block="319" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M203.1 0h-15.3l-1-35.8 15-1.2Z" data-block="317" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m201.8-39-14.7 1.1-2.7-37.3 14.1-1.6Z" data-block="315" data-section="category-2-superior" data-tags="cat-2,categor-a-3--cat3-,category-3,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m143.9-147.2-14.4-2.3.6-16 18.8 4.2Z" data-block="309" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m127.5-150.2-13.7-1.3.7-15.6 13.4 1.5Z" data-block="309" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m111-151.8-30.5-1.9.6-16.1 29.9 2Z" data-block="307" data-section="category-1-superior" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m78.5-153.7-30.3-1.5.5-15.8 29.8.8Z" data-block="305" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m46.9-154.9-30.9-.9v-16h30.9Z" data-block="303" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-2.2-155.8-14.4-.3v-15.7h14.4Z" data-block="302" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-18.2-156.1h-29.5v-15.7h28.9Z" data-block="304" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-50.1-155.4-30.5 1.1v-15.2l29.3-1.7Z" data-block="306" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-83.6-153.8-30 2.3-1.4-16.2 31.4-1.8Z" data-block="408" data-section="category-1-superior" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-50.1-137.3h-24.2v-13.4l23.5-1.5Z" data-block="204" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-76.1-137.3-26.2 2.6-1.2-14.6 27.4-1.4Z" data-block="206" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-105.5-134.9-10.1 2.1-1.7-13.9 11.8-1.7Z" data-block="208" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-119.5-132.8-12.8 1.6-3.6-11.9 14.4-3.7Z" data-block="208" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-168.8-75.7-14-3.8 7.5-33 12.3 9.2Z" data-block="212" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-172-46-14.1-1 2.1-28.7 13.9 3.9Z" data-block="214" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-171 41.2h-13.5l-1.6-25.9h15.1Z" data-block="220" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-167.8 68.7-15.3 3.3-1.4-28 15-1Z" data-block="222" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-161.1 102.7-15.9 6.6-5.3-35 15-2.3Z" data-block="224" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-125.6 143.7-14.4-4.5 6-13.7 9.9 3.1Z" data-block="228" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-114 144.3-8.5-.1.9-15.8 8.5.9Z" data-block="228" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-78.5 147-32.8-2.2 1.3-15.5 32.9 3.5Z" data-block="230" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-47.3 148.3-29-1 1.5-14.5 27.5 1.7Z" data-block="232" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m71.7 146.5-27.8 1.8v-13.8l27.8-1.7Z" data-block="231" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m104.7 145.7-31 .8v-14l31-2.2Z" data-block="229" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m118 144.4-11 1.3v-16.4l11-1.3Z" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m140 139.7-19.1 4v-16l14-2.5Z" data-block="227" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m179.5 71.8-13.1-2.5 2.2-25.1 13.3 1Z" data-block="221" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m182.4 41.5-13.8-1.2 1.3-24.8 13.6 1Z" data-block="219" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m183.5 13.7-13.6-1.4v-25.9h13.6Z" data-block="217" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M183.5-16.8h-13.8l-1.1-25.8 13.1-1.4Z" data-block="215" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m181.7-46.8-13.1 1.1-2.7-25.5 13.4-2.1Z" data-block="213" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m131-128.7-15-5.3 1.2-12.8 18.5 4.3Z" data-block="207" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m113.1-134-12.4-1.1 1-13.9 12.8 1.3Z" data-block="205" data-section="longside-lower-tier" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m98.1-135.1-25.9-2.4v-14l25.9 2.3Z" data-block="205" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-86.3-95.3-24.5 1.5-4.8-34.1 26-3.3Z" data-block="108" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-127.3-71.8-38.7-3.5 9.2-25.9 30.7 18.7Z" data-block="112" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-129.5-44.7-39.3-1.8 2.5-25.3 40.2 2.3Z" data-block="114" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-130.1-17.7-38.7-1V-43l39.3 1.2Z" data-block="116" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-130.1 12.2h-38.7l-.7-28 39.4.8Z" data-block="118" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-129.5 37.5-37.6 2.7-1.7-25.7h39.3Z" data-block="120" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-129.5 62.8-34.1 5.9-2.5-25.7 36.6-2.8Z" data-block="122" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-126.8 84-32 10.7-4.8-23.4 34.5-5Z" data-block="124" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-131.8 121.6 15.4 3.2 3.3-35.7-6.5-1.2Z" data-block="128" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-102.9 126.5-12.1-1.2 4.1-36 12.6.4Z" data-block="128" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-74 128.6-27.2-1.7 5.3-36.9 25.2 2.1Z" data-block="130" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-45.4 130.3-25.3-1.7 2.1-36.6 24.6.8Z" data-block="132" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-17 128.4-12.4-.5-1 3.1-12.2-.7 1.5-37.5 13.9.6V97H-17Z" data-block="134" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m41.1 130.3-27.7-1 .6-31.9 11.4.1V92h13.5Z" data-block="133" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m67.3 129.3-23.9 1L41.9 92h24.5Z" data-block="131" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m95 128.8-25.7.5V91.6l22.8-2.5Z" data-block="129" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m112.2 126.5-15.9 1.9-2.8-39.3 16.6-1.6Z" data-block="127" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m130.3 123-16.2 2.2-2.6-37.9 5.9-.1Z" data-block="127" data-section="category-1-silver" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m156.8 97-34.4-14.4 3-17 36.4 5.8Z" data-block="123" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m162.4 69.3-37.5-6.1 2.1-22.9 37.7 2.7Z" data-block="121" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M165.2 40.3 127 38.1l1.7-24.4 37.7 1.5Z" data-block="119" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m166.4 12.5-37.7-.5.8-23.9 36.4-1.7Z" data-block="117" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m165.9-15.5-36.6 1.9-1.2-27.2 36.3-3.2Z" data-block="115" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m164.4-45.2-36.8 2.6-1.8-23.3 35.8-5.3Z" data-block="113" data-section="category-1-gol" data-tags="cat-2,categor-a-3--cat3-,shortside-lower,shortside-upper"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m109.1-93-26-2.6L85-131l28.1 2.1Z" data-block="107" data-section="category-1-silver" data-tags="cat-2,categor-a-1-premium,categoria-1-premium,shortside-lower,shortside-upper,vip-hospitality-package,category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m81.1-95.9-25-1.2 1-35.8 26 2Z" data-block="105" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m56.1-132.9-29.2-1.8V-98l28 .9Z" data-block="103" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="M-3.2-98h-25.7l-1.2-35.8 26.6-.9Z" data-block="102" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-30.5-97.8-26.8.9-1.6-35.9 27.6-1Z" data-block="104" data-section="category-1-premium" data-tags="category-1"></path>
+    <path fill="none" stroke="#000" stroke-width="0.8" d="m-59.1-96.7-25 1.4-2.9-36 26.7-1.5Z" data-block="106" data-section="category-1-premium" data-tags="category-1"></path>
+  </g>
+  <g id="text" opacity="1">
+    <text class="text-1" transform="matrix(1 0 0 1 -1.15 240)">645</text>
+    <text class="text-1" transform="matrix(1 0 0 1 -16.55 239.66)">646</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -179.49 247.87)">702</text>
+    <text class="text-3" transform="matrix(1 0 0 1 155.85 247.87)">701</text>
+    <text class="text-3" transform="matrix(1 0 0 1 120.85 252.58)">703</text>
+    <text class="text-3" transform="matrix(1 0 0 1 82.97 256.24)">705</text>
+    <text class="text-3" transform="matrix(1 0 0 1 43.1 256.41)">707</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -3.61 257.97)">709</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -34.22 257.91)">710</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -67.99 257.2)">708</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -109.65 255.08)">706</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -148.11 250.62)">704</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -170.99 230.91)">636</text>
+    <text class="text-3" transform="matrix(1 0 0 1 144.1 232.75)">635</text>
+    <text class="text-3" transform="matrix(1 0 0 1 111.51 237.58)">637</text>
+    <text class="text-3" transform="matrix(1 0 0 1 74.51 240.27)">639</text>
+    <text class="text-3" transform="matrix(1 0 0 1 47.93 239.83)">641</text>
+    <text class="text-3" transform="matrix(1 0 0 1 16.39 241.27)">643</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -44.99 243.24)">644</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -73.07 241.27)">642</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -100.57 239.83)">640</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -133.65 237)">638</text>
+    <text class="text-4" transform="matrix(1 0 0 1 -15.84 -159.59)">302</text>
+    <text class="text-1" transform="matrix(1 0 0 1 -117.27 -138.27)">208</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -82.65 -209.13)">506</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -119.09 -205.96)">508</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -155.9 -201.88)">510</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -190.91 -195.67)">512</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -219.15 -177.05)">514</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -239.99 -148.36)">516</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -247.28 -112.5)">518</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -255.66 -73.3)">520</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -254.81 -32.26)">522</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -254.81 4.99)">524</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -254.81 42.99)">526</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -254.66 84.12)">528</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -248.49 119.74)">530</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -237.15 155.91)">532</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -215.2 185.99)">534</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -169.28 213.78)">536</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -136.65 220.74)">538</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -99.57 223.62)">540</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -58.86 224.49)">542</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -24.49 225.83)">544</text>
+    <text class="text-3" transform="matrix(1 0 0 1 6.3 225.24)">543</text>
+    <text class="text-3" transform="matrix(1 0 0 1 41.51 225.24)">541</text>
+    <text class="text-3" transform="matrix(1 0 0 1 82.12 224.49)">539</text>
+    <text class="text-3" transform="matrix(1 0 0 1 117.1 220.16)">537</text>
+    <text class="text-3" transform="matrix(1 0 0 1 147.6 213.74)">535</text>
+    <text class="text-3" transform="matrix(1 0 0 1 196.39 186.41)">533</text>
+    <text class="text-3" transform="matrix(1 0 0 1 217.43 155.91)">531</text>
+    <text class="text-3" transform="matrix(1 0 0 1 224.53 122.02)">529</text>
+    <text class="text-3" transform="matrix(1 0 0 1 233.89 81.29)">527</text>
+    <text class="text-3" transform="matrix(1 0 0 1 233.89 42.99)">525</text>
+    <text class="text-3" transform="matrix(1 0 0 1 233.89 4.99)">523</text>
+    <text class="text-3" transform="matrix(1 0 0 1 235.76 -34.34)">521</text>
+    <text class="text-3" transform="matrix(1 0 0 1 233.89 -75.17)">519</text>
+    <text class="text-3" transform="matrix(1 0 0 1 229.26 -114.09)">517</text>
+    <text class="text-3" transform="matrix(1 0 0 1 221.68 -147.26)">515</text>
+    <text class="text-3" transform="matrix(1 0 0 1 199.9 -178.73)">513</text>
+    <text class="text-3" transform="matrix(1 0 0 1 171.6 -196.49)">511</text>
+    <text class="text-3" transform="matrix(1 0 0 1 164.68 -233.42)">609</text>
+    <text class="text-3" transform="matrix(1 0 0 1 122.35 -241)">607</text>
+    <text class="text-3" transform="matrix(1 0 0 1 85.15 -243.59)">605</text>
+    <text class="text-3" transform="matrix(1 0 0 1 48.18 -245.01)">603</text>
+    <text class="text-3" transform="matrix(1 0 0 1 6.64 -245.01)">601</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -27.34 -245.01)">602</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -63.75 -245.11)">604</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -104.99 -241.01)">606</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -139.28 -238.69)">608</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -182.32 -233.01)">610</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -224.55 -217.44)">612</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -259.07 -181.38)">614</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -272.7 -141.84)">616</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -282.07 -95.34)">618</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -286.32 -54.26)">620</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -287.15 -14.48)">622</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -286.32 26.99)">624</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -286.32 66.87)">626</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -282.74 108.28)">628</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -275.63 150.44)">630</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -257.66 193.06)">632</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -228.18 220.22)">634</text>
+    <text class="text-3" transform="matrix(1 0 0 1 211.51 221.16)">633</text>
+    <text class="text-3" transform="matrix(1 0 0 1 237.37 192.06)">631</text>
+    <text class="text-3" transform="matrix(1 0 0 1 253.07 151.81)">629</text>
+    <text class="text-3" transform="matrix(1 0 0 1 263.93 109.28)">627</text>
+    <text class="text-3" transform="matrix(1 0 0 1 270.72 66.87)">625</text>
+    <text class="text-3" transform="matrix(1 0 0 1 270.37 27.18)">623</text>
+    <text class="text-3" transform="matrix(1 0 0 1 272.16 -13.84)">621</text>
+    <text class="text-3" transform="matrix(1 0 0 1 267.85 -58.26)">619</text>
+    <text class="text-3" transform="matrix(1 0 0 1 264.57 -101.19)">617</text>
+    <text class="text-3" transform="matrix(1 0 0 1 257.68 -141.51)">615</text>
+    <text class="text-3" transform="matrix(1 0 0 1 237.51 -184.67)">613</text>
+    <text class="text-3" transform="matrix(1 0 0 1 204.91 -217.44)">611</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 188.62 -70.48)">315</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 185.99 -106.94)">313</text>
+    <text class="text-3" transform="matrix(1 0 0 1 158.93 -137.77)">311</text>
+    <text class="text-5" transform="matrix(1 0 0 1 129.87 -153.86)">309</text>
+    <text class="text-4" transform="matrix(1 0 0 1 112.99 -155.61)">309</text>
+    <text class="text-3" transform="matrix(1 0 0 1 72.66 -178.92)">405</text>
+    <text class="text-3" transform="matrix(1 0 0 1 40.57 -180.57)">403</text>
+    <text class="text-3" transform="matrix(1 0 0 1 6.59 -181.92)">401</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -30.49 -181.57)">402</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -61.01 -180.65)">404</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -93.84 -178.05)">406</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -127.69 -176.35)">408</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -184.32 -163.38)">412</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -209.49 -140.13)">414</text>
+    <text class="text-3" transform="matrix(0.5306 0.8467 -0.8467 0.5306 -289.8485 -495.8328)">416</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -227.57 -80.34)">418</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -230.11 -44.69)">420</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -231.58 -11.96)">422</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -231.47 22.12)">424</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -229.47 55.76)">426</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -228.49 94.52)">428</text>
+    <text class="text-3" transform="matrix(0.98 0 0 0.98 -221.33 120.42)">430</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -207.74 146.99)">432</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -189.15 164.83)">434</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -170.78 176.12)">434</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -145.27 181.08)">436</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -111.05 184.37)">438</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -74.72 183.6)">440</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -44.67 183.54)">442</text>
+    <text class="text-4" transform="matrix(1 0 0 1 -19.58 183.54)">444</text>
+    <text class="text-4" transform="matrix(1 0 0 1 -1.15 183.54)">443</text>
+    <text class="text-3" transform="matrix(1 0 0 1 24.97 185.17)">441</text>
+    <text class="text-3" transform="matrix(1 0 0 1 58.03 184.39)">439</text>
+    <text class="text-3" transform="matrix(1 0 0 1 89.76 183.54)">437</text>
+    <text class="text-3" transform="matrix(1 0 0 1 124.01 183.54)">435</text>
+    <text class="text-2" transform="matrix(1 0 0 1 152.6 178.15)">433</text>
+    <text class="text-3" transform="matrix(1 0 0 1 168.57 164.83)">433</text>
+    <text class="text-3" transform="matrix(1 0 0 1 186.37 146.02)">431</text>
+    <text class="text-3" transform="matrix(-0.3540 0.8322 -0.8322 -0.3540 209.2566 103.5279)">429</text>
+    <text class="text-3" transform="matrix(-0.0539 0.9108 -0.9108 -0.0539 207.684 70.2842)">427</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 209.28 38.27)">425</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 212.11 5.68)">423</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 211.84 -26.39)">421</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 208.97 -60.62)">419</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 207.69 -92.69)">417</text>
+    <text class="text-3" transform="matrix(1 0 0 1 198.39 -112.01)">415</text>
+    <text class="text-3" transform="matrix(1 0 0 1 190.93 -139)">413</text>
+    <text class="text-3" transform="matrix(1 0 0 1 167.72 -163.01)">411</text>
+    <text class="text-3" transform="matrix(1 0 0 1 106.8 -176.05)">407</text>
+    <text class="text-3" transform="matrix(1 0 0 1 138.97 -204.61)">509</text>
+    <text class="text-3" transform="matrix(1 0 0 1 99.76 -208.82)">507</text>
+    <text class="text-3" transform="matrix(1 0 0 1 61.6 -209.13)">505</text>
+    <text class="text-3" transform="matrix(1 0 0 1 30.18 -211.98)">503</text>
+    <text class="text-5" transform="matrix(1 0 0 1 0.85 -211.98)">501</text>
+    <text class="text-5" transform="matrix(1 0 0 1 -19.05 -211.98)">502</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -48.82 -211.98)">504</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -24.82 -109.5)">102</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -52.65 -107.84)">104</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -80.65 -106.41)">106</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -106.65 -104.5)">108</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -140.82 -98.38)">110</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -153.15 -77.5)">112</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -154.74 -55.25)">114</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -158.15 -27)">116</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -158.15 4)">118</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -158.15 30.91)">120</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -158.15 58.12)">122</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -155.9 84.33)">124</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -150.3 107.95)">126</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -130.57 118.83)">128</text>
+    <text class="text-5" transform="matrix(1 0 0 1 -113.4 112.43)">128</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -95.82 116.39)">130</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -66.4 118)">132</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -39.55 117.87)">134</text>
+    <text class="text-3" transform="matrix(1 0 0 1 17.85 120)">133</text>
+    <text class="text-3" transform="matrix(1 0 0 1 46.35 119.75)">131</text>
+    <text class="text-3" transform="matrix(1 0 0 1 71.43 118.5)">129</text>
+    <text class="text-2" transform="matrix(1 0 0 1 95.73 115.87)">127</text>
+    <text class="text-2" transform="matrix(1 0 0 1 113.1 119.75)">127</text>
+    <text class="text-3" transform="matrix(1 0 0 1 127.68 105.5)">125</text>
+    <text class="text-3" transform="matrix(1 0 0 1 134.68 82.29)">123</text>
+    <text class="text-3" transform="matrix(1 0 0 1 136.76 59.12)">121</text>
+    <text class="text-3" transform="matrix(1 0 0 1 136.76 30.5)">119</text>
+    <text class="text-3" transform="matrix(1 0 0 1 138.01 4)">117</text>
+    <text class="text-3" transform="matrix(1 0 0 1 138.76 -25.8)">115</text>
+    <text class="text-3" transform="matrix(1 0 0 1 136.76 -51.25)">113</text>
+    <text class="text-3" transform="matrix(1 0 0 1 134.68 -77.5)">111</text>
+    <text class="text-3" transform="matrix(1 0 0 1 120.01 -100.88)">109</text>
+    <text class="text-3" transform="matrix(1 0 0 1 89.76 -104.5)">107</text>
+    <text class="text-3" transform="matrix(1 0 0 1 59.89 -106.32)">105</text>
+    <text class="text-3" transform="matrix(1 0 0 1 33.76 -107.84)">103</text>
+    <text class="text-3" transform="matrix(1 0 0 1 27.26 -141.5)">201</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -0.15 -141.75)">200</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -20.58 -142.25)">200</text>
+    <text class="text-6" transform="matrix(1 0 0 1 -45.96 -140.6)">202</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -70.07 -140.6)">204</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -100.57 -139.17)">206</text>
+    <text class="text-1" transform="matrix(1 0 0 1 -133.85 -134.67)">208</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -163.65 -120.25)">210</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -168.44 -80.5)">212</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -172.85 -50.16)">214</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -175.71 -20.51)">216</text>
+    <text class="text-3" transform="matrix(0.0237 -0.9995 0.9995 0.0237 -175.6663 7.5344)">218</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -174.23 38.57)">220</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -172.71 68.82)">222</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -167.302 101.3879)">224</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -163.65 126.25)">226</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -138.99 139)">228</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -102.99 142.5)">230</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -70.82 145.37)">232</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -43.61 145.37)">234</text>
+    <text class="text-5" transform="matrix(1 0 0 1 24.26 146)">233</text>
+    <text class="text-3" transform="matrix(1 0 0 1 49.01 144.58)">231</text>
+    <text class="text-3" transform="matrix(1 0 0 1 81.6 143.5)">229</text>
+    <text class="text-2" transform="matrix(1 0 0 1 120.85 139)">227</text>
+    <text class="text-2" transform="matrix(1 0 0 1 146.1 124.56)">225</text>
+    <text class="text-3" transform="matrix(-0.1695 0.9 -0.9 -0.1695 168.92 77.9)">223</text>
+    <text class="text-3" transform="matrix(-0.043 0.9508 -0.9508 -0.043 168.6629 45.9646)">221</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 170.65 18.12)">219</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 172.29 -9.3)">217</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 170.97 -40.71)">215</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 167.47 -71.58)">213</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 163.56 -102.49)">211</text>
+    <text class="text-3" transform="matrix(1 0 0 1 145.08 -123.92)">209</text>
+    <text class="text-3" transform="matrix(1 0 0 1 118.01 -134.67)">207</text>
+    <text class="text-3" transform="matrix(1 0 0 1 78.9 -139.29)">205</text>
+    <text class="text-3" transform="matrix(1 0 0 1 51.76 -140.13)">203</text>
+    <text class="text-3" transform="matrix(1 0 0 1 86.18 -155.84)">307</text>
+    <text class="text-3" transform="matrix(1 0 0 1 53.14 -158.63)">305</text>
+    <text class="text-3" transform="matrix(1 0 0 1 23.26 -158.63)">303</text>
+    <text class="text-4" transform="matrix(1 0 0 1 1.89 -158.84)">301</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -44.67 -159.59)">304</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -73.07 -158.63)">306</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -109.65 -155.67)">308</text>
+    <text class="text-2" transform="matrix(1 0 0 1 -131.24 -153.46)">310</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -150.3 -149.75)">310</text>
+    <text class="text-3" transform="matrix(0.6916 -0.557 0.557 0.6916 -176.9955 -127.989)">312</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -187.7 -90.32)">314</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -191.24 -47.9)">316</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -192.54 -8.97)">318</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -194.24 30.67)">320</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -192.74 66.06)">322</text>
+    <text class="text-3" transform="matrix(0.04 -0.98 0.98 0.04 -187.48 109.4)">324</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -184.82 135.5)">326</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -170.15 149.33)">326</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -146.07 157.25)">328</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -116.7 159.91)">330</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -85.9 162.08)">332</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -59.15 164.5)">334</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -24.82 164.5)">336</text>
+    <text class="text-3" transform="matrix(1 0 0 1 10.14 163.08)">335</text>
+    <text class="text-3" transform="matrix(1 0 0 1 41.14 163.08)">333</text>
+    <text class="text-3" transform="matrix(1 0 0 1 73.1 161.58)">331</text>
+    <text class="text-3" transform="matrix(1 0 0 1 104.68 160.75)">329</text>
+    <text class="text-3" transform="matrix(1 0 0 1 128.14 158.08)">327</text>
+    <text class="text-2" transform="matrix(1 0 0 1 150.68 149.2)">325</text>
+    <text class="text-2" transform="matrix(1 0 0 1 165.57 133.35)">325</text>
+    <text class="text-3" transform="matrix(-0.2143 0.9621 -0.9621 -0.2143 186.7937 86.9326)">323</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 187.84 45.66)">321</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 190.45 7.48)">319</text>
+    <text class="text-3" transform="matrix(0.04 0.98 -0.98 0.04 189.79 -28.03)">317</text>
+    <text class="text-3" transform="matrix(1 0 0 1 5.26 -109.5)">101</text>
+    <text class="text-3" transform="matrix(1 0 0 1 -222.44 -113.08)">416</text>
+    <text class="text-7" transform="matrix(1 0 0 1 -23.0943 -271.6132)">OESTE</text>
+    <text class="text-7" transform="matrix(1 0 0 1 -13.6603 281.217)">ESTE</text>
+    <text class="text-7" transform="matrix(0.0068 0.9999 -0.9999 0.0068 306.25 -34.7335)">NORTE</text>
+    <text class="text-7" transform="matrix(0.0068 -0.9999 0.9999 0.0068 -305.1489 -0.7317)">SUR</text>
+    <text class="text-4" transform="matrix(0.9555 0.2945 -0.2945 0.9555 140.3623 -175.645)">409</text>
+    <text class="text-4" transform="matrix(0.9555 -0.2945 0.2945 0.9555 -144.1585 -174.6974)">410</text>
+  </g>
+</svg>

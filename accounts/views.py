@@ -99,7 +99,7 @@ class UserLoginView(View, BaseViewMixin):
                 )
             
             if not user.is_verified:
-                self.send_verification_email(user, 'signup')
+                self.send_verification_email(request, user, 'signup')
                 return self.handle_error(request,
                     'Email not verified. New verification link sent.',
                     'accounts:sign_in'

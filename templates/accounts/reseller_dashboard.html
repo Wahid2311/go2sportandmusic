@@ -34,6 +34,9 @@
             font-family: 'Inter', sans-serif;
             padding-top: var(--header-height);
         }
+        
+        /* UNUSED AUTH STYLES - KEPT FOR REFERENCE */
+        /*
         .auth-container {
             max-width: 580px;
             margin: 4rem auto;
@@ -103,6 +106,7 @@
         .btn-auth:active {
             transform: translateY(0);
         }
+        */
 
         .alert-messages {
             position: fixed;
@@ -133,6 +137,8 @@
             color: var(--primary-dark);
         }
 
+        /* UNUSED AUTOCOMPLETE STYLES - MOVED TO PARTIALS/HEADER.HTML */
+        /*
         .autocomplete-results {
             position: absolute;
             top: 100%;
@@ -169,7 +175,10 @@
             font-size: 0.9rem;
             color: var(--primary-accent);
         }
+        */
 
+        /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
+        /*
         .header {
             position: fixed;
             top: 0;
@@ -245,7 +254,10 @@
             transform: translateY(-50%);
             color: var(--primary-dark);
         }
+        */
 
+        /* UNUSED FOOTER STYLES - MOVED TO PARTIALS/FOOTER.HTML */
+        /*
         .footer {
             background: var(--primary-dark);
             color: var(--text-light);
@@ -287,7 +299,10 @@
         .footer-link:hover::after {
             width: 100%;
         }
+        */
 
+        /* UNUSED RESPONSIVE STYLES - MOVED TO PARTIALS */
+        /*
         @media (max-width: 991px) {
             body { padding-top: calc(var(--header-height) + 20px); }
             .header {
@@ -310,11 +325,14 @@
                 margin: 1rem 0;
             }
         }
+        */
+
+        /* DASHBOARD STYLES - IN USE */
         .dashboard-main-wrapper {
             display: flex;
             flex-direction: column;
             min-height: calc(100vh - 160px);
-            margin: 80px 0 60px;
+          /* margin: 80px 0 60px; */
         }
 
         .dashboard-nav-container {
@@ -420,40 +438,9 @@
     </style>
 </head>
 <body>
-    <header class="header">
-        <nav class="navbar navbar-expand-lg align-items-center">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="{% url 'events:home' %}">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="logo">
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarNav">
-                    <div class="search-container me-auto">
-                        <input type="text" name="query" class="form-control search-bar navbar-search-input" placeholder="Search events..." data-behavior="search-autocomplete">
-                        <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        </svg>
-                        <div id="navbar-search-results" class="autocomplete-results"></div>
-                    </div>
-                    <div class="d-flex ms-lg-auto mt-3 mt-lg-0">
-                        {% if user.is_authenticated %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
-                            <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
-                        {% else %}
-                            <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
-                            <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
-                            <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
+    {% include "partials/header.html" %}
 
-    <main class="flex-grow-1 py-4">
+    <main class="flex-grow-1">
         {% if messages %}
         <div class="alert-messages">
             {% for message in messages %}
@@ -465,7 +452,7 @@
         </div>
         {% endif %}
 
-        <div class="dashboard-main-wrapper">
+        <div class="dashboard-main-wrapper py-4">
             <nav class="dashboard-nav-container">
                 <a href="{% url 'events:my_listings' %}" class="dashboard-nav-link {% if request.path == '/my-listings' %}active{% endif %}">
                     <i class="bi bi-list dashboard-nav-icon"></i>
@@ -492,29 +479,12 @@
         </div>
     </main>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
-                    <img src="{% static 'images/logo.png' %}" alt="Go2Events" class="footer-logo">
-                    <h6>A WORLD OF EVENTS. We connect people to make every event Precious.</h6>
-                    <div class="copyright mt-3">&copy; {% now 'Y' %} Go2Sport&Music. All rights reserved.</div>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <h6><i class="bi bi-geo-alt-fill"></i>UK London</h6>
-                    <h6><i class="bi bi-envelope"></i>&nbsp;Contact@go2sportandmusic.com</h6>
-                    <h6><i class="bi bi-phone"></i>+447359424931</h6>
-                </div>
-                <div class="col-lg-4 text-center text-lg-end mt-4 mt-lg-0">
-                    <a href="{% url 'events:home' %}" class="footer-link">Home</a>
-                    <a href="{% url 'events:privacy' %}" class="footer-link">Privacy Policy</a>
-                    <a href="{% url 'events:contact' %}" class="footer-link">Contact Us</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+    {% include "partials/footer.html" %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+    <!--
     <script>
         window.addEventListener('scroll', () => {
             const header = document.querySelector('.header');
@@ -524,6 +494,10 @@
             header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
         });
     </script>
+    -->
+
+    <!-- UNUSED SEARCH AUTOCOMPLETE SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+    <!--
     <script>
         document.addEventListener('DOMContentLoaded', function() {
         initSearchAutocomplete('.hero-search-input', '#hero-search-results');
@@ -577,6 +551,8 @@
             });
         }
     </script>
+    -->
+
     <script>
         window.addEventListener('resize', () => {
             const nav = document.querySelector('.dashboard-nav-container');

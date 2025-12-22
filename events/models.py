@@ -22,6 +22,22 @@ class Event(BaseModel):
         ('other', 'Other'),
     ]
     
+    STADIUM_SVG_CHOICES = [
+        ('emiratesStadium', 'Emirates Stadium'),
+        ('villaParkStadium', 'Villa Park Stadium'),
+        ('oldTraffordStadium', 'Old Trafford'),
+        ('anfieldStadium', 'Anfield Stadium'),
+        ('ellandStadium', 'Elland Road'),
+        ('tottenhamHotspurStadium', 'Tottenham Hotspur Stadium'),
+        ('hillDickinsonStadium', 'Hill Dickinson Stadium'),
+        ('sanSiro', 'San Siro'),
+        ('molineux', 'Molineux Stadium'),
+        ('cravenCottage', 'Craven Cottage'),
+        ('etihadStadium', 'Etihad Stadium'),
+        ('santiagoBernabeuStadium', 'Santiago Bernabéu Stadium'),
+        ('riyadhMetropolitanoStadium', 'Riyadh Metropolitano Stadium'),
+    ]
+    
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     event_id = models.CharField(max_length=6, unique=True, editable=False)
     superadmin = models.ForeignKey('accounts.User', on_delete=models.CASCADE)
@@ -33,6 +49,13 @@ class Event(BaseModel):
     stadium_name = models.CharField(max_length=255)
     stadium_image = models.URLField(max_length=500)
     event_logo = models.URLField(max_length=500)
+    stadium_svg_key = models.CharField(
+        max_length=50, 
+        null=True, 
+        blank=True,
+        choices=STADIUM_SVG_CHOICES,
+        help_text="SVG key for interactive stadium map. Leave blank if no SVG available."
+    )
     
     date = models.DateField()
     time = models.TimeField()
@@ -87,6 +110,14 @@ class Event(BaseModel):
         return f"{months} months {days} days {hours} hours left"
 
     @property
+    def event_timestamp(self):
+        """Returns Unix timestamp of event datetime for JavaScript countdown timers"""
+        event_datetime = timezone.make_aware(
+            timezone.datetime.combine(self.date, self.time)
+        )
+        return int(event_datetime.timestamp())
+
+    @property
     def left_tickets(self):
         return self.total_tickets - self.sold_tickets
 
@@ -105,6 +136,11 @@ class Event(BaseModel):
             timezone.datetime.combine(self.date, self.time)
         )
         return event_datetime < timezone.now()
+
+    @property
+    def has_interactive_map(self):
+        """Check if this event has an interactive SVG stadium map available"""
+        return self.stadium_svg_key is not None and self.stadium_svg_key != ''
 
 class EventSection(BaseModel):
     COLORS = [
