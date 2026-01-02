@@ -79,6 +79,9 @@ class Ticket(models.Model):
     sell_price_for_normal = models.DecimalField(max_digits=8, decimal_places=2, editable=False)
     sell_price_for_reseller = models.DecimalField(max_digits=8, decimal_places=2, editable=False)
 
+    sell_together = models.BooleanField(default=False, help_text="If checked, all tickets in this bundle must be purchased together")
+    bundle_id = models.UUIDField(null=True, blank=True, db_index=True, help_text="Groups tickets that must be sold together")
+
     checked = models.BooleanField(default=False)
     ordered = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)
@@ -119,8 +122,11 @@ class Ticket(models.Model):
             raise ValidationError("Number of seats must match the number of tickets.")
 
     def save(self, *args, **kwargs):
-        self.sell_price_for_normal = self.sell_price + (((self.sell_price*self.event.normal_service_charge)/100) or 0)
-        self.sell_price_for_reseller = self.sell_price + (((self.sell_price*self.event.reseller_service_charge)/100) or 0)
+        normal_charge = self.event.normal_service_charge or 0
+        reseller_charge = self.event.reseller_service_charge or 0
+        
+        self.sell_price_for_normal = self.sell_price + (((self.sell_price * normal_charge)/100) or 0)
+        self.sell_price_for_reseller = self.sell_price + (((self.sell_price * reseller_charge)/100) or 0)
         is_new = self.pk is None
         
         super().save(*args, **kwargs)
@@ -173,6 +179,17 @@ class Ticket(models.Model):
         section.save()
         event.total_tickets = sum(t.number_of_tickets for t in event.tickets.all())
         event.save()
+
+    @property
+    def is_bundled(self):
+        """Check if this ticket is part of a bundle"""
+        return self.sell_together and self.bundle_id is not None
+
+    def get_bundle_tickets(self):
+        """Get all tickets in the same bundle"""
+        if self.is_bundled:
+            return Ticket.objects.filter(bundle_id=self.bundle_id)
+        return Ticket.objects.filter(id=self.id)
 
     @property
     def get_total_price(self):

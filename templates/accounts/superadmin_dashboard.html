@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -35,79 +36,6 @@
             padding-top: var(--header-height);
         }
 
-        /* UNUSED AUTH STYLES - MOVED TO PARTIALS */
-        /*
-        .auth-container {
-            max-width: 580px;
-            margin: 4rem auto;
-            padding: 2.5rem;
-            background: rgba(233, 245, 233, 0.98);
-            border-radius: 20px;
-            box-shadow: 0 12px 40px rgba(13, 36, 27, 0.15);
-            border: 1px solid rgba(64, 145, 108, 0.2);
-        }
-
-        .auth-title {
-            color: var(--primary-dark);
-            font-weight: 700;
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            position: relative;
-            padding-bottom: 0.5rem;
-        }
-
-        .auth-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--gold-accents);
-        }
-
-        .form-label {
-            color: var(--primary-accent);
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
-
-        .form-control {
-            padding: 14px 20px;
-            border: 2px solid rgba(64, 145, 108, 0.2);
-            border-radius: 10px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .form-control:focus {
-            border-color: var(--secondary-accent);
-            box-shadow: 0 0 0 3px var(--hover-glow);
-        }
-
-        .btn-auth {
-            background: var(--secondary-accent);
-            color: white;
-            padding: 14px 30px;
-            border-radius: 10px;
-            font-weight: 600;
-            border: none;
-            transition: all 0.3s;
-            width: 100%;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-auth:hover {
-            background: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .btn-auth:active {
-            transform: translateY(0);
-        }
-        */
-
         .alert-messages {
             position: fixed;
             top: 100px;
@@ -122,7 +50,7 @@
             border: 2px solid;
             padding: 1rem 1.5rem;
             margin-bottom: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .alert-success {
@@ -137,199 +65,17 @@
             color: var(--primary-dark);
         }
 
-        /* UNUSED AUTOCOMPLETE STYLES - MOVED TO PARTIALS/HEADER.HTML */
-        /*
-        .autocomplete-results {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: white;
-            border-radius: 0 0 8px 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 1000;
-            margin-top: -10px;
-        }
-
-        .autocomplete-item {
-            display: block;
-            padding: 1rem;
-            border-bottom: 1px solid rgba(13, 36, 27, 0.1);
-            color: var(--primary-dark);
-            text-decoration: none;
-            transition: all 0.2s;
-        }
-
-        .autocomplete-item:hover {
-            background: rgba(77, 147, 112, 0.05);
-        }
-
-        .ac-event-name {
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .ac-event-details {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.9rem;
-            color: var(--primary-accent);
-        }
-        */
-
-        /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
-        /*
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: var(--header-height);
-            background: linear-gradient(to right, #0d241b 0%, #1d4532 100%);
-            border-radius: 0 0 12px 12px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-            z-index: 2000;
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid rgba(64, 145, 108, 0.3);
-        }
-
-        .navbar {
-            padding: 0 2rem;
-            height: 100%;
-        }
-
-        .logo {
-            height: 45px;
-            transition: transform 0.3s, filter 0.3s;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-        }
-
-        .logo:hover {
-            transform: translateY(-2px) scale(1.05);
-            filter: drop-shadow(0 4px 8px var(--hover-glow));
-        }
-
-        .nav-link {
-            color: var(--text-light) !important;
-            padding: 8px 24px !important;
-            margin: 0 8px;
-            transition: transform 0.3s;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-        }
-
-        .nav-link:hover {
-            transform: translateY(-3px);
-            border-color: var(--highlight);
-        }
-
-        .search-container {
-            position: relative;
-            max-width: 680px;
-            margin: 0 auto;
-        }
-
-        .search-bar {
-            width: 100%;
-            padding: 12px 48px 12px 24px;
-            border-radius: 8px;
-            border: 1px solid rgba(64, 145, 108, 0.3);
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 0.9rem;
-            transition: box-shadow 0.3s, border-color 0.3s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .search-bar:focus {
-            outline: none;
-            box-shadow: 0 4px 16px rgba(64, 145, 108, 0.2);
-            border-color: var(--secondary-accent);
-        }
-
-        .search-icon {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--primary-dark);
-        }
-        */
-
-        /* UNUSED FOOTER STYLES - MOVED TO PARTIALS/FOOTER.HTML */
-        /*
-        .footer {
-            background: var(--primary-dark);
-            color: var(--text-light);
-            margin-top: auto;
-            padding: 2rem 0;
-            border-top: 1px solid rgba(64, 145, 108, 0.1);
-        }
-
-        .footer-logo {
-            height: 40px;
-            opacity: 0.9;
-            transition: opacity 0.3s, transform 0.3s;
-        }
-
-        .footer-logo:hover {
-            opacity: 1;
-            transform: rotate(-5deg) scale(1.05);
-        }
-
-        .footer-link {
-            color: var(--text-light) !important;
-            text-decoration: none;
-            margin: 0 1.5rem;
-            position: relative;
-            padding-bottom: 4px;
-        }
-
-        .footer-link::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--gold-accents);
-            transition: width 0.3s;
-        }
-
-        .footer-link:hover::after {
-            width: 100%;
-        }
-        */
-
         @media (max-width: 991px) {
-            body { padding-top: calc(var(--header-height) + 20px); }
-            /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
-            /*
-            .header {
-                border-radius: 0;
+            body {
+                padding-top: calc(var(--header-height) + 20px);
             }
-            .navbar-collapse {
-                background: var(--primary-dark);
-                padding: 1rem;
-                margin-top: 12px;
-                border-radius: 8px;
-            }
-            .nav-link {
-                margin: 12px 5px;
-                text-align: center;
-                padding: 12px !important;
-                width: 100%;
-                max-width: 280px;
-            }
-            .search-bar {
-                margin: 1rem 0;
-            }
-            */
+
         }
+
         .dashboard-main-wrapper {
             display: flex;
             flex-direction: column;
-            min-height: calc(100vh - 160px);
+            min-height: calc(100vh - 120px);
             /* margin: 80px 0 60px;ss */
         }
 
@@ -346,7 +92,7 @@
             .dashboard-nav-container {
                 display: flex;
                 overflow-x: auto;
-                padding: 12px;
+                /* padding: 12px; */
                 gap: 8px;
             }
 
@@ -380,9 +126,10 @@
             .dashboard-nav-container {
                 width: 240px;
                 min-width: 240px;
-                height: calc(100vh - 240px);
+                position: fixed;
+                height: calc(100vh - 120px);
                 overflow-y: auto;
-                padding: 16px 0;
+                /* padding: 16px 0; */
                 margin-left: 10px;
             }
 
@@ -396,7 +143,7 @@
                 border-radius: 8px;
                 border: 1px solid transparent;
                 border-right: 2px solid var(--gold-accents);
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 transition: all 0.3s;
             }
 
@@ -419,9 +166,10 @@
             flex: 1;
             padding: 20px;
             margin: 10px;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            margin-left: 270px;
         }
 
         .dashboard-nav-container::-webkit-scrollbar {
@@ -435,10 +183,11 @@
         }
     </style>
 </head>
+
 <body>
     {% include "partials/header.html" %}
 
-    <main class="flex-grow-1 py-4">
+    <main class="flex-grow-1 py-2">
         {% if messages %}
         <div class="alert-messages">
             {% for message in messages %}
@@ -452,39 +201,53 @@
 
         <div class="dashboard-main-wrapper">
             <nav class="dashboard-nav-container">
-                <a href="{% url 'events:my_listings' %}" class="dashboard-nav-link {% if request.path == '/my-listings/' %}active{% endif %}">
+                <a href="{% url 'events:my_listings' %}"
+                    class="dashboard-nav-link {% if request.path == '/my-listings/' %}active{% endif %}">
                     <i class="bi bi-list dashboard-nav-icon"></i>
                     My Listings
                 </a>
-                <a href="{% url 'accounts:superadmin_accounts' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'accounts:superadmin_accounts' %}"
+                    class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     Accounts
                 </a>
-                <a href="{% url 'events:superadmin_event_list' %}" class="dashboard-nav-link {% if request.path == '/superadmin/events/' %}active{% endif %}">
+                <a href="{% url 'events:superadmin_event_list' %}"
+                    class="dashboard-nav-link {% if request.path == '/superadmin/events/' %}active{% endif %}">
                     <i class="bi bi-calendar-event-fill dashboard-nav-icon"></i>
                     Events
                 </a>
-                <a href="{% url 'events:superadmin_list' %}" class="dashboard-nav-link {% if request.path == 'superadmin/tickets/' %}active{% endif %}">
+                <a href="{% url 'events:create_category' %}"
+                    class="dashboard-nav-link {% if request.path == '/category/' %}active{% endif %}">
+                    <i class="bi bi-ui-radios-grid dashboard-nav-icon"></i>
+                    Categories
+                </a>
+                <a href="{% url 'events:superadmin_list' %}"
+                    class="dashboard-nav-link {% if request.path == '/superadmin/tickets/' %}active{% endif %}">
                     <i class="bi bi-ticket dashboard-nav-icon"></i>
                     Tickets
                 </a>
-                <a href="{% url 'accounts:profile' %}" class="dashboard-nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}">
+                <a href="{% url 'accounts:profile' %}"
+                    class="dashboard-nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}">
                     <i class="bi bi-person-bounding-box dashboard-nav-icon"></i>
                     Profile
                 </a>
-                <a href="{% url 'events:my_orders' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:my_orders' %}"
+                    class="dashboard-nav-link {% if request.path == '/my-orders/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     My Orders
                 </a>
-                <a href="{% url 'events:my_sales' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:my_sales' %}"
+                    class="dashboard-nav-link {% if request.path == '/my-sales/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     My Sales
                 </a>
-                <a href="{% url 'events:superadmin_orders' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:superadmin_orders' %}"
+                    class="dashboard-nav-link {% if request.path == '/superadmin/orders/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     Orders
                 </a>
-                <a href="{% url 'events:superadmin_sales' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:superadmin_sales' %}"
+                    class="dashboard-nav-link {% if request.path == '/superadmin/sales/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     Sales
                 </a>
@@ -497,84 +260,13 @@
         </div>
     </main>
 
-    {% include "partials/footer.html" %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
-    <!--
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            const scrollY = window.scrollY;
-            const scale = 1 - Math.min(scrollY * 0.0005, 0.02);
-            header.style.transform = `scale(${scale})`;
-            header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
-        });
-    </script>
-    -->
 
-    <!-- UNUSED SEARCH AUTOCOMPLETE SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
-    <!--
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        initSearchAutocomplete('.hero-search-input', '#hero-search-results');
-        initSearchAutocomplete('.navbar-search-input', '#navbar-search-results');
-        });
-
-        function initSearchAutocomplete(inputSelector, resultsContainer) {
-            const searchInput = document.querySelector(inputSelector);
-            const resultsDiv = document.querySelector(resultsContainer);
-
-            if (!searchInput) return;
-
-            let timeoutId;
-
-            searchInput.addEventListener('input', function(e) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    const query = this.value.trim();
-                    
-                    if(query.length < 2) {
-                        resultsDiv.innerHTML = '';
-                        return;
-                    }
-
-                    fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`,{
-                        headers: {
-                        'X-Requested-With': 'XMLHttpRequest' 
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            resultsDiv.innerHTML = data.map(event => `
-                                <a href="${event.url}" class="autocomplete-item">
-                                    <div class="ac-event-name">${event.name}</div>
-                                    <div class="ac-event-details">
-                                        <span>${event.category}</span>
-                                        <span>${event.date}</span>
-                                        <span>$${event.min_price} - $${event.max_price}</span>
-                                    </div>
-                                </a>
-                            `).join('');
-                        })
-                        .catch(error => console.error('Error:', error));
-                }, 300);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target)) {
-                    resultsDiv.innerHTML = '';
-                }
-            });
-        }
-    </script>
-    -->
-    
     <script>
         window.addEventListener('resize', () => {
             const nav = document.querySelector('.dashboard-nav-container');
-            if(window.innerWidth >= 992) {
+            if (window.innerWidth >= 992) {
                 nav.scrollTop = 0;
             } else {
                 nav.scrollLeft = 0;
@@ -582,4 +274,5 @@
         });
     </script>
 </body>
+
 </html>

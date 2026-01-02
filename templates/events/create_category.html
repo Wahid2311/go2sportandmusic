@@ -1,0 +1,85 @@
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% load static %}
+{% block title %} Create Category Data {% endblock %}
+
+{% block dashboard_content %}
+
+<style>
+    .add-btn {
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .btn-admin-filter {
+        background: var(--gold-accents);
+        color: var(--primary-dark);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-admin-filter:hover {
+        background: #d4b23c;
+        transform: translateY(-2px);
+    }
+
+    .country-select-wrapper {
+        position: relative;
+        max-width: 220px;
+        width: 100%;
+    }
+
+    .country-select {
+        padding-left: 38px;
+    }
+
+    .country-flag {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        display: none;
+    }
+
+    .badge {
+        font-weight: 500;
+        padding: 0.45em 0.65em;
+    }
+
+    .badge i {
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="container">
+    <div class="auth-container event-create-container">
+        <h2 class="auth-title text-center mb-4 ">
+            <i class="bi bi-diagram-3"></i> Create Category
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div id="categoryCountryForm"></div>
+            <input type="hidden" name="teams_tournaments_data" id="teamsTournamentsInput">
+        </form>
+
+    </div>
+</div>
+
+<script>
+    console.log("Template loaded, DOM state:", document.readyState);
+    console.log("Container exists:", !!document.getElementById('categoryCountryForm'));
+    console.log("About to load external scripts...");
+</script>
+<script src="{% static 'events/js/countryData.js' %}" defer
+    onerror="console.error('Failed to load countryData.js')"></script>
+<script src="{% static 'events/js/categoryCountryForm.js' %}" defer
+    onerror="console.error('Failed to load categoryCountryForm.js')"></script>
+<script>
+    console.log("Script tags added");
+</script>
+
+{% endblock %}

@@ -46,6 +46,9 @@ class Event(BaseModel):
         RegexValidator(r'^[a-zA-Z0-9\s\-\.]+$', 'Only letters, numbers, spaces, hyphens and periods allowed')
     ])
     category = models.CharField(max_length=20, choices=EVENT_CATEGORIES)
+    sports_type = models.CharField(max_length=100, blank=True, null=True)
+    country = models.CharField(max_length=100, blank=True, null=True)
+    team = models.CharField(max_length=100, blank=True, null=True)
     stadium_name = models.CharField(max_length=255)
     stadium_image = models.URLField(max_length=500)
     event_logo = models.URLField(max_length=500)
@@ -259,3 +262,23 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return f"{self.subject} - {self.name}"
+
+
+class Category(models.Model):
+    TYPE_CHOICES = [
+        ('team', 'Team'),
+        ('tournament', 'Tournament'),
+        ('other', 'Other'),
+    ]
+    name = models.CharField(max_length=100)
+    type = models.CharField(max_length=20, choices=TYPE_CHOICES, default='other')
+    country = models.CharField(max_length=100, blank=True, null=True)
+
+    class Meta:
+        unique_together = ('name', 'type', 'country')
+    # parent = models.ForeignKey(
+    #     "self",
+    #     # null : True,
+    #     # blank : True ,
+    #     # related_name 
+    # )

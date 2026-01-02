@@ -1,38 +1,39 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Home Page </title>
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
-    <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Home Page </title>
+  <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/apple-touch-icon.png' %}">
+  <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon-32x32.png' %}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon-16x16.png' %}">
+  <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
     :root {
-        --primary-dark: #0d241b;
-        --primary-accent: #1d4532;
-        --secondary-accent: #2d6a4f;
-        --highlight: #4d9370;
-        --gold-accents: #c5a645;
-        --text-light: #f8f9fa;
-        --hover-glow: rgba(77, 147, 112, 0.2);
-        --header-height: 80px;
+      --primary-dark: #0d241b;
+      --primary-accent: #1d4532;
+      --secondary-accent: #2d6a4f;
+      --highlight: #4d9370;
+      --gold-accents: #c5a645;
+      --text-light: #f8f9fa;
+      --hover-glow: rgba(77, 147, 112, 0.2);
+      --header-height: 80px;
     }
 
     body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
-        font-family: 'Inter', sans-serif;
-        padding-top: var(--header-height);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
+      font-family: 'Inter', sans-serif;
+      padding-top: var(--header-height);
     }
 
     /* UNUSED AUTH STYLES - MOVED TO PARTIALS */
@@ -158,32 +159,32 @@
     */
 
     .alert-messages {
-        position: fixed;
-        top: 100px;
-        right: 2rem;
-        z-index: 2000;
-        min-width: 300px;
+      position: fixed;
+      top: 100px;
+      right: 2rem;
+      z-index: 2000;
+      min-width: 300px;
     }
 
     .alert {
-        border-radius: 10px;
-        backdrop-filter: blur(8px);
-        border: 2px solid;
-        padding: 1rem 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      backdrop-filter: blur(8px);
+      border: 2px solid;
+      padding: 1rem 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
 
     .alert-success {
-        background: rgba(77, 147, 112, 0.15);
-        border-color: var(--highlight);
-        color: var(--primary-dark);
+      background: rgba(77, 147, 112, 0.15);
+      border-color: var(--highlight);
+      color: var(--primary-dark);
     }
 
     .alert-error {
-        background: rgba(197, 166, 69, 0.15);
-        border-color: var(--gold-accents);
-        color: var(--primary-dark);
+      background: rgba(197, 166, 69, 0.15);
+      border-color: var(--gold-accents);
+      color: var(--primary-dark);
     }
 
     /* UNUSED AUTOCOMPLETE STYLES - MOVED TO PARTIALS/HEADER.HTML */
@@ -781,7 +782,7 @@
 </head>
 
 <body>
-   {% include "partials/header.html" %}
+  {% include "partials/header.html" %}
 
   <!-- Main -->
   <main class="flex-grow-1">
@@ -1000,36 +1001,35 @@
   <!-- Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Initialize search autocomplete with loading states
     initSearchAutocomplete(".hero-search-input", "#hero-search-results");
+
+    function parseEventDate(dateStr) {
+      return new Date(dateStr + " 00:00:00");
+    }
 
     function initSearchAutocomplete(inputSelector, resultsContainer) {
       const searchInput = document.querySelector(inputSelector);
       const resultsDiv = document.querySelector(resultsContainer);
 
-      if (!searchInput) return;
+      if (!searchInput || !resultsDiv) return;
 
       let timeoutId;
-      let isLoading = false;
 
-      searchInput.addEventListener("input", function (e) {
+      searchInput.addEventListener("input", function () {
         clearTimeout(timeoutId);
 
         const query = this.value.trim();
 
         if (query.length < 2) {
           resultsDiv.innerHTML = "";
-          isLoading = false;
           return;
         }
 
-        // Show loading spinner
-        isLoading = true;
         resultsDiv.innerHTML = `
-            <div class="loading-spinner">
-              <div class="spinner"></div>
-            </div>
-          `;
+        <div class="loading-spinner">
+          <div class="spinner"></div>
+        </div>
+      `;
 
         timeoutId = setTimeout(() => {
           fetch(
@@ -1040,53 +1040,72 @@
               },
             }
           )
-            .then((response) => response.json())
-            .then((data) => {
-              isLoading = false;
-
-              if (data.length === 0) {
-                resultsDiv.innerHTML = `
-                    <div class="no-results">
-                      No events found matching "${query}"
-                    </div>
-                  `;
-              } else {
-                resultsDiv.innerHTML = data
-                  .map(
-                    (event) => `
-                        <a href="${event.url}" class="autocomplete-item">
-                          <div class="ac-event-name">${event.name}</div>
-                          <div class="ac-event-details">
-                            <span>${event.category}</span>
-                            <span>${event.date}</span>
-                            <span>$${event.min_price} - $${event.max_price}</span>
-                          </div>
-                        </a>
-                      `
-                  )
-                  .join("");
-              }
+            .then((response) => {
+              if (!response.ok) throw new Error("Network error");
+              return response.json();
             })
-            .catch((error) => {
-              console.error("Error:", error);
-              isLoading = false;
+            .then((data) => {
+              if (!data.length) {
+                resultsDiv.innerHTML = `
+                <div class="no-results">
+                  No events found matching "${query}"
+                </div>
+              `;
+                return;
+              }
+
+              const now = new Date();
+
+              const sortedEvents = data.sort((a, b) => {
+                const dateA = parseEventDate(a.date);
+                const dateB = parseEventDate(b.date);
+
+                const isAFuture = dateA >= now;
+                const isBFuture = dateB >= now;
+
+                if (isAFuture && !isBFuture) return -1;
+                if (!isAFuture && isBFuture) return 1;
+
+                if (isAFuture && isBFuture) {
+                  return dateA - dateB;
+                }
+
+                return dateB - dateA;
+              });
+
+              resultsDiv.innerHTML = sortedEvents
+                .map(
+                  (event) => `
+                  <a href="${event.url}" class="autocomplete-item">
+                    <div class="ac-event-name">${event.name}</div>
+                    <div class="ac-event-details">
+                      <span>${event.category}</span>
+                      <span>${event.date}</span>
+                      <span>$${event.min_price} - $${event.max_price}</span>
+                    </div>
+                  </a>
+                `
+                )
+                .join("");
+            })
+            .catch(() => {
               resultsDiv.innerHTML = `
-                  <div class="no-results">
-                    Error loading search results
-                  </div>
-                `;
+              <div class="no-results">
+                Error loading search results
+              </div>
+            `;
             });
         }, 300);
       });
 
       document.addEventListener("click", (e) => {
-        if (!searchInput.contains(e.target)) {
+        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
           resultsDiv.innerHTML = "";
-          isLoading = false;
         }
       });
     }
   </script>
+
 </body>
 
 </html>

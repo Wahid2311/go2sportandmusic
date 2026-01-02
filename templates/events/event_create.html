@@ -18,7 +18,7 @@
 
     .btn-add-section {
         background: var(--secondary-accent);
-        color: white;
+        /* color: white; */
         padding: 0.6rem 1.5rem;
         border-radius: 8px;
         transition: all 0.3s;
@@ -61,7 +61,6 @@
     .btn-remove-section:hover {
         background: rgba(220, 53, 69, 0.2);
     }
-
 </style>
 <div class="container">
     <div class="auth-container event-create-container">
@@ -71,20 +70,20 @@
 
         <form method="post" id="eventCreateForm">
             {% csrf_token %}
-            
+
             <div class="row g-4">
                 {% for field in form %}
-                    {% if field.name != 'sections' %}
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label class="form-label">{{ field.label }}</label>
-                            {{ field }}
-                            {% for error in field.errors %}
-                            <div class="invalid-feedback d-block">{{ error }}</div>
-                            {% endfor %}
-                        </div>
+                {% if field.name != 'sections' %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">{{ field.label }}</label>
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
                     </div>
-                    {% endif %}
+                </div>
+                {% endif %}
                 {% endfor %}
             </div>
 
@@ -97,18 +96,16 @@
                         <i class="bi bi-plus-circle"></i> Add Section
                     </button>
                 </div>
-                
+
                 <div id="sectionsList">
                 </div>
-                
+
                 <template id="sectionTemplate">
                     <div class="section-card">
                         <div class="row g-3">
                             <div class="col-md-5">
-                                <input type="text" name="section_name" 
-                                       class="form-control section-input"
-                                       placeholder="Section Name"
-                                       required>
+                                <input type="text" name="section_name" class="form-control section-input"
+                                    placeholder="Section Name" required>
                             </div>
                             <div class="col-md-5">
                                 <select name="section_color" class="form-control section-color" required>
@@ -120,9 +117,8 @@
                                 </select>
                             </div>
                             <div class="col-md-2">
-                                <button type="button" 
-                                        class="btn btn-remove-section"
-                                        onclick="this.closest('.section-card').remove()">
+                                <button type="button" class="btn btn-remove-section"
+                                    onclick="this.closest('.section-card').remove()">
                                     <i class="bi bi-trash"></i>
                                 </button>
                             </div>
@@ -158,25 +154,25 @@
             if (idInput) {
                 sectionData.id = idInput.value;
             }
-            
+
             sections.push(sectionData);
         });
         sectionsInput.value = JSON.stringify(sections);
 
     }
 
-     addSectionBtn.addEventListener('click', () => {
+    addSectionBtn.addEventListener('click', () => {
         const clone = template.content.cloneNode(true);
         sectionsList.appendChild(clone);
         updateSectionsData();
     });
 
     sectionsList.addEventListener('input', (e) => {
-        if(e.target.matches('.section-input, .color-picker')) {
+        if (e.target.matches('.section-input, .color-picker')) {
             updateSectionsData();
         }
     });
-    
+
     sectionsList.addEventListener('change', (e) => {
         if (e.target.matches('.section-color')) {
             updateSectionsData();

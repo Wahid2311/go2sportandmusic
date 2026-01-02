@@ -34,7 +34,8 @@ class EventCreationForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = [
-            'name', 'category', 'stadium_name', 'stadium_image',
+            'name', 'category', 'sports_type', 'country', 'team',
+            'stadium_name', 'stadium_image',
             'event_logo', 'date', 'time', 'normal_service_charge',
             'reseller_service_charge'
         ]
@@ -47,6 +48,18 @@ class EventCreationForm(forms.ModelForm):
             'category': forms.Select(attrs={
                 'class': 'form-control event-form-select',
                 'data-behavior': 'category-select'
+            }),
+            'sports_type': forms.TextInput(attrs={
+                'class': 'form-control event-form-input',
+                'placeholder': 'e.g. Football, Basketball (Optional)'
+            }),
+            'country': forms.TextInput(attrs={
+                'class': 'form-control event-form-input',
+                'placeholder': 'Enter country'
+            }),
+            'team': forms.TextInput(attrs={
+                'class': 'form-control event-form-input',
+                'placeholder': 'Enter team name (Optional)'
             }),
             'stadium_name': forms.TextInput(attrs={
                 'class': 'form-control event-form-input',

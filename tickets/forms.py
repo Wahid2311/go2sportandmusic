@@ -100,12 +100,21 @@ class TicketForm(forms.ModelForm):
         })
     )
 
+    sell_together = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(attrs={
+            'class': 'form-check-input',
+        }),
+        help_text='Check this if all uploaded tickets must be purchased together'
+    )
+
     class Meta:
         model = Ticket
         fields = [
             'upload_choice', 'upload_file', 'upload_by',
             'number_of_tickets', 'section', 'row', 'seats',
-            'face_value', 'ticket_type', 'benefits_and_Restrictions', 'sell_price'
+            'face_value', 'ticket_type', 'benefits_and_Restrictions', 'sell_price', 'sell_together'
         ]
 
     def __init__(self, *args, **kwargs):

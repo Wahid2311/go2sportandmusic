@@ -14,9 +14,9 @@ from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q, Count, Sum
-from .models import Event, EventSection,ContactMessage
+from .models import Event, EventSection, ContactMessage, Category
 from .forms import EventCreationForm, SectionForm, EventSearchForm,ContactForm
-from accounts.utils import api_login_required, require_user_type
+from accounts.utils import api_login_required, require_user_type, authenticate_via_id_token
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from tickets.models import Ticket
@@ -51,6 +51,9 @@ class EventCreateAPIView(View):
                     superadmin=request.user,
                     name=data.get('name'),
                     category=data.get('category'),
+                    sports_type=data.get('sports_type'),
+                    country=data.get('country'),
+                    team=data.get('team'),
                     stadium_name=data.get('stadium_name'),
                     stadium_image=data.get('stadium_image'),
                     event_logo=data.get('event_logo'),
@@ -400,12 +403,23 @@ class AllEventsView(ListView):
 
     def get_queryset(self):
         sort = self.request.GET.get('sort', 'upcoming')
+        team = self.request.GET.get('team')
+        tournament = self.request.GET.get('tournament')
         
         qs = Event.objects.annotate(
             min_price=Min('sections__lower_price'),
             max_price=Max('sections__upper_price')
         )
         
+        # Filter by team if provided
+        if team:
+            qs = qs.filter(team__iexact=team)
+        
+        # Filter by tournament/sports_type if provided
+        if tournament:
+            qs = qs.filter(sports_type__iexact=tournament)
+        
+        # Apply sorting
         if sort == 'upcoming':
             return qs.filter(date__gte=timezone.now().date()).order_by('date')
         elif sort == 'popular':
@@ -416,6 +430,13 @@ class AllEventsView(ListView):
             return qs.order_by('-max_price')
         
         return qs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['current_team'] = self.request.GET.get('team', '')
+        context['current_tournament'] = self.request.GET.get('tournament', '')
+        context['current_sort'] = self.request.GET.get('sort', 'upcoming')
+        return context
 
 class CreateListingRedirectView(View):
     def get(self, request, *args, **kwargs):
@@ -517,6 +538,10 @@ class AllEventsAPIView(View):
         sort = request.GET.get('sort', 'upcoming')
         category = request.GET.get('category', '')
 
+        sports_type = request.GET.get('sports_type', '')
+        country = request.GET.get('country', '')
+        team = request.GET.get('team', '')
+
         qs = Event.objects.annotate(
             min_price=Min('sections__lower_price'),
             max_price=Max('sections__upper_price')
@@ -524,6 +549,15 @@ class AllEventsAPIView(View):
 
         if category:
             qs = qs.filter(category=category)
+        
+        if sports_type:
+            qs = qs.filter(sports_type__iexact=sports_type)
+        
+        if country:
+            qs = qs.filter(country__iexact=country)
+            
+        if team:
+            qs = qs.filter(team__iexact=team)
 
         if sort == 'upcoming':
             qs = qs.filter(date__gte=timezone.now().date()).order_by('date')
@@ -552,6 +586,9 @@ class AllEventsAPIView(View):
                 'event_id': event.event_id,
                 'name': event.name,
                 'category': event.category,
+                'sports_type': event.sports_type,
+                'country': event.country,
+                'team': event.team,
                 'stadium_name': event.stadium_name,
                 'date': event.date.isoformat(),
                 'time': event.time.strftime('%H:%M:%S'),
@@ -587,7 +624,10 @@ class EventSearchAPIView(View):
             qs = qs.filter(
                 Q(name__icontains=query) |
                 Q(stadium_name__icontains=query) |
-                Q(category__icontains=query)
+                Q(category__icontains=query) |
+                Q(sports_type__icontains=query) |
+                Q(country__icontains=query) |
+                Q(team__icontains=query)
             )
 
         if start_date and end_date:
@@ -747,8 +787,180 @@ class EventSectionsAPIView(View):
             'event': {
                 'event_id': event.event_id,
                 'name': event.name,
+                'category': event.category,
+                'sports_type': event.sports_type,
+                'country': event.country,
+                'team': event.team,
+                'stadium_name': event.stadium_name,
                 'date': event.date.isoformat(),
                 'time': event.time.strftime('%H:%M:%S'),
             },
             'sections': sections_data
         })
+
+
+class CreateCategory(SuperAdminMixin , CreateView):
+    def get(self , request):
+        return render (request , 'events/create_category_inline.html')
+
+class CategoryCreateAPIView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            # Try API authentication if not logged in via session
+            user = authenticate_via_id_token(request)
+            if user:
+                request.user = user
+            else:
+                 return JsonResponse({'error': 'Authentication required'}, status=401)
+        return super().dispatch(request, *args, **kwargs)
+
+    def post(self, request):
+        if not request.user.is_superadmin:
+             return JsonResponse({'error': 'Only superadmins can create categories'}, status=403)
+
+        try:
+            data = json.loads(request.body)
+            name = data.get('name')
+            raw_type = data.get('type') 
+            country = data.get('country')
+
+            if not name or not raw_type:
+                 return JsonResponse({'error': 'Name and Type are required'}, status=400)
+            
+            # Normalize type: 'teams' -> 'team', 'tournaments' -> 'tournament'
+            if raw_type.endswith('s'):
+                normalized_type = raw_type[:-1] 
+            else:
+                normalized_type = raw_type
+            
+            # Basic validation
+            if normalized_type not in dict(Category.TYPE_CHOICES):
+                return JsonResponse({'error': 'Invalid category type'}, status=400)
+
+            category, created = Category.objects.get_or_create(
+                name=name,
+                type=normalized_type,
+                country=country
+            )
+            
+            return JsonResponse({
+                'success': True,
+                'id': category.id,
+                'name': category.name,
+                'type': category.type,
+                'country': category.country,
+                'created': created,
+                'message': 'Category created successfully' if created else 'Category already exists'
+            })
+
+        except Exception as e:
+            print(f"Error creating category: {str(e)}")
+            return JsonResponse({'error': str(e)}, status=500)
+
+class CategoryListAPIView(View):
+    def get(self, request):
+        
+        categories = Category.objects.all().order_by('country', 'name')
+        data = {
+            'teams': {},
+            'tournaments': {}
+        }
+
+        for cat in categories:
+            # Map database type to frontend keys
+            if cat.type == 'team':
+                if cat.country not in data['teams']:
+                    data['teams'][cat.country] = []
+                data['teams'][cat.country].append({
+                    'id': cat.id,
+                    'name': cat.name
+                })
+            elif cat.type == 'tournament':
+                if cat.country not in data['tournaments']:
+                    data['tournaments'][cat.country] = []
+                data['tournaments'][cat.country].append({
+                    'id': cat.id,
+                    'name': cat.name
+                })
+        
+        return JsonResponse(data)
+
+class CategoryDeleteAPIView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            user = authenticate_via_id_token(request)
+            if user:
+                request.user = user
+            else:
+                 return JsonResponse({'error': 'Authentication required'}, status=401)
+        return super().dispatch(request, *args, **kwargs)
+
+    def delete(self, request, category_id):
+        if not request.user.is_superadmin:
+             return JsonResponse({'error': 'Only superadmins can delete categories'}, status=403)
+
+        try:
+            category = Category.objects.get(id=category_id)
+            category_name = category.name
+            category_type = category.type
+            category.delete()
+            
+            return JsonResponse({
+                'success': True,
+                'message': f'{category_type.capitalize()} "{category_name}" deleted successfully'
+            })
+        except Category.DoesNotExist:
+            return JsonResponse({'error': 'Category not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
+
+class CategoryUpdateAPIView(View):
+    @method_decorator(csrf_exempt)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            user = authenticate_via_id_token(request)
+            if user:
+                request.user = user
+            else:
+                 return JsonResponse({'error': 'Authentication required'}, status=401)
+        return super().dispatch(request, *args, **kwargs)
+
+    def put(self, request, category_id):
+        if not request.user.is_superadmin:
+             return JsonResponse({'error': 'Only superadmins can update categories'}, status=403)
+
+        try:
+            category = Category.objects.get(id=category_id)
+            data = json.loads(request.body)
+            
+            # Update fields if provided
+            if 'name' in data:
+                category.name = data['name']
+            if 'country' in data:
+                category.country = data['country']
+            if 'type' in data:
+                raw_type = data['type']
+                if raw_type.endswith('s'):
+                    normalized_type = raw_type[:-1]
+                else:
+                    normalized_type = raw_type
+                
+                if normalized_type in dict(Category.TYPE_CHOICES):
+                    category.type = normalized_type
+            
+            category.save()
+            
+            return JsonResponse({
+                'success': True,
+                'id': category.id,
+                'name': category.name,
+                'type': category.type,
+                'country': category.country,
+                'message': 'Category updated successfully'
+            })
+        except Category.DoesNotExist:
+            return JsonResponse({'error': 'Category not found'}, status=404)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)

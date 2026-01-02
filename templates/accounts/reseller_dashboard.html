@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -34,7 +35,7 @@
             font-family: 'Inter', sans-serif;
             padding-top: var(--header-height);
         }
-        
+
         /* UNUSED AUTH STYLES - KEPT FOR REFERENCE */
         /*
         .auth-container {
@@ -122,7 +123,7 @@
             border: 2px solid;
             padding: 1rem 1.5rem;
             margin-bottom: 1rem;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .alert-success {
@@ -331,8 +332,8 @@
         .dashboard-main-wrapper {
             display: flex;
             flex-direction: column;
-            min-height: calc(100vh - 160px);
-          /* margin: 80px 0 60px; */
+            min-height: calc(100vh - 120px);
+            /* margin: 80px 0 60px; */
         }
 
         .dashboard-nav-container {
@@ -382,7 +383,7 @@
             .dashboard-nav-container {
                 width: 240px;
                 min-width: 240px;
-                height: calc(100vh - 240px);
+                height: calc(100vh - 120px);
                 overflow-y: auto;
                 padding: 16px 0;
                 margin-left: 10px;
@@ -398,7 +399,7 @@
                 border-radius: 8px;
                 border: 1px solid transparent;
                 border-right: 2px solid var(--gold-accents);
-                border-bottom: 1px solid rgba(255,255,255,0.1);
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
                 transition: all 0.3s;
             }
 
@@ -421,9 +422,9 @@
             flex: 1;
             padding: 20px;
             margin: 10px;
-            background: rgba(255,255,255,0.9);
+            background: rgba(255, 255, 255, 0.9);
             border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         .dashboard-nav-container::-webkit-scrollbar {
@@ -437,6 +438,7 @@
         }
     </style>
 </head>
+
 <body>
     {% include "partials/header.html" %}
 
@@ -454,19 +456,23 @@
 
         <div class="dashboard-main-wrapper py-4">
             <nav class="dashboard-nav-container">
-                <a href="{% url 'events:my_listings' %}" class="dashboard-nav-link {% if request.path == '/my-listings' %}active{% endif %}">
+                <a href="{% url 'events:my_listings' %}"
+                    class="dashboard-nav-link {% if request.path == '/my-listings' %}active{% endif %}">
                     <i class="bi bi-list dashboard-nav-icon"></i>
                     My Listings
                 </a>
-                <a href="{% url 'accounts:profile' %}" class="dashboard-nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}">
+                <a href="{% url 'accounts:profile' %}"
+                    class="dashboard-nav-link {% if request.path == '/accounts/profile/' %}active{% endif %}">
                     <i class="bi bi-person-bounding-box dashboard-nav-icon"></i>
                     Profile
                 </a>
-                <a href="{% url 'events:my_orders' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:my_orders' %}"
+                    class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     My Orders
                 </a>
-                <a href="{% url 'events:my_sales' %}" class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
+                <a href="{% url 'events:my_sales' %}"
+                    class="dashboard-nav-link {% if request.path == '/accounts/superadmin/accounts/' %}active{% endif %}">
                     <i class="bi bi-person-workspace dashboard-nav-icon"></i>
                     My Sales
                 </a>
@@ -482,7 +488,7 @@
     {% include "partials/footer.html" %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
     <!--
     <script>
@@ -556,7 +562,7 @@
     <script>
         window.addEventListener('resize', () => {
             const nav = document.querySelector('.dashboard-nav-container');
-            if(window.innerWidth >= 992) {
+            if (window.innerWidth >= 992) {
                 nav.scrollTop = 0;
             } else {
                 nav.scrollLeft = 0;
@@ -564,4 +570,5 @@
         });
     </script>
 </body>
+
 </html>

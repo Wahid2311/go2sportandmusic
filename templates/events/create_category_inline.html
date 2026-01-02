@@ -1,0 +1,543 @@
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% load static %}
+{% block title %} Create Category Data {% endblock %}
+
+{% block dashboard_content %}
+
+<style>
+    .add-btn {
+        height: 38px;
+        min-width: 38px;
+    }
+
+    .btn-admin-filter {
+        background: var(--gold-accents);
+        color: var(--primary-dark);
+        padding: 0.8rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-admin-filter:hover {
+        background: #d4b23c;
+        transform: translateY(-2px);
+    }
+
+    .country-select-wrapper {
+        position: relative;
+        max-width: 220px;
+        width: 100%;
+    }
+
+    .country-select {
+        padding-left: 38px;
+    }
+
+    .country-flag {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        pointer-events: none;
+        display: none;
+    }
+
+    .badge {
+        font-weight: 500;
+        padding: 0.45em 0.65em;
+    }
+
+    .badge i {
+        cursor: pointer;
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="container">
+    <div class="auth-container event-create-container">
+        <h2 class="auth-title text-center mb-4 ">
+            <i class="bi bi-diagram-3"></i> Create Category
+        </h2>
+
+        <form method="post">
+            {% csrf_token %}
+            <div id="categoryCountryForm"></div>
+            <input type="hidden" name="teams_tournaments_data" id="teamsTournamentsInput">
+        </form>
+
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal fade" style="margin-top: 10pc ;" id="editCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit Category</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="editCategoryId">
+                <input type="hidden" id="editCategoryType">
+
+                <div class="mb-3">
+                    <label class="form-label">Country</label>
+                    <div class="country-select-wrapper w-100" style="max-width: 100%;">
+                        <img id="editCountryFlag" class="country-flag" width="20" alt=""
+                            style="display:none; left: 10px; top: 11px;">
+                        <select class="form-select country-select" id="editCategoryCountry">
+                            <!-- Options populated by JS -->
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" id="editCategoryName">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="updateCategory()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" style="padding-top: 10pc ;" id="deleteCategoryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete <strong id="deleteCategoryNameDisplay"></strong>?</p>
+                <input type="hidden" id="deleteCategoryId">
+                <input type="hidden" id="deleteCategoryName">
+                <input type="hidden" id="deleteCategoryType">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDeleteCategory()">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'events/js/countryData.js' %}"></script>
+<script>
+    // Wait for DOM and COUNTRIES to load
+    document.addEventListener('DOMContentLoaded', function () {
+        (function checkCountries() {
+            if (typeof window.COUNTRIES === 'undefined') {
+
+                setTimeout(checkCountries, 100);
+                return;
+            }
+
+            initCategoryForm();
+        })();
+    });
+
+    function initCategoryForm() {
+        let container = document.getElementById("categoryCountryForm");
+        let hiddenInput = document.getElementById("teamsTournamentsInput");
+        let COUNTRIES = window.COUNTRIES || [];
+
+        // Modals
+        let editModal = new bootstrap.Modal(document.getElementById('editCategoryModal'));
+        let deleteModal = new bootstrap.Modal(document.getElementById('deleteCategoryModal'));
+
+        // Populate Edit Modal Country Select on init
+        const editCountrySelect = document.getElementById('editCategoryCountry');
+        if (editCountrySelect) {
+            editCountrySelect.innerHTML = countryOptions();
+        }
+
+        function countryOptions() {
+            return `
+            <option value="">Select country</option>
+            ${COUNTRIES.map(c => `
+                <option value="${c.label}" data-code="${c.code}">
+                    ${c.label}
+                </option>
+            `).join("")}
+        `;
+        }
+
+        async function callCreateAPI(type, btnElement) {
+            const section = btnElement.closest(`.${type}-section`);
+            const countrySelect = section.querySelector(".country-select");
+            const nameInput = section.querySelector(".name-input");
+            const flag = section.querySelector(".country-flag");
+
+            const country = countrySelect.value;
+            const name = nameInput.value;
+
+            if (!country || !name) {
+                showToast("Please select a country and enter a name.", "error");
+                return;
+            }
+
+            const originalIcon = btnElement.innerHTML;
+            btnElement.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`;
+            btnElement.disabled = true;
+
+            try {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch('/api/categories/create/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ type, country, name })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    countrySelect.value = "";
+                    nameInput.value = "";
+                    if (flag) flag.style.display = "none";
+                    showToast(`${type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)} added successfully!`, "success");
+                    fetchCategories();
+                } else {
+                    showToast(`Error: ${data.error}`, "error");
+                }
+            } catch (error) {
+                showToast('An error occurred while saving.', "error");
+            } finally {
+                btnElement.innerHTML = originalIcon;
+                btnElement.disabled = false;
+            }
+        }
+
+        function showToast(message, type = "success") {
+            let toastContainer = document.querySelector('.alert-messages');
+            if (!toastContainer) {
+                toastContainer = document.createElement('div');
+                toastContainer.className = 'alert-messages';
+                document.body.appendChild(toastContainer);
+            }
+
+            const toast = document.createElement('div');
+            const alertClass = type === 'error' ? 'alert-error' : 'alert-success';
+            toast.className = `alert ${alertClass} alert-dismissible fade show`;
+            toast.role = 'alert';
+            toast.innerHTML = `${message}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>`;
+            toastContainer.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 150);
+            }, 3000);
+        }
+
+        function createSingleRow(type) {
+            const wrapper = document.createElement("div");
+            wrapper.className = `${type}-section`;
+            wrapper.innerHTML = `
+            <div class="d-flex gap-2 align-items-center mb-3">
+                <div class="country-select-wrapper">
+                    <img class="country-flag" width="20" alt="" />
+                    <select class="form-select country-select">
+                        ${countryOptions()}
+                    </select>
+                </div>
+                <input type="text" class="form-control name-input" placeholder="Enter ${type.slice(0, -1)}" />
+                <button type="button" class="btn btn-outline-primary btn-sm add-row" data-type="${type}">
+                    <i class="bi bi-plus"></i>
+                </button>
+            </div>
+        `;
+            return wrapper;
+        }
+
+        function renderSection(title, type) {
+            const section = document.createElement("div");
+            section.className = "section-card mb-4";
+            section.style.padding = "15px";
+            section.style.borderRadius = "10px";
+            section.innerHTML = `<h6 class="mb-3">${title}</h6>`;
+            section.appendChild(createSingleRow(type));
+            return section;
+        }
+
+        let categoryData = { teams: {}, tournaments: {} };
+
+        async function fetchCategories() {
+            // Show loading state
+            renderTablesLoading();
+
+            try {
+                const response = await fetch('/api/categories/list/');
+                if (response.ok) {
+                    categoryData = await response.json();
+                    renderTables();
+                } else {
+                    renderTablesError();
+                }
+            } catch (error) {
+                renderTablesError();
+            }
+        }
+
+        function renderTablesLoading() {
+            let tables = document.getElementById("tablesWrapper");
+            if (!tables) {
+                tables = document.createElement("div");
+                tables.id = "tablesWrapper";
+                tables.className = "mt-4";
+                container.appendChild(tables);
+            }
+
+            tables.innerHTML = `
+            <div class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3 text-muted">Loading categories...</p>
+            </div>
+        `;
+        }
+
+        function renderTablesError() {
+            let tables = document.getElementById("tablesWrapper");
+            if (tables) {
+                tables.innerHTML = `
+                <div class="alert alert-warning">
+                    <i class="bi bi-exclamation-triangle"></i> 
+                    Failed to load categories. Please refresh the page.
+                </div>
+            `;
+            }
+        }
+
+        function renderTableSection(title, data) {
+            if (Object.keys(data).length === 0) {
+                return `<p class="text-muted">No ${title.toLowerCase()} added yet.</p>`;
+            }
+
+            let rows = '';
+            for (const [country, items] of Object.entries(data)) {
+                const pills = items.map(item => `
+                <span class="badge bg-${title === 'Teams' ? 'primary' : 'success'} me-2 position-relative">
+                    ${item.name}
+                    <i class="bi bi-pen ms-2 edit-category" 
+                       data-id="${item.id}" 
+                       data-name="${item.name}" 
+                       data-country="${country}"
+                       data-type="${title.toLowerCase().slice(0, -1)}"
+                       style="cursor: pointer; font-size: 0.9rem;"
+                       title="Edit ${item.name}">
+                    </i>
+
+                    <i class="bi bi-x-circle ms-2 delete-category" 
+                       data-id="${item.id}" 
+                       data-name="${item.name}" 
+                       data-type="${title.toLowerCase().slice(0, -1)}"
+                       style="cursor: pointer; font-size: 0.9rem; color:red" 
+                       title="Delete ${item.name}">
+                    </i>
+                </span>
+            `).join("");
+                rows += `<tr><td>${country}</td><td>${pills}</td></tr>`;
+            }
+
+            return `
+            <h6>${title}</h6>
+            <table class="table table-bordered mb-4 align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 180px">Country</th>
+                        <th>${title}</th>
+                    </tr>
+                </thead>
+                <tbody>${rows}</tbody>
+            </table>
+        `;
+        }
+
+        function renderTables() {
+            let tables = document.getElementById("tablesWrapper");
+            if (!tables) {
+                tables = document.createElement("div");
+                tables.id = "tablesWrapper";
+                tables.className = "mt-4";
+                container.appendChild(tables);
+            }
+            tables.innerHTML = `
+            ${renderTableSection('Teams', categoryData.teams)}
+            ${renderTableSection('Tournaments', categoryData.tournaments)}
+        `;
+
+            // Add event listeners to delete buttons
+            tables.querySelectorAll('.delete-category').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const { id, name, type } = this.dataset;
+                    openDeleteModal(id, name, type);
+                });
+            });
+
+            // Add event listeners to edit buttons
+            tables.querySelectorAll('.edit-category').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.stopPropagation();
+                    const { id, name, country, type } = this.dataset;
+                    openEditModal(id, name, country, type);
+                });
+            });
+        }
+
+        // --- Edit Logic ---
+        window.openEditModal = function (id, name, country, type) {
+            document.getElementById('editCategoryId').value = id;
+            document.getElementById('editCategoryType').value = type;
+            document.getElementById('editCategoryName').value = name;
+
+            const countrySelect = document.getElementById('editCategoryCountry');
+            countrySelect.value = country;
+
+            // Update flag
+            const flag = document.getElementById('editCountryFlag');
+            const selectedOption = countrySelect.selectedOptions[0];
+            if (selectedOption && selectedOption.dataset.code) {
+                flag.src = `https://flagcdn.com/w20/${selectedOption.dataset.code.toLowerCase()}.png`;
+                flag.style.display = "block";
+            } else {
+                flag.style.display = "none";
+            }
+
+            editModal.show();
+        }
+
+        window.updateCategory = async function () {
+            const id = document.getElementById('editCategoryId').value;
+            const type = document.getElementById('editCategoryType').value;
+            const name = document.getElementById('editCategoryName').value;
+            const country = document.getElementById('editCategoryCountry').value;
+
+            const btn = document.querySelector('#editCategoryModal .btn-primary');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Updating...';
+            btn.disabled = true;
+
+            try {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch(`/api/categories/update/${id}/`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrfToken
+                    },
+                    body: JSON.stringify({ name, country, type })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast('Category updated successfully!', 'success');
+                    editModal.hide();
+                    fetchCategories();
+                } else {
+                    showToast(`Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showToast('An error occurred while updating.', 'error');
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // --- Delete Logic ---
+        window.openDeleteModal = function (id, name, type) {
+            document.getElementById('deleteCategoryId').value = id;
+            document.getElementById('deleteCategoryName').value = name;
+            document.getElementById('deleteCategoryType').value = type;
+            document.getElementById('deleteCategoryNameDisplay').innerText = name;
+            deleteModal.show();
+        }
+
+        window.confirmDeleteCategory = async function () {
+            const id = document.getElementById('deleteCategoryId').value;
+            const name = document.getElementById('deleteCategoryName').value;
+            const type = document.getElementById('deleteCategoryType').value;
+
+            const btn = document.querySelector('#deleteCategoryModal .btn-danger');
+            const originalText = btn.innerText;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Deleting...';
+            btn.disabled = true;
+
+            try {
+                const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+                const response = await fetch(`/api/categories/delete/${id}/`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRFToken': csrfToken
+                    }
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showToast(`${type.charAt(0).toUpperCase() + type.slice(1)} "${name}" deleted successfully!`, "success");
+                    deleteModal.hide();
+                    fetchCategories(); // Refresh the list
+                } else {
+                    showToast(`Error: ${data.error}`, "error");
+                }
+            } catch (error) {
+                showToast('An error occurred while deleting.', "error");
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+
+        container.appendChild(renderSection("Tournaments", "tournaments"));
+        container.appendChild(renderSection("Teams", "teams"));
+        fetchCategories();
+
+        container.addEventListener("click", e => {
+            const addBtn = e.target.closest(".add-row");
+            if (addBtn) {
+                callCreateAPI(addBtn.dataset.type, addBtn);
+            }
+        });
+
+        document.getElementById('editCategoryCountry')?.addEventListener('change', function () {
+            const flag = document.getElementById('editCountryFlag');
+            const selectedOption = this.selectedOptions[0];
+            if (selectedOption && selectedOption.dataset.code) {
+                flag.src = `https://flagcdn.com/w20/${selectedOption.dataset.code.toLowerCase()}.png`;
+                flag.style.display = "block";
+            } else {
+                flag.style.display = "none";
+            }
+        });
+
+        container.addEventListener("change", e => {
+            const select = e.target.closest(".country-select");
+            if (select && !select.id.includes('edit')) {
+                const flag = select.closest(".country-select-wrapper").querySelector(".country-flag");
+                const code = select.selectedOptions[0]?.dataset.code;
+                if (code) {
+                    flag.src = `https://flagcdn.com/w20/${code.toLowerCase()}.png`;
+                    flag.style.display = "block";
+                } else {
+                    flag.style.display = "none";
+                }
+            }
+        });
+
+    }
+</script>
+
+{% endblock %}

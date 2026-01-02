@@ -1,9 +1,11 @@
 import json
+import uuid
 from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail
 from django.db import transaction
+from django.db.models import Sum
 from django.http import JsonResponse, HttpResponseBadRequest, Http404,HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse, reverse_lazy
@@ -72,6 +74,28 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
     def form_valid(self, form):
         ticket = form.save(commit=False)
         ticket.seller = self.request.user
+        
+        # Handle bundle creation if sell_together is checked
+        if form.cleaned_data.get('sell_together', False):
+            # Check if there's a bundle_id in session for this event
+            session_key = f'bundle_id_{self.event.event_id}'
+            bundle_id = self.request.session.get(session_key)
+            
+            # If no bundle_id in session, create a new one
+            if not bundle_id:
+                bundle_id = uuid.uuid4()
+                self.request.session[session_key] = str(bundle_id)
+            else:
+                bundle_id = uuid.UUID(bundle_id)
+            
+            ticket.bundle_id = bundle_id
+        else:
+            # Clear bundle_id from session if sell_together is not checked
+            session_key = f'bundle_id_{self.event.event_id}'
+            if session_key in self.request.session:
+                del self.request.session[session_key]
+            ticket.bundle_id = None
+        
         ticket.save()
 
         subject = f"Ticket Listing Created for {self.event.name}"
@@ -137,7 +161,7 @@ class EventTicketListView(ListView):
         ctx.update({
             'event': event,
             'sections': event.sections.all(),
-            'ticket_types': dict(Ticket.ticket_type.field.choices),
+            'ticket_types': dict(Ticket._meta.get_field('ticket_type').choices),
             'applied_filters': self.request.GET,
         })
         return ctx
@@ -338,44 +362,137 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         context = super().get_context_data(**kwargs)
         ticket = self.object
         price_per_ticket = ticket.sell_price_for_reseller if self.request.user.user_type == 'Reseller' else ticket.sell_price_for_normal
-        context['price_per_ticket'] = price_per_ticket
-        context['total_price'] = ticket.number_of_tickets * price_per_ticket
+        
+        # Check if ticket is part of a bundle
+        if ticket.is_bundled:
+            bundle_tickets = ticket.get_bundle_tickets()
+            context['is_bundled'] = True
+            context['bundle_tickets'] = bundle_tickets
+            # Calculate total price for all tickets in bundle
+            total_price = sum(
+                t.number_of_tickets * (t.sell_price_for_reseller if self.request.user.user_type == 'Reseller' else t.sell_price_for_normal)
+                for t in bundle_tickets
+            )
+            context['total_price'] = total_price
+        else:
+            context['is_bundled'] = False
+            context['price_per_ticket'] = price_per_ticket
+            context['total_price'] = ticket.number_of_tickets * price_per_ticket
+        
         return context
 
 class CreateOrderView(LoginRequiredMixin, View):
     def post(self, request, ticket_id):
         ticket = get_object_or_404(Ticket, ticket_id=ticket_id, sold=False)
         
-        price = ticket.sell_price_for_reseller if request.user.user_type == 'Reseller' else ticket.sell_price_for_normal
-        total_price=ticket.number_of_tickets*price
-        ticket_uploaded=False
-        if ticket.upload_choice=='now':
-            ticket_uploaded=True
-        order = Order.objects.create(
-            ticket_reference=ticket.ticket_id,
-            event_name = ticket.event.name,
-            event_date =ticket.event.date,
-            event_time =ticket.event.time, 
-            number_of_tickets = ticket.number_of_tickets,
-            ticket_section =ticket.section.name,
-            ticket_row =ticket.row,
-            ticket_seats =ticket.seats,
-            ticket_face_value = ticket.face_value,
-            ticket_upload_type = ticket.ticket_type,
-            ticket_benefits_and_Restrictions = ticket.benefits_and_Restrictions,
-            ticket_sell_price = ticket.sell_price,
-            ticket_uploaded=ticket_uploaded,
-            buyer=request.user,
-            amount=total_price,
-            revolut_order_id="", 
-            revolut_checkout_url=""
-        )
+        # Check if ticket is part of a bundle
+        if ticket.is_bundled:
+            # Get all tickets in the bundle
+            bundle_tickets = list(ticket.get_bundle_tickets())
+            
+            # Validate all tickets in bundle are available
+            for t in bundle_tickets:
+                if t.sold:
+                    messages.error(request, "One or more tickets in this bundle are no longer available.")
+                    return redirect('events:event_tickets', event_id=ticket.event.event_id)
+            
+            # Calculate total price for bundle
+            price = sum(
+                t.number_of_tickets * (t.sell_price_for_reseller if request.user.user_type == 'Reseller' else t.sell_price_for_normal)
+                for t in bundle_tickets
+            )
+            total_price = price
+            
+            # Create order with bundle information
+            ticket_uploaded = all(t.upload_choice == 'now' for t in bundle_tickets)
+            
+            # Store bundle ticket references as JSON
+            bundle_ticket_refs = [str(t.ticket_id) for t in bundle_tickets]
+            
+            order = Order.objects.create(
+                ticket_reference=ticket.ticket_id,  # Primary ticket reference
+                event_name=ticket.event.name,
+                event_date=ticket.event.date,
+                event_time=ticket.event.time,
+                number_of_tickets=sum(t.number_of_tickets for t in bundle_tickets),
+                ticket_section=ticket.section.name,
+                ticket_row=ticket.row,
+                ticket_seats=ticket.seats,  # Will store first ticket's seats
+                ticket_face_value=ticket.face_value,
+                ticket_upload_type=ticket.ticket_type,
+                ticket_benefits_and_Restrictions=ticket.benefits_and_Restrictions,
+                ticket_sell_price=ticket.sell_price,
+                ticket_uploaded=ticket_uploaded,
+                buyer=request.user,
+                amount=total_price,
+                revolut_order_id="",
+                revolut_checkout_url=""
+            )
+        else:
+            # Individual ticket purchase (existing logic)
+            requested_quantity = int(request.POST.get('quantity', ticket.number_of_tickets))
+            
+            # Handle partial purchase if sell_together is False
+            if not ticket.sell_together and requested_quantity < ticket.number_of_tickets:
+                # Create a new ticket for the sold portion
+                new_seats = ticket.seats[:requested_quantity]
+                remaining_seats = ticket.seats[requested_quantity:]
+                
+                # Update original ticket (remaining portion)
+                ticket.number_of_tickets -= requested_quantity
+                ticket.seats = remaining_seats
+                ticket.save()
+                
+                # Create new ticket instance for the order
+                ticket = Ticket.objects.create(
+                    event=ticket.event,
+                    seller=ticket.seller,
+                    buyer=request.user.email, # Will be confirmed on payment
+                    number_of_tickets=requested_quantity,
+                    section=ticket.section,
+                    row=ticket.row,
+                    seats=new_seats,
+                    face_value=ticket.face_value,
+                    ticket_type=ticket.ticket_type,
+                    benefits_and_Restrictions=ticket.benefits_and_Restrictions,
+                    sell_price=ticket.sell_price,
+                    sell_together=False, # It's a split ticket now
+                    upload_choice=ticket.upload_choice,
+                    upload_by=ticket.upload_by,
+                    # upload_file logic tricky if splitting file? inheriting for now
+                )
+            
+            price = ticket.sell_price_for_reseller if request.user.user_type == 'Reseller' else ticket.sell_price_for_normal
+            total_price = ticket.number_of_tickets * price
+            ticket_uploaded = False
+            if ticket.upload_choice == 'now':
+                ticket_uploaded = True
+            
+            order = Order.objects.create(
+                ticket_reference=ticket.ticket_id,
+                event_name=ticket.event.name,
+                event_date=ticket.event.date,
+                event_time=ticket.event.time,
+                number_of_tickets=ticket.number_of_tickets,
+                ticket_section=ticket.section.name,
+                ticket_row=ticket.row,
+                ticket_seats=ticket.seats,
+                ticket_face_value=ticket.face_value,
+                ticket_upload_type=ticket.ticket_type,
+                ticket_benefits_and_Restrictions=ticket.benefits_and_Restrictions,
+                ticket_sell_price=ticket.sell_price,
+                ticket_uploaded=ticket_uploaded,
+                buyer=request.user,
+                amount=total_price,
+                revolut_order_id="",
+                revolut_checkout_url=""
+            )
         
         revolut_api = RevolutAPI()
         try:
             revolut_order = revolut_api.create_order(
                 amount=total_price,
-                currency="GBP", 
+                currency="GBP",
                 customer_email=request.user.email,
                 description=f"Ticket for {ticket.event.name}",
                 order_id=order.id
@@ -405,11 +522,29 @@ class PaymentReturnView(LoginRequiredMixin, View):
                 order.save()
                 
                 ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
-                ticket.sold = True
-                ticket.buyer = request.user.email
-                ticket.event.sold_tickets+=ticket.number_of_tickets
-                ticket.save()
-                ticket.event.save()
+                
+                # Check if ticket is part of a bundle
+                if ticket.is_bundled:
+                    # Mark all tickets in the bundle as sold
+                    bundle_tickets = ticket.get_bundle_tickets()
+                    total_tickets_count = 0
+                    
+                    for t in bundle_tickets:
+                        t.sold = True
+                        t.buyer = request.user.email
+                        t.save()
+                        total_tickets_count += t.number_of_tickets
+                    
+                    # Update event sold tickets count
+                    ticket.event.sold_tickets += total_tickets_count
+                    ticket.event.save()
+                else:
+                    # Individual ticket
+                    ticket.sold = True
+                    ticket.buyer = request.user.email
+                    ticket.event.sold_tickets += ticket.number_of_tickets
+                    ticket.save()
+                    ticket.event.save()
                 
                 self.send_notifications(order)
                 
@@ -798,6 +933,7 @@ class TicketDetailAPIView(View):
                 'face_value': float(ticket.face_value),
                 'ticket_type': ticket.ticket_type,
                 'benefits_and_Restrictions': ticket.benefits_and_Restrictions,
+                'sell_together': ticket.sell_together,
                 'sell_price': float(ticket.sell_price),
                 'price_per_ticket': float(price_per_ticket),
                 'total_price': float(ticket.number_of_tickets * price_per_ticket),
@@ -903,6 +1039,7 @@ class MyListingsAPIView(View):
                 'seats': ticket.seats,
                 'number_of_tickets': ticket.number_of_tickets,
                 'ticket_type': ticket.ticket_type,
+                'sell_together': ticket.sell_together,
                 'face_value':ticket.face_value,
                 'sell_price': float(ticket.sell_price),
                 'created_at': ticket.created_at.isoformat(),
@@ -923,10 +1060,6 @@ class MyListingsAPIView(View):
 
 
 class EventTicketListAPIView(View):
-    @method_decorator(api_login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
     def get(self, request, event_id):
         try:
             event = Event.objects.get(event_id=event_id)
@@ -969,17 +1102,16 @@ class EventTicketListAPIView(View):
 
         tickets = tickets.order_by('-created_at')
 
-        paginator = Paginator(tickets, per_page)
-
-        try:
-            tickets_page = paginator.page(page)
-        except (EmptyPage, PageNotAnInteger):
-            tickets_page = paginator.page(1)
-        user_type = request.user.user_type
-        is_reseller = user_type == 'Reseller' or request.user.is_superadmin
+        # Pagination removed as per request - return all data
+        if request.user.is_authenticated:
+            user_type = request.user.user_type
+            is_reseller = user_type == 'Reseller' or request.user.is_superadmin
+        else:
+            user_type = None
+            is_reseller = False
 
         tickets_data = []
-        for ticket in tickets_page:
+        for ticket in tickets:
             price_per_ticket = ticket.sell_price_for_normal
 
             tickets_data.append({
@@ -1001,10 +1133,24 @@ class EventTicketListAPIView(View):
                 'upload_choice': ticket.upload_choice,
                 'upload_by': ticket.upload_by.isoformat() if ticket.upload_by else None,
                 'created_at': ticket.created_at.isoformat(),
+                'sell_together': ticket.sell_together,
             })
 
         available_sections = event.sections.all().values('id', 'name', 'color')
         available_ticket_types = dict(Ticket.TICKET_TYPE_CHOICES)
+        
+        # Import section normalization function
+        from events.stadium_config import normalize_section_name
+        
+        # Add SVG section key for mapping
+        sections_with_svg = []
+        for section in available_sections:
+            sections_with_svg.append({
+                'id': section['id'],
+                'name': section['name'],
+                'color': section['color'],
+                'svg_section_key': normalize_section_name(section['name']),
+            })
 
         return JsonResponse({
             'event': {
@@ -1018,7 +1164,7 @@ class EventTicketListAPIView(View):
             },
             'tickets': tickets_data,
             'filters': {
-                'sections': list(available_sections),
+                'sections': sections_with_svg,
                 'ticket_types': available_ticket_types,
                 'applied': {
                     'sections': sections,
@@ -1027,11 +1173,5 @@ class EventTicketListAPIView(View):
                     'max_price': max_price,
                     'number_of_tickets': number_of_tickets,
                 }
-            },
-            'pagination': {
-                'page': page,
-                'per_page': per_page,
-                'total_pages': paginator.num_pages,
-                'total_tickets': paginator.count,
             }
         })

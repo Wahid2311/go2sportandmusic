@@ -385,137 +385,229 @@
         {% if messages %}
         <div class="alert-messages">
             {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif %}">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            {% endfor %}
+        {% endif %}
+<div class="container py-5">
+    <div class="row g-5">
+        <div class="col-lg-7">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white py-4">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h2 class="h4 mb-0">{{ ticket.event.name }}</h2>
+                        <span class="badge bg-success fs-6">Available</span>
+                    </div>
+                    <p class="mb-0 mt-2">
+                        <i class="bi bi-calendar-event me-2"></i>{{ ticket.event.date }} 
+                        <i class="bi bi-clock ms-3 me-2"></i>{{ ticket.event.time }}
+                    </p>
+                </div>
+                
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between border-bottom pb-3 mb-3">
+                        <div>
+                            <h3 class="h5">Section {{ ticket.section.name }}</h3>
+                            <p class="mb-0 text-muted">Row {{ ticket.row }}, Seats {{ ticket.seats|join:", " }}</p>
+                        </div>
+                        <div class="text-end">
+                            <span class="d-block display-6 fw-bold text-primary">
+                                £{{ total_price }}
+                            </span>
+                            <small class="text-muted">per ticket</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h4 class="h6 mb-3">Ticket Details</h4>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1"><strong>Type:</strong></p>
+                                <p class="mb-0">{{ ticket.get_ticket_type_display }}</p>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <p class="mb-1"><strong>Delivery:</strong></p>
+                                <p class="mb-0">
+                                    {% if ticket.upload_choice == 'now' %}
+                                        Instant Download
+                                    {% else %}
+                                        Upload by {{ ticket.upload_by|date:"M d, Y" }}
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <p class="mb-1"><strong>Benefits:</strong></p>
+                                <p class="mb-0">
+                                    {% if ticket.benefits_and_Restrictions %}
+                                        {{ ticket.benefits_and_Restrictions|join:", " }}
+                                    {% else %}
+                                        None
+                                    {% endif %}
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="bg-light rounded-3 p-4 mb-4">
+                        <h4 class="h6 mb-3">Secure Checkout</h4>
+                        <ul class="list-unstyled">
+                            <li class="mb-2">
+                                <i class="bi bi-shield-check text-success me-2"></i>
+                                100% Buyer Guarantee
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-credit-card text-success me-2"></i>
+                                Secure Payment
+                            </li>
+                            <li>
+                                <i class="bi bi-ticket-perforated text-success me-2"></i>
+                                Authentic Tickets
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <form method="post" action="{% url 'events:create_order' ticket_id=ticket.ticket_id %}">
+                        {% csrf_token %}
+                        {% if not ticket.sell_together %}
+                        <div class="mb-3">
+                            <label for="quantity" class="form-label fw-bold">Quantity (Tickets Available: {{ ticket.number_of_tickets }})</label>
+                            <input type="number" name="quantity" id="quantity" class="form-control" 
+                                   value="{{ ticket.number_of_tickets }}" min="1" max="{{ ticket.number_of_tickets }}">
+                        </div>
+                        {% endif %}
+                        <button type="submit" class="btn btn-primary btn-lg w-100 py-3">
+                            <i class="bi bi-lock me-2"></i> Secure Checkout
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-5">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+                <img src="{{ ticket.event.stadium_image }}" class="card-img-top" alt="{{ ticket.event.stadium_name }}">
+                <div class="card-body">
+                    <h3 class="h5">{{ ticket.event.stadium_name }}</h3>
+                    <p class="mb-0">{{ ticket.event.stadium_location }}</p>
+                </div>
+            </div>
+            
+            <div class="card border-0 shadow-sm rounded-4">
+                <div class="card-header bg-light py-3">
+                    <h3 class="h6 mb-0">Why Buy From Us</h3>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0 text-primary">
+                            <i class="bi bi-check2-circle fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h4 class="h6 mb-1">100% Guarantee</h4>
+                            <p class="mb-0 small">Your tickets will arrive in time and be valid for entry</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex mb-3">
+                        <div class="flex-shrink-0 text-primary">
+                            <i class="bi bi-arrow-repeat fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h4 class="h6 mb-1">Easy Returns</h4>
+                            <p class="mb-0 small">Full refund if event is canceled</p>
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex">
+                        <div class="flex-shrink-0 text-primary">
+                            <i class="bi bi-headset fs-3"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                            <h4 class="h6 mb-1">24/7 Support</h4>
+                            <p class="mb-0 small">Dedicated customer service team</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</main>
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+    {% include "partials/footer.html" %}
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+    <!--
+    <script>
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            const scrollY = window.scrollY;
+            const scale = 1 - Math.min(scrollY * 0.0005, 0.02);
+            header.style.transform = `scale(${scale})`;
+            header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
+        });
+    </script>
+    -->
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+    <!-- UNUSED SEARCH AUTOCOMPLETE SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
+    <!--
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        initSearchAutocomplete('.hero-search-input', '#hero-search-results');
+        initSearchAutocomplete('.navbar-search-input', '#navbar-search-results');
+        });
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+        function initSearchAutocomplete(inputSelector, resultsContainer) {
+            const searchInput = document.querySelector(inputSelector);
+            const resultsDiv = document.querySelector(resultsContainer);
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+            if (!searchInput) return;
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if message.tags == 'error' %}error{% else %}success{% endif n      text-align: center;
-            padding: 12px !important;
-            width: 100%;
-            max-width: 280px;
-        }
-        .search-bar {
-            margin: 1rem 0;
-        }
-        */
-    }
-</style>
-</head>
-<body>
-    {% include "partials/header.html" %}
+            let timeoutId;
 
-    <main class="flex-grow-1 py-4">
-        {% if messages %}
-        <div class="alert-messages">
-            {% for message in messages %}
-            <div class="alert alert-{% if mess
+            searchInput.addEventListener('input', function(e) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    const query = this.value.trim();
+                    
+                    if(query.length < 2) {
+                        resultsDiv.innerHTML = '';
+                        return;
+                    }
+
+                    fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`,{
+                        headers: {
+                        'X-Requested-With': 'XMLHttpRequest' 
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            resultsDiv.innerHTML = data.map(event => `
+                                <a href="${event.url}" class="autocomplete-item">
+                                    <div class="ac-event-name">${event.name}</div>
+                                    <div class="ac-event-details">
+                                        <span>${event.category}</span>
+                                        <span>${event.date}</span>
+                                        <span>$${event.min_price} - $${event.max_price}</span>
+                                    </div>
+                                </a>
+                            `).join('');
+                        })
+                        .catch(error => console.error('Error:', error));
+                }, 300);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!searchInput.contains(e.target)) {
+                    resultsDiv.innerHTML = '';
+                }
+            });
+        }
+    </script>
+    -->
+</body>
+</html>

@@ -16,6 +16,11 @@ urlpatterns = [
     path('superadmin/events/<uuid:pk>/update/', views.EventUpdateView.as_view(), name='event_update'),
     path('superadmin/expired-events/', views.ExpiredEventListView.as_view(), name='expired_events'),
     path('superadmin/events/<uuid:pk>/delete/', views.EventDeleteView.as_view(), name='event_delete'),
+    path('category/', views.CreateCategory.as_view() , name='create_category' ),
+    path('api/categories/create/', views.CategoryCreateAPIView.as_view(), name='api_category_create'),
+    path('api/categories/list/', views.CategoryListAPIView.as_view(), name='api_category_list'),
+    path('api/categories/delete/<int:category_id>/', views.CategoryDeleteAPIView.as_view(), name='api_category_delete'),
+    path('api/categories/update/<int:category_id>/', views.CategoryUpdateAPIView.as_view(), name='api_category_update'),
 
     path('', views.HomeView.as_view(), name='home'),
     path('events/search-results/', views.EventSearchView.as_view(), name='search_results'),

@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,371 +14,516 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    :root {
-        --primary-dark: #0d241b;
-        --primary-accent: #1d4532;
-        --secondary-accent: #2d6a4f;
-        --highlight: #4d9370;
-        --gold-accents: #c5a645;
-        --text-light: #f8f9fa;
-        --hover-glow: rgba(77, 147, 112, 0.2);
-        --header-height: 80px;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-        background: linear-gradient(135deg, #f0f6f3 0%, #e1ece7 100%);
-        font-family: 'Inter', sans-serif;
-        padding-top: var(--header-height);
-    }
-
-    /* UNUSED AUTH STYLES - MOVED TO PARTIALS */
-    /*
-    .auth-container {
-        max-width: 580px;
-        margin: 4rem auto;
-        padding: 2.5rem;
-        background: rgba(233, 245, 233, 0.98);
-        border-radius: 20px;
-        box-shadow: 0 12px 40px rgba(13, 36, 27, 0.15);
-        border: 1px solid rgba(64, 145, 108, 0.2);
-    }
-
-    .auth-title {
-        color: var(--primary-dark);
-        font-weight: 700;
-        font-size: 2rem;
-        margin-bottom: 2rem;
-        position: relative;
-        padding-bottom: 0.5rem;
-    }
-
-    .auth-title::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 60px;
-        height: 3px;
-        background: var(--gold-accents);
-    }
-
-    .form-label {
-        color: var(--primary-accent);
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-    }
-
-    .form-control {
-        padding: 14px 20px;
-        border: 2px solid rgba(64, 145, 108, 0.2);
-        border-radius: 10px;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .form-control:focus {
-        border-color: var(--secondary-accent);
-        box-shadow: 0 0 0 3px var(--hover-glow);
-    }
-
-    .btn-auth {
-        background: var(--secondary-accent);
-        color: white;
-        padding: 14px 30px;
-        border-radius: 10px;
-        font-weight: 600;
-        border: none;
-        transition: all 0.3s;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .btn-auth:hover {
-        background: var(--primary-dark);
-        transform: translateY(-2px);
-    }
-
-    .btn-auth:active {
-        transform: translateY(0);
-    }
-
-    .radio-select-group {
-        display: grid;
-        gap: 1rem;
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .radio-select {
-        padding: 1.5rem;
-        border: 2px solid rgba(64, 145, 108, 0.2);
-        border-radius: 10px;
-        cursor: pointer;
-        transition: all 0.3s;
-        text-align: center;
-        position: relative;
-    }
-
-    .radio-select input[type="radio"] {
-        position: absolute;
-        opacity: 0;
-        width: 0;
-        height: 0;
-    }
-
-    .radio-select .bi {
-        font-size: 1.5rem;
-        margin-bottom: 0.5rem;
-        color: var(--primary-accent);
-    }
-
-    .radio-select:hover {
-        border-color: var(--highlight);
-    }
-
-    .radio-select input[type="radio"]:checked + .radio-content {
-        border-color: var(--highlight);
-        background: rgba(77, 147, 112, 0.08);
-    }
-
-    .conditional-field {
-        opacity: 0;
-        max-height: 0;
-        overflow: hidden;
-        transition: all 0.4s ease-in-out;
-    }
-
-    .conditional-field.active {
-        opacity: 1;
-        max-height: 500px;
-    }
-    */
-
-    .alert-messages {
-        position: fixed;
-        top: 100px;
-        right: 2rem;
-        z-index: 2000;
-        min-width: 300px;
-    }
-
-    .alert {
-        border-radius: 10px;
-        backdrop-filter: blur(8px);
-        border: 2px solid;
-        padding: 1rem 1.5rem;
-        margin-bottom: 1rem;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
-
-    .alert-success {
-        background: rgba(77, 147, 112, 0.15);
-        border-color: var(--highlight);
-        color: var(--primary-dark);
-    }
-
-    .alert-error {
-        background: rgba(197, 166, 69, 0.15);
-        border-color: var(--gold-accents);
-        color: var(--primary-dark);
-    }
-
-    /* UNUSED AUTOCOMPLETE STYLES - MOVED TO PARTIALS/HEADER.HTML */
-    /*
-    .autocomplete-results {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border-radius: 0 0 8px 8px;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        z-index: 1000;
-        margin-top: -10px;
-    }
-
-    .autocomplete-item {
-        display: block;
-        padding: 1rem;
-        border-bottom: 1px solid rgba(13, 36, 27, 0.1);
-        color: var(--primary-dark);
-        text-decoration: none;
-        transition: all 0.2s;
-    }
-
-    .autocomplete-item:hover {
-        background: rgba(77, 147, 112, 0.05);
-    }
-
-    .ac-event-name {
-        font-weight: 600;
-        margin-bottom: 0.3rem;
-    }
-
-    .ac-event-details {
-        display: flex;
-        justify-content: space-between;
-        font-size: 0.9rem;
-        color: var(--primary-accent);
-    }
-    */
-
-    /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
-    /*
-    .header {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: var(--header-height);
-        background: linear-gradient(to right, #0d241b 0%, #1d4532 100%);
-        border-radius: 0 0 12px 12px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-        z-index: 2000;
-        backdrop-filter: blur(12px);
-        border-bottom: 1px solid rgba(64, 145, 108, 0.3);
-    }
-
-    .navbar {
-        padding: 0 2rem;
-        height: 100%;
-    }
-
-    .logo {
-        height: 45px;
-        transition: transform 0.3s, filter 0.3s;
-        filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
-    }
-
-    .logo:hover {
-        transform: translateY(-2px) scale(1.05);
-        filter: drop-shadow(0 4px 8px var(--hover-glow));
-    }
-
-    .nav-link {
-        color: var(--text-light) !important;
-        padding: 8px 24px !important;
-        margin: 0 8px;
-        transition: transform 0.3s;
-        background: transparent;
-        border: 1px solid rgba(255,255,255,0.1);
-        border-radius: 8px;
-    }
-
-    .nav-link:hover {
-        transform: translateY(-3px);
-        border-color: var(--highlight);
-    }
-
-    .search-container {
-        position: relative;
-        max-width: 680px;
-        margin: 0 auto;
-    }
-
-    .search-bar {
-        width: 100%;
-        padding: 12px 48px 12px 24px;
-        border-radius: 8px;
-        border: 1px solid rgba(64, 145, 108, 0.3);
-        background: rgba(255, 255, 255, 0.9);
-        font-size: 0.9rem;
-        transition: box-shadow 0.3s, border-color 0.3s;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .search-bar:focus {
-        outline: none;
-        box-shadow: 0 4px 16px rgba(64, 145, 108, 0.2);
-        border-color: var(--secondary-accent);
-    }
-
-    .search-icon {
-        position: absolute;
-        right: 20px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: var(--primary-dark);
-    }
-    */
-
-    /* UNUSED FOOTER STYLES - MOVED TO PARTIALS/FOOTER.HTML */
-    /*
-    .footer {
-        background: var(--primary-dark);
-        color: var(--text-light);
-        margin-top: auto;
-        padding: 2rem 0;
-        border-top: 1px solid rgba(64, 145, 108, 0.1);
-    }
-
-    .footer-logo {
-        height: 40px;
-        opacity: 0.9;
-        transition: opacity 0.3s, transform 0.3s;
-    }
-
-    .footer-logo:hover {
-        opacity: 1;
-        transform: rotate(-5deg) scale(1.05);
-    }
-
-    .footer-link {
-        color: var(--text-light) !important;
-        text-decoration: none;
-        margin: 0 1.5rem;
-        position: relative;
-        padding-bottom: 4px;
-    }
-
-    .footer-link::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 0;
-        height: 1px;
-        background: var(--gold-accents);
-        transition: width 0.3s;
-    }
-
-    .footer-link:hover::after {
-        width: 100%;
-    }
-    */
-
-    @media (max-width: 991px) {
-        body { padding-top: calc(var(--header-height) + 20px); }
-        /* UNUSED HEADER STYLES - MOVED TO PARTIALS/HEADER.HTML */
-        /*
-        .header {
-            border-radius: 0;
+        :root {
+            --primary-dark: #0d241b;
+            --primary-accent: #1d4532;
+            --secondary-accent: #2d6a4f;
+            --highlight: #4d9370;
+            --gold-accents: #c5a645;
+            --text-light: #f8f9fa;
+            --hover-glow: rgba(77, 147, 112, 0.2);
+            --header-height: 80px;
+            --gradient-1: linear-gradient(135deg, hsl(162, 48%, 15%) 0%, hsl(162, 38%, 25%) 100%);
+            --gradient-2: linear-gradient(135deg, hsl(162, 48%, 40%) 0%, hsl(162, 38%, 55%) 100%);
+            --gradient-gold: linear-gradient(135deg, hsl(48, 52%, 52%) 0%, hsl(48, 62%, 62%) 100%);
         }
-        .navbar-collapse {
-            background: var(--primary-dark);
-            padding: 1rem;
-            margin-top: 12px;
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg,
+                    hsl(162, 48%, 96%) 0%,
+                    hsl(162, 28%, 92%) 25%,
+                    hsl(162, 38%, 88%) 50%,
+                    hsl(162, 28%, 92%) 75%,
+                    hsl(162, 48%, 96%) 100%);
+            background-attachment: fixed;
+            font-family: 'Inter', sans-serif;
+            padding-top: var(--header-height);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background:
+                radial-gradient(circle at 20% 30%, rgba(77, 147, 112, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(197, 166, 69, 0.06) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(29, 69, 50, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+        }
+
+        .alert-messages {
+            position: fixed;
+            top: 100px;
+            right: 2rem;
+            z-index: 2000;
+            min-width: 320px;
+        }
+
+        .alert {
+            border-radius: 16px;
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 2px solid;
+            padding: 1.25rem 1.75rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+            animation: slideInRight 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .alert-success {
+            background: rgba(77, 147, 112, 0.2);
+            border-color: var(--highlight);
+            color: var(--primary-dark);
+        }
+
+        .alert-error {
+            background: rgba(197, 166, 69, 0.2);
+            border-color: var(--gold-accents);
+            color: var(--primary-dark);
+        }
+
+        .container {
+            max-width: 1400px;
+        }
+
+        .admin-main-title {
+            color: var(--primary-dark);
+            font-weight: 700;
+            font-size: 2.75rem;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0;
+        }
+
+        .admin-main-title i {
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: 2.5rem;
+        }
+
+        .results-count {
+            font-size: 1.1rem;
+            color: var(--secondary-accent);
+            background: rgba(77, 147, 112, 0.1);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: 2px solid rgba(77, 147, 112, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .cards-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.25rem;
+            justify-content: flex-start;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 1.25rem;
+            margin-bottom: 0;
+            width: calc(33.333% - 0.84rem);
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            box-shadow:
+                0 8px 32px rgba(13, 36, 27, 0.08),
+                0 2px 8px rgba(13, 36, 27, 0.04),
+                inset 0 1px 0 rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-2);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .user-card:hover {
+            transform: translateY(-8px);
+            box-shadow:
+                0 20px 48px rgba(13, 36, 27, 0.15),
+                0 8px 16px rgba(13, 36, 27, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 1);
+            border-color: rgba(77, 147, 112, 0.3);
+        }
+
+        .user-card:hover::before {
+            opacity: 1;
+        }
+
+        .user-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid rgba(64, 145, 108, 0.15);
+        }
+
+        .user-id {
+            font-family: 'Courier New', monospace;
+            color: var(--primary-accent);
+            font-size: 0.8rem;
+            font-weight: 700;
+            background: rgba(29, 69, 50, 0.1);
+            padding: 0.35rem 0.75rem;
             border-radius: 8px;
+            letter-spacing: 0.05em;
         }
-        .nav-link {
-            margin: 12px 5px;
-            text-align: center;
-            padding: 12px !important;
+
+        .user-type-badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .user-type-badge::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
             width: 100%;
-            max-width: 280px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
         }
-        .search-bar {
-            margin: 1rem 0;
+
+        .user-card:hover .user-type-badge::before {
+            left: 100%;
         }
-        */
-    }
-</style>
+
+        .user-type-badge.normal,
+        .user-type-badge.sport,
+        .user-type-badge.music,
+        .user-type-badge.other {
+            background: var(--gradient-2);
+            color: white;
+            box-shadow: 0 4px 12px rgba(77, 147, 112, 0.3);
+        }
+
+        .user-card-body {
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .user-info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.6rem;
+            color: var(--primary-dark);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 0.5rem 0.75rem;
+            background: rgba(77, 147, 112, 0.04);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .user-info-item:hover {
+            background: rgba(77, 147, 112, 0.08);
+            transform: translateX(4px);
+        }
+
+        .user-info-item i {
+            color: var(--secondary-accent);
+            font-size: 1rem;
+            min-width: 24px;
+        }
+
+        .verification-badge {
+            padding: 0.35rem 0.85rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            margin-left: auto;
+            font-weight: 700;
+            background: var(--gradient-gold);
+            color: white;
+            box-shadow: 0 4px 12px rgba(197, 166, 69, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            white-space: nowrap;
+        }
+
+        .verification-badge i {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        .event-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 2px solid rgba(64, 145, 108, 0.15);
+            flex-wrap: wrap;
+        }
+
+        .btn-admin-action {
+            padding: 0.65rem 1rem !important;
+            border-radius: 10px !important;
+            font-weight: 600 !important;
+            font-size: 0.85rem !important;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            position: relative;
+            overflow: hidden;
+            text-decoration: none !important;
+            display: inline-flex !important;
+            align-items: center;
+            gap: 0.5rem;
+            border: none !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-admin-action::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-admin-action:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-admin-action:hover {
+            transform: translateY(-4px) scale(1.02) !important;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+        }
+
+        .btn-admin-action:active {
+            transform: translateY(-2px) scale(0.98) !important;
+        }
+
+        .btn-admin-action:first-child {
+            background: var(--gradient-2) !important;
+            color: white !important;
+        }
+
+        .btn-admin-action:last-child {
+            background: var(--gradient-gold) !important;
+            color: white !important;
+        }
+
+        .admin-pagination {
+            margin-top: 3rem;
+        }
+
+        .admin-pagination .pagination {
+            gap: 0.5rem;
+        }
+
+        .admin-pagination .page-link {
+            color: var(--secondary-accent);
+            border: 2px solid rgba(64, 145, 108, 0.2);
+            margin: 0;
+            border-radius: 12px !important;
+            padding: 0.75rem 1.25rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .admin-pagination .page-link:hover {
+            background: var(--secondary-accent);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(45, 106, 79, 0.3);
+            border-color: var(--secondary-accent);
+        }
+
+        .admin-pagination .page-item.active .page-link {
+            background: var(--gradient-2);
+            border-color: transparent;
+            color: white;
+            box-shadow: 0 6px 16px rgba(45, 106, 79, 0.4);
+        }
+
+        @media (max-width: 991px) {
+            body {
+                padding-top: calc(var(--header-height) + 20px);
+            }
+
+            .admin-main-title {
+                font-size: 2rem;
+            }
+
+            .admin-main-title i {
+                font-size: 1.75rem;
+            }
+
+            .results-count {
+                font-size: 0.95rem;
+                padding: 0.6rem 1.25rem;
+            }
+
+            .user-card {
+                padding: 1.5rem;
+                width: calc(50% - 0.625rem);
+                min-width: 280px;
+            }
+
+            .event-actions {
+                flex-direction: column;
+            }
+
+            .btn-admin-action {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .admin-main-title {
+                font-size: 1.75rem;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+
+            .d-flex.justify-content-between.align-items-center.mb-5 {
+                flex-direction: column !important;
+                align-items: flex-start !important;
+                gap: 1rem;
+            }
+
+            .results-count {
+                width: 100%;
+                text-align: center;
+            }
+
+            .user-card {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .user-info-item {
+                font-size: 0.95rem;
+            }
+
+            .admin-pagination .page-link {
+                padding: 0.6rem 1rem;
+            }
+        }
+
+        /* Animation for cards on page load */
+        .user-card {
+            animation: fadeInUp 0.6s ease-out backwards;
+        }
+
+        .user-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .user-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .user-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .user-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .user-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
+
 <body>
     {% include "partials/header.html" %}
 
@@ -402,192 +548,92 @@
                 </div>
             </div>
 
-            <div class="row g-4">
+            <div class="cards-container">
                 {% for event in events %}
-                <div class="col-12">
-                    <div class="user-card event-card">
-                        <div class="user-card-header">
-                            <span class="user-id">#{{ event.event_id }}</span>
-                            <span class="user-type-badge {{ event.category }}">
-                                {{ event.get_category_display }}
+                <div class="user-card event-card">
+                    <div class="user-card-header">
+                        <span class="user-id">#{{ event.event_id }}</span>
+                        <span class="user-type-badge {{ event.category }}">
+                            {{ event.get_category_display }}
+                        </span>
+                    </div>
+
+                    <div class="user-card-body">
+                        <div class="user-info-item">
+                            <i class="bi bi-ticket-perforated"></i>
+                            <span>{{ event.name }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                &nbsp; &nbsp; {{ event.date }}:{{ event.time }}</span>
+                            <span class="verification-badge">
+                                <i class="bi bi-clock"></i> {{ event.time_left }}
                             </span>
                         </div>
-                        
-                        <div class="user-card-body">
-                            <div class="user-info-item">
-                                <i class="bi bi-ticket-perforated"></i>
-                                <span>{{ event.name }}     &nbsp; &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;  {{ event.date }}:{{ event.time }}</span>
-                                <span class="verification-badge">
-                                    <i class="bi bi-clock"></i> {{ event.time_left }}
-                                </span>
-                            </div>
-                            
-                            <div class="row g-3 mt-2">
-                                <div class="col-md-4">
-                                    <div class="user-info-item">
-                                        <i class="bi bi-geo-alt"></i>
-                                        {{ event.stadium_name }}
-                                    </div>
+
+                        <div class="row g-3 mt-2">
+                            <div class="col-md-4">
+                                <div class="user-info-item">
+                                    <i class="bi bi-geo-alt"></i>
+                                    {{ event.stadium_name }}
                                 </div>
-                                
-                                <div class="col-md-4">
-                                    <div class="user-info-item">
-                                        <i class="bi bi-ticket-detailed"></i>
-                                        Tickets: Sold {{ event.sold_tickets }}/{{ event.total_tickets }}
-                                    </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="user-info-item">
+                                    <i class="bi bi-ticket-detailed"></i>
+                                    Tickets: Sold {{ event.sold_tickets }}/{{ event.total_tickets }}
                                 </div>
                             </div>
                         </div>
-                            
-                            <div class="event-actions">
-                                <a 
-                                    href="{% url 'events:create_listing' event.event_id %}" 
-                                    class="btn btn-admin-action"
-                                    style="
-                                    display: inline-block;
-                                    padding: .5rem 1rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #fff;
-                                    background-color: #007bff;
-                                    border: 1px solid #007bff;
-                                    border-radius: .25rem;
-                                    text-decoration: none;
-                                    margin-right: .5rem;
-                                    "
-                                >
-                                <i class="bi bi-plus-circle"></i> Create Listing
-                                </a>
+                    </div>
 
-                                <a 
-                                    href="{% url 'events:event_tickets' event.event_id %}" 
-                                    class="btn btn-admin-action"
-                                    style="
-                                    display: inline-block;
-                                    padding: .5rem 1rem;
-                                    font-size: 1rem;
-                                    font-weight: 400;
-                                    line-height: 1.5;
-                                    color: #fff;
-                                    background-color: #28a745;
-                                    border: 1px solid #28a745;
-                                    border-radius: .25rem;
-                                    text-decoration: none;
-                                    "
-                                >
-                                <i class="bi bi-ticket-detailed"></i> See Tickets
-                                </a>
+                    <div class="event-actions">
+                        <a href="{% url 'events:create_listing' event.event_id %}" class="btn btn-admin-action">
+                            <i class="bi bi-plus-circle"></i> Create Listing
+                        </a>
 
-                            </div>
-                        </div>
+                        <a href="{% url 'events:event_tickets' event.event_id %}" class="btn btn-admin-action">
+                            <i class="bi bi-ticket-detailed"></i> See Tickets
+                        </a>
+
                     </div>
                 </div>
                 {% endfor %}
             </div>
+        </div>
 
-            <nav class="admin-pagination mt-5">
-                <ul class="pagination justify-content-center">
-                    {% if page_obj.has_previous %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
-                            <i class="bi bi-chevron-left"></i>
-                        </a>
-                    </li>
-                    {% endif %}
-                    
-                    {% for num in page_obj.paginator.page_range %}
-                    <li class="page-item {% if num == page_obj.number %}active{% endif %}">
-                        <a class="page-link" href="?page={{ num }}">
-                            {{ num }}
-                        </a>
-                    </li>
-                    {% endfor %}
-                    
-                    {% if page_obj.has_next %}
-                    <li class="page-item">
-                        <a class="page-link" href="?page={{ page_obj.next_page_number }}">
-                            <i class="bi bi-chevron-right"></i>
-                        </a>
-                    </li>
-                    {% endif %}
-                </ul>
-            </nav>
+        <nav class="admin-pagination mt-5">
+            <ul class="pagination justify-content-center">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </a>
+                </li>
+                {% endif %}
+
+                {% for num in page_obj.paginator.page_range %}
+                <li class="page-item {% if num == page_obj.number %}active{% endif %}">
+                    <a class="page-link" href="?page={{ num }}">
+                        {{ num }}
+                    </a>
+                </li>
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
         </div>
     </main>
 
     {% include "partials/footer.html" %}
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- UNUSED HEADER SCROLL SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
-    <!--
-    <script>
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            const scrollY = window.scrollY;
-            const scale = 1 - Math.min(scrollY * 0.0005, 0.02);
-            header.style.transform = `scale(${scale})`;
-            header.style.boxShadow = `0 8px 32px rgba(0,0,0,${0.15 - Math.min(scrollY * 0.0005, 0.05)})`;
-        });
-    </script>
-    -->
 
-    <!-- UNUSED SEARCH AUTOCOMPLETE SCRIPT - MOVED TO PARTIALS/HEADER.HTML -->
-    <!--
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-        initSearchAutocomplete('.hero-search-input', '#hero-search-results');
-        initSearchAutocomplete('.navbar-search-input', '#navbar-search-results');
-        });
-
-        function initSearchAutocomplete(inputSelector, resultsContainer) {
-            const searchInput = document.querySelector(inputSelector);
-            const resultsDiv = document.querySelector(resultsContainer);
-
-            if (!searchInput) return;
-
-            let timeoutId;
-
-            searchInput.addEventListener('input', function(e) {
-                clearTimeout(timeoutId);
-                timeoutId = setTimeout(() => {
-                    const query = this.value.trim();
-                    
-                    if(query.length < 2) {
-                        resultsDiv.innerHTML = '';
-                        return;
-                    }
-
-                    fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`,{
-                        headers: {
-                        'X-Requested-With': 'XMLHttpRequest' 
-                        }
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            resultsDiv.innerHTML = data.map(event => `
-                                <a href="${event.url}" class="autocomplete-item">
-                                    <div class="ac-event-name">${event.name}</div>
-                                    <div class="ac-event-details">
-                                        <span>${event.category}</span>
-                                        <span>${event.date}</span>
-                                        <span>$${event.min_price} - $${event.max_price}</span>
-                                    </div>
-                                </a>
-                            `).join('');
-                        })
-                        .catch(error => console.error('Error:', error));
-                }, 300);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!searchInput.contains(e.target)) {
-                    resultsDiv.innerHTML = '';
-                }
-            });
-        }
-    </script>
-    -->
 </body>
+
 </html>
