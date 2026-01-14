@@ -1,42 +1,34 @@
-<div class="dropdown">
-    {% with current_sort=request.GET.sort|default:'upcoming' %}
-    <button class="btn btn-admin-action dropdown-toggle" type="button" id="sortDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-sort-down"></i>
-        {% if current_sort == 'upcoming' %}
-            Upcoming
-        {% elif current_sort == 'popular' %}
-            Popular
-        {% elif current_sort == 'price_low' %}
-            Price: Low to High
-        {% elif current_sort == 'price_high' %}
-            Price: High to Low
-        {% endif %}
-    </button>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="sortDropdown">
-        <li>
-            <a class="dropdown-item {% if current_sort == 'upcoming' %}active{% endif %}" 
-               href="?sort=upcoming">
-                <i class="bi bi-calendar-event"></i> Upcoming
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item {% if current_sort == 'popular' %}active{% endif %}" 
-               href="?sort=popular">
-                <i class="bi bi-fire"></i> Popular
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item {% if current_sort == 'price_low' %}active{% endif %}" 
-               href="?sort=price_low">
-                <i class="bi bi-arrow-up"></i> Price: Low to High
-            </a>
-        </li>
-        <li>
-            <a class="dropdown-item {% if current_sort == 'price_high' %}active{% endif %}" 
-               href="?sort=price_high">
-                <i class="bi bi-arrow-down"></i> Price: High to Low
-            </a>
-        </li>
-    </ul>
-    {% endwith %}
+<div class="d-flex gap-2">
+    <div class="dropdown">
+        <button class="btn btn-outline-success dropdown-toggle" type="button" data-bs-toggle="dropdown"
+            aria-expanded="false">
+            <i class="bi bi-sort-down"></i> Sort By: {{ current_sort|title }}
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+                <a class="dropdown-item {% if current_sort == 'upcoming' %}active{% endif %}"
+                    href="?sort=upcoming{% if current_team %}&team={{ current_team }}{% endif %}{% if current_tournament %}&tournament={{ current_tournament }}{% endif %}">
+                    <i class="bi bi-calendar-event"></i> Upcoming
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item {% if current_sort == 'popular' %}active{% endif %}"
+                    href="?sort=popular{% if current_team %}&team={{ current_team }}{% endif %}{% if current_tournament %}&tournament={{ current_tournament }}{% endif %}">
+                    <i class="bi bi-fire"></i> Popular
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item {% if current_sort == 'price_low' %}active{% endif %}"
+                    href="?sort=price_low{% if current_team %}&team={{ current_team }}{% endif %}{% if current_tournament %}&tournament={{ current_tournament }}{% endif %}">
+                    <i class="bi bi-tag"></i> Price: Low to High
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item {% if current_sort == 'price_high' %}active{% endif %}"
+                    href="?sort=price_high{% if current_team %}&team={{ current_team }}{% endif %}{% if current_tournament %}&tournament={{ current_tournament }}{% endif %}">
+                    <i class="bi bi-tag-fill"></i> Price: High to Low
+                </a>
+            </li>
+        </ul>
+    </div>
 </div>

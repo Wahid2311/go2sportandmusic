@@ -1117,7 +1117,7 @@
           const container = document.getElementById('svg-stadium-container');
 
           if (!container || !container.dataset.stadiumName) {
-            // console.log("No stadium data found, skipping SVG map.");
+            if (container) container.innerHTML = '<div class="alert alert-info small">Stadium information not available.</div>';
             return;
           }
 
@@ -1149,6 +1149,26 @@
               'santiago bernab\u00e9u stadium': 'santiagoBernabeuStadium',
               'riyadh metropolitano': 'riyadhMetropolitanoStadium',
               'riyadh metropolitano stadium': 'riyadhMetropolitanoStadium',
+              'gtech community stadium': 'gtechCommunityStadium',
+              'gtech': 'gtechCommunityStadium',
+              'stamford bridge': 'stamfordBridge',
+              'stamford': 'stamfordBridge',
+              'chelsea': 'stamfordBridge',
+              'elland road': 'ellandStadium',
+              'elland': 'ellandStadium',
+              'leeds': 'ellandStadium',
+              'turf moor': 'turfMoorStadium',
+              'turf moor stadium': 'turfMoorStadium',
+              'burnley': 'turfMoorStadium',
+              'queen elizabeth olympic park': 'queenElizabethOlympicPark',
+              'london stadium': 'queenElizabethOlympicPark',
+              'west ham': 'queenElizabethOlympicPark',
+              'selhurst park': 'selhurstPark',
+              'crystal palace': 'selhurstPark',
+              'celtic': 'celticStadium',
+              'celtic park': 'celticStadium',
+              'celtic stadium': 'celticStadium',
+              'tottenham hotspur stadium': 'tottenhamHotspurStadium',
             };
 
             if (MAPPING[nameLower]) return MAPPING[nameLower] + '.svg';

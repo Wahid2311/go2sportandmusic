@@ -11,12 +11,18 @@ SECTION_NAME_MAPPINGS = {
         'East Stand Lower',
         'West Stand Lower',
         'Central Lower Longside',
+        'North Stand Lower',
+        'Main Stand Lower',
+        'South Stand Lower',
     ],
     'longside-upper-tier': [
         'Longside Upper Tier',
         'Main Stand Upper',
         'East Stand Upper',
         'West Stand Upper',
+        'North Stand Upper',
+        'South Stand Upper',
+        'Main Stand Upper',
     ],
     
     # Shortside sections
@@ -25,12 +31,18 @@ SECTION_NAME_MAPPINGS = {
         'North Stand Lower',
         'South Stand Lower',
         'Anfield Road Lower',
+        'Jock Stein Stand Lower',
+        'Lisbon Lions Stand Lower',
+        'Jock Stein Stand',
+        'Lisbon Lions Stand',
     ],
     'shortside-upper-tier': [
         'Shortside Upper Tier',
         'North Stand Upper',
         'South Stand Upper',
         'Anfield Road Upper',
+        'Jock Stein Stand Upper',
+        'Lisbon Lions Stand Upper',
     ],
     
     # VIP sections
@@ -124,6 +136,172 @@ SECTION_NAME_MAPPINGS = {
         'Category 2 Superior',
         'Cat 2 Superior',
     ],
+
+    # Stamford Bridge specific sections
+    'matthew-harding-lower-tier': [
+        'Matthew Harding Lower',
+        'Matthew Harding Lower Tier',
+        'North Lower',
+    ],
+    'matthew-harding-upper-tier': [
+        'Matthew Harding Upper',
+        'Matthew Harding Upper Tier',
+        'North Upper',
+    ],
+    'shedend-lower-tier': [
+        'Shed End Lower',
+        'Shed End Lower Tier',
+        'South Lower',
+    ],
+    'shedend-upper-tier': [
+        'Shed End Upper',
+        'Shed End Upper Tier',
+        'South Upper',
+    ],
+    'hospitality-west-stand-lower-tier': [
+        'West Stand Lower Hospitality',
+        'Hospitality West Lower',
+    ],
+    'hospitality-west-stand-middle-tier': [
+        'West Stand Middle Hospitality',
+        'Hospitality West Middle',
+        'Tambling',
+        'Clarke',
+        'Harris',
+        'Drake',
+        'Bonetti',
+        'Hollins',
+        'Utb',
+        'Millennium Suites',
+    ],
+    'hospitality-west-stand-upper-tier': [
+        'West Stand Upper Hospitality',
+        'Hospitality West Upper',
+    ],
+    'hospitality-east-stand-middle-tier': [
+        'East Stand Middle Hospitality',
+        'Hospitality East Middle',
+        'Captains',
+        'Canoville',
+        'Canalettos',
+        'Exec Club',
+        'Ossie\'s',
+    ],
+
+    # Elland Road specific sections
+    'away-seating': [
+        'Away Seating',
+        'Away Stand',
+    ],
+    'hospitality-boxes': [
+        'Hospitality Boxes',
+        'East Stand Boxes',
+        'West Stand Boxes',
+    ],
+    'hospitality-lounges': [
+        'Hospitality Lounges',
+        'Bremner Suite',
+        'Norman Hunter Suite',
+        'Revie Room',
+        'Gary Speed Suite',
+        'Lorimer Suite',
+        'Centenary Pavilion',
+    ],
+
+    # Turf Moor specific sections
+    'shortside-corner-tier': [
+        'Shortside Corner Tier',
+        'Corner',
+    ],
+    'away-fan-section': [
+        'Away Fan Section', # Specific to Turf Moor SVG naming which uses singular 'fan'
+    ],
+    'vip-100-club': [
+        '100 Club',
+        'The 100 Club',
+    ],
+    'vip-bdb': [
+        'BDB',
+        'BDB Lounge',
+    ],
+
+    # Queen Elizabeth Olympic Park (London Stadium) specific sections
+    'longside-lower-central-tier': [
+        'Longside Lower Central Tier',
+        'East Stand Lower Central',
+        'West Stand Lower Central',
+    ],
+    'longside-upper-central-tier': [
+        'Longside Upper Central Tier',
+        'East Stand Upper Central',
+        'West Stand Upper Central',
+    ],
+    'vip-packages': [
+        'VIP Packages',
+        'Club London',
+        'Academy Bar',
+        'Great Briton',
+        'Arnold Hills',
+        'Royal East',
+        # Selhurst Park VIP
+        'Executive Lounge',
+        'Wright and Bright',
+        "Speroni's",
+        'Stephenson',
+        'Malcolm Allison',
+        '2010 Club',
+        'Glaziers',
+        'Legend',
+        'Executive Boxes',
+        'Red and Blue Bar',
+        # Craven Cottage VIP
+        'Johnny Haynes Suites',
+        "Sponsors' Lounge",
+        'Thameside Suites',
+        'Television Studio',
+    ],
+
+    # Craven Cottage specific sections
+    'riverside-stand-lower-tier': [
+        'Riverside Stand Lower',
+        'Riverside Lower',
+    ],
+    'riverside-stand-upper-tier': [
+        'Riverside Stand Upper',
+        'Riverside Upper',
+    ],
+    'jhonny-hayens-stand-lower-tier': [
+        'Johnny Haynes Stand Lower',
+        'Johnny Haynes Lower',
+    ],
+    'jhonny-hayens-stand-upper-tier': [
+        'Johnny Haynes Stand Upper',
+        'Johnny Haynes Upper',
+    ],
+    'putney-end-tier': [
+        'Putney End',
+    ],
+    'hammersmith-stand-tier': [
+        'Hammersmith End',
+        'Hammersmith Stand',
+    ],
+
+    # Selhurst Park specific sections
+    'whitehorse-lane-stand-lower-tier': [
+        'Whitehorse Lane Stand',
+        'Whitehorse Lane',
+    ],
+    'holmesdale-road-stand-lower-tier': [
+        'Holmesdale Road Stand',
+        'Holmesdale Road',
+    ],
+    'arthur-wait-stand-tier': [
+        'Arthur Wait Stand',
+        'Arthur Wait',
+    ],
+    'main-stand-tier': [
+        'Main Stand',
+    ],
 }
 
 # Reverse mapping for quick lookup
@@ -191,12 +369,31 @@ def get_svg_key_from_stadium_name(stadium_name):
         'san siro': 'sanSiro',
         'molineux': 'molineux',
         'craven cottage': 'cravenCottage',
+        'craven cottage stadium': 'cravenCottage',
+        'fulham': 'cravenCottage',
         'etihad': 'etihadStadium',
         'etihad stadium': 'etihadStadium',
         'santiago bernabéu': 'santiagoBernabeuStadium',
         'santiago bernabeu': 'santiagoBernabeuStadium',
         'riyadh metropolitano': 'riyadhMetropolitanoStadium',
         'riyadh metropolitano stadium': 'riyadhMetropolitanoStadium',
+        'gtech community stadium': 'gtechCommunityStadium',
+        'gtech': 'gtechCommunityStadium',
+        'stamford bridge': 'stamfordBridge',
+        'stamford': 'stamfordBridge',
+        'chelsea': 'stamfordBridge',
+        'turf moor': 'turfMoorStadium',
+        'turf moor stadium': 'turfMoorStadium',
+        'burnley': 'turfMoorStadium',
+        'queen elizabeth olympic park': 'queenElizabethOlympicPark',
+        'london stadium': 'queenElizabethOlympicPark',
+        'west ham': 'queenElizabethOlympicPark',
+        'selhurst park': 'selhurstPark',
+        'crystal palace': 'selhurstPark',
+        'celtic park': 'celticStadium',
+        'celtic stadium': 'celticStadium',
+        'celtic': 'celticStadium',
+        'tottenham hotspur stadium': 'tottenhamHotspurStadium',
     }
     
     name_lower = stadium_name.lower().strip()

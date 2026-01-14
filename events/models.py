@@ -36,6 +36,12 @@ class Event(BaseModel):
         ('etihadStadium', 'Etihad Stadium'),
         ('santiagoBernabeuStadium', 'Santiago Bernabéu Stadium'),
         ('riyadhMetropolitanoStadium', 'Riyadh Metropolitano Stadium'),
+        ('gtechCommunityStadium', 'Gtech Community Stadium'),
+        ('stamfordBridge', 'Stamford Bridge'),
+        ('turfMoorStadium', 'Turf Moor Stadium'),
+        ('queenElizabethOlympicPark', 'Queen Elizabeth Olympic Park'),
+        ('selhurstPark', 'Selhurst Park'),
+        ('celticStadium', 'Celtic Stadium'),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)

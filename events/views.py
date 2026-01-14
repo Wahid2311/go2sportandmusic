@@ -423,7 +423,7 @@ class AllEventsView(ListView):
         if sort == 'upcoming':
             return qs.filter(date__gte=timezone.now().date()).order_by('date')
         elif sort == 'popular':
-            return qs.annotate(ticket_count=Sum('sold_tickets')).order_by('-ticket_count')
+            return qs.order_by('-sold_tickets')
         elif sort == 'price_low':
             return qs.order_by('min_price')
         elif sort == 'price_high':
@@ -562,7 +562,7 @@ class AllEventsAPIView(View):
         if sort == 'upcoming':
             qs = qs.filter(date__gte=timezone.now().date()).order_by('date')
         elif sort == 'popular':
-            qs = qs.annotate(ticket_count=Sum('sold_tickets')).order_by('-ticket_count')
+            qs = qs.order_by('-sold_tickets')
         elif sort == 'price_low':
             qs = qs.order_by('min_price')
         elif sort == 'price_high':

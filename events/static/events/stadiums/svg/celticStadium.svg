@@ -1,0 +1,260 @@
+<svg id="Laag_1" data-name="Laag 1" xmlns="http://www.w3.org/2000/svg"
+    viewBox="218.75999450683594 152.77000427246094 1267.882568359375 881.5799560546875">
+    <defs>
+        <style>
+
+        </style>
+        <style class="darkreader darkreader--sync" media="screen"></style>
+    </defs>
+    <g id="Layer_3" data-name="Layer 3">
+        <rect class="soccerfield" x="1135.95" y="556.76" width="32.24" height="111.73"></rect>
+        <polygon class="soccerfield"
+            points="1168.19 672.99 1168.19 732.23 1073.9 732.23 1073.9 490.96 1168.19 490.96 1168.19 552.26 1131.46 552.26 1131.46 672.99 1168.19 672.99"></polygon>
+        <path class="soccerfield" d="M1069.4,567.79V652a50.6,50.6,0,0,1,0-84.16Z"></path>
+        <path class="soccerfield"
+            d="M1168.19,736.73v59H854V664.93a55.11,55.11,0,0,0,0-110.12V425.1h314.19v61.36H1069.4v76a55.06,55.06,0,0,0,0,94.75v79.49Z"></path>
+        <path class="soccerfield" d="M854,559.31a50.61,50.61,0,0,1,0,101.12Z"></path>
+        <path class="soccerfield" d="M849.5,559.31V660.43a50.61,50.61,0,0,1,0-101.12Z"></path>
+        <path class="soccerfield"
+            d="M849.5,664.93v130.8H535.3v-59h98.79V657.24a55.06,55.06,0,0,0,0-94.75v-76H535.3V425.1H849.5V554.81a55.11,55.11,0,0,0,0,110.12Z"></path>
+        <path class="soccerfield" d="M634.09,567.79a50.6,50.6,0,0,1,0,84.16Z"></path>
+        <polygon class="soccerfield"
+            points="629.6 490.96 629.6 732.23 535.3 732.23 535.3 672.99 572.04 672.99 572.04 552.26 535.3 552.26 535.3 490.96 629.6 490.96"></polygon>
+        <rect class="soccerfield" x="535.3" y="556.76" width="32.24" height="111.73"></rect>
+        <polygon class="grandstand nosale"
+            points="1486.64 754.1 1486.64 837.35 1409.6 837.35 1409.6 834.35 1351.14 834.35 1351.14 754.1 1486.64 754.1"></polygon>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand nosale" x="1351.14" y="679.6" width="135.5" height="64.5"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand nosale" x="1351.14" y="603.6" width="135.5" height="66"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand nosale" x="1351.14" y="525.6" width="135.5" height="68"></rect>
+        <polygon class="grandstand nosale"
+            points="1486.64 449.1 1486.64 515.6 1351.14 515.6 1351.14 449.1 1365.81 449.1 1486.64 449.1"></polygon>
+        <path data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale"
+            d="M1486.64,429.6v9.5H1365.81V421.36a105.12,105.12,0,0,0-.37-19.91l116.33-24.18C1486.91,407.85,1486.64,429.31,1486.64,429.6Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M1480,367.43,1364,391.53a132.92,132.92,0,0,0-10.72-33.45A127.79,127.79,0,0,0,1342,338.86L1439.18,261c20.84,33.17,32.23,68.21,38.39,95.15Q1478.91,361.91,1480,367.43Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M1433.67,252.56,1336,330.92a137.24,137.24,0,0,0-23.63-22.25,156.23,156.23,0,0,0-18.39-11.74l65.71-112.49a214.12,214.12,0,0,1,48.47,37A229.3,229.3,0,0,1,1433.67,252.56Z"></path>
+        <path data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale"
+            d="M1344.08,361.93A122.5,122.5,0,0,1,1356,418.1H1246.14v-2.43a46.9,46.9,0,0,0-3.86-19l76.81-69.31A119.73,119.73,0,0,1,1344.08,361.93Z"></path>
+        <polygon class="grandstand nosale"
+            points="1341.14 449.1 1341.14 496.1 1215.97 496.1 1215.97 435.6 1246.14 435.6 1246.14 428.1 1341.14 428.1 1341.14 449.1"></polygon>
+        <rect data-section="shortside-lower-tier" data-tags="shortside-lower-tier" class="grandstand nosale" x="1215.97" y="506.1" width="125.17" height="68"></rect>
+        <rect data-section="shortside-lower-tier" data-tags="shortside-lower-tier" class="grandstand nosale" x="1215.97" y="584.1" width="125.17" height="68"></rect>
+        <rect data-section="shortside-lower-tier" data-tags="shortside-lower-tier" class="grandstand nosale" x="1215.97" y="662.1" width="125.17" height="67.5"></rect>
+        <polygon class="grandstand nosale"
+            points="1341.14 739.6 1341.14 792.69 1240.64 792.69 1240.64 792.6 1215.97 792.6 1215.97 739.6 1341.14 739.6"></polygon>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M1341.14,802.69v31.66h-98.33V835a10.64,10.64,0,0,0-2.17-2.11V802.69Z"></path>
+        <path data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand nosale"
+            d="M1350.81,179.74,1285,292.36c-16-7.6-34.07-13.43-54.2-17.4V250.43h-3.59V152.79C1274.3,153.11,1315.64,162.14,1350.81,179.74Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M1311.58,320.64l-74.89,67.58-.11-.11a24.88,24.88,0,0,0-9.36-6.12V284.47C1262.27,291.15,1290.47,303.26,1311.58,320.64Z"></path>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="979.31" y="325.62" width="70.33" height="54.48"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="896.14" y="325.62" width="73.17" height="54.48"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="815.64" y="325.62" width="70.5" height="54.48"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="730.97" y="325.62" width="74.67" height="54.48"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="652.31" y="325.62" width="68.66" height="54.48"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="569.31" y="325.62" width="73" height="54.48"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="569.31" y="260.43" width="73" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="652.31" y="260.43" width="68.66" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="730.97" y="260.43" width="74.67" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="815.64" y="260.43" width="70.5" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="896.14" y="260.43" width="73.17" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="979.31" y="260.43" width="70.33" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="1059.64" y="260.43" width="83.33" height="55.19"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="1059.64" y="325.62" width="83.33" height="54.48"></rect>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" d="M1217.22,325.62v54.5l-1.2,0h-63V325.62Z"></path>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="1152.97" y="260.43" width="64.25" height="55.19"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="1152.97" y="152.77" width="64.25" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="1071.97" y="152.77" width="71" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="991.97" y="152.77" width="70" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="912.31" y="152.77" width="69.66" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="833.64" y="152.77" width="68.67" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="752.31" y="152.77" width="71.33" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="672.64" y="152.77" width="69.67" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="595.31" y="152.77" width="67.33" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="535.31" y="152.77" width="50" height="97.66"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="490.64" y="152.77" width="34.67" height="97.66"></rect>
+        <rect data-section="longside-lower-tier" data-tags="longside-lower-tier" class="grandstand nosale" x="490.64" y="325.62" width="68.67" height="54.48"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="490.64" y="260.43" width="68.67" height="55.19"></rect>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M471.49,286.15l5.95,97.28A37.76,37.76,0,0,0,467,391.35l-71.48-70.8Q424.6,296.63,471.49,286.15Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M471.16,152.77V276A224.86,224.86,0,0,0,422,292.35L355.71,181.24c45.71-24.09,86-28.27,88-28.47Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand 50141063ae4f4102a06b7bd58d76f5e5_ctg cursor-pointer active"
+            d="M1346.14,844.35h61.21c-3,48.86-16.83,88.54-41.18,118.66l-126-108.61a29.89,29.89,0,0,0,4.54-9.46,4.65,4.65,0,0,0,.14-.59h101.27Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand 50141063ae4f4102a06b7bd58d76f5e5_ctg cursor-pointer active"
+            d="M1233.21,861.57l126.44,109a164.15,164.15,0,0,1-40.11,31.66c-42.11,23.9-84.69,25.11-92.8,25.11h-6.16v-159A47.92,47.92,0,0,0,1233.21,861.57Z"></path>
+        <polygon class="grandstand nosale"
+            points="1210.58 870.77 1210.58 1027.35 1105.86 1027.35 1133.65 899.6 1182.64 899.6 1182.64 870.77 1210.58 870.77"></polygon>
+        <polygon class="grandstand nosale"
+            points="1133.16 850.1 1122.5 899.6 1123.42 899.6 1119.34 918.37 1062.31 918.37 1062.31 850.1 1133.16 850.1"></polygon>
+        <polygon class="grandstand nosale"
+            points="1117.16 928.37 1095.63 1027.35 1013.64 1027.35 1013.64 928.37 1117.16 928.37"></polygon>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="984.97" y="850.1" width="67.34" height="68.27"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="888.97" y="928.37" width="114.67" height="98.98"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="908.97" y="850.1" width="66" height="68.27"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="871.64" y="850.1" width="27.33" height="68.27"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="823.64" y="928.37" width="55.33" height="98.98"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="802.97" y="850.1" width="29.34" height="68.27"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="700.31" y="928.37" width="113.33" height="98.98"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="724.97" y="850.1" width="68" height="68.27"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale" x="650.31" y="850.1" width="64.66" height="68.27"></rect>
+        <polygon class="grandstand nosale"
+            points="690.31 928.37 690.31 1027.35 614.7 1027.35 589.85 928.37 690.31 928.37"></polygon>
+        <polygon class="grandstand nosale"
+            points="640.31 850.1 640.31 918.37 587.34 918.37 570.2 850.1 640.31 850.1"></polygon>
+        <polygon class="grandstand nosale"
+            points="558.55 876.6 594.88 1034.35 498.97 1034.35 498.97 949.1 522.64 949.1 522.64 876.6 558.55 876.6"></polygon>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M483,949.1v85.25h-.38c-55.2,0-99.33-18.9-131.76-56.26l118.89-106.7A33.57,33.57,0,0,0,483,876.12v73Z"></path>
+        <polygon class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale"
+            points="474.31 767.6 474.31 812.35 453.39 812.35 453.39 833.1 351.14 833.1 351.14 767.6 474.31 767.6"></polygon>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="351.14" y="691.1"
+            width="123.17" height="57.75"></rect>
+        <rect data-section="longside-upper-tier" data-tags="longside-upper-tier" id="_90179b9169d74c99b13f831560e8504a_ctg"
+            class="_90179b9169d74c99b13f831560e8504a_ctg grandstand 90179b9169d74c99b13f831560e8504a_ctg e880e5fb201948cf94cc4156b83d20b1_ctg nosale"
+            x="351.14" y="612.14" width="123.17" height="60.46"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="351.14" y="537.39"
+            width="123.17" height="56.25"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="351.14" y="467.93"
+            width="123.17" height="50.96"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="351.14" y="429.35"
+            width="123.17" height="22.08"></rect>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M388,327.21l73,72.35a53,53,0,0,0-5.37,14.9H350.85a123.18,123.18,0,0,1,11.81-52.09A119.44,119.44,0,0,1,388,327.21Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M457.84,858.5,339.92,964.13a214.58,214.58,0,0,1-16.32-27.07c-18.68-36.72-25-73.85-26.91-89.76h47.45v1.55H454A43.83,43.83,0,0,0,457.84,858.5Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M347,186.07,413,296.92a157.16,157.16,0,0,0-18.42,11.75,136.55,136.55,0,0,0-24.76,23.66l-97.95-79.77a247.9,247.9,0,0,1,74.18-66Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand nosale"
+            d="M266.08,260.71l97.78,79.63a128.9,128.9,0,0,0-10.24,17.74,133.14,133.14,0,0,0-10.11,30.35L223,365.36C231.78,322.15,247.46,287.86,266.08,260.71Z"></path>
+        <path data-section="longside-upper-tier" data-tags="longside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale"
+            d="M220.57,381.51,341.27,404a101.16,101.16,0,0,0-.13,17.38v32.07H218.76V418.15C219.19,400.23,220,388.39,220.57,381.51Z"></path>
+        <polygon class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale"
+            points="341.14 769.1 341.14 837.3 293.89 837.3 293.89 837.35 218.76 837.35 218.76 769.1 341.14 769.1"></polygon>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="218.76" y="694.35"
+            width="122.38" height="57"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="218.76" y="618.64"
+            width="122.38" height="57.96"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="218.76" y="543.89"
+            width="122.38" height="57"></rect>
+        <rect data-section="shortside-upper-tier" data-tags="shortside-upper-tier" class="grandstand e880e5fb201948cf94cc4156b83d20b1_ctg nosale" x="218.76" y="469.1"
+            width="122.38" height="57.04"></rect>
+    </g>
+    <g id="Layer_4" data-name="Layer 4">
+        <text class="labels-small" transform="translate(408.91 972.66)">122</text>
+        <text class="labels-small" transform="translate(343.57 899.32)">123</text>
+        <text class="labels-small" transform="translate(382.91 805.66)">137</text>
+        <text class="labels-small" transform="translate(260.07 805.66)">437</text>
+        <text class="labels-small" transform="translate(382.91 729.66)">138</text>
+        <text class="labels-small" transform="translate(382.91 648.99)">139</text>
+        <text class="labels-small" transform="translate(382.91 573.99)">140</text>
+        <text class="labels-small" transform="translate(382.91 501.66)">141</text>
+        <text class="labels-small" transform="translate(382.91 451.03)">142</text>
+        <text class="labels-small" transform="translate(373.41 391.35)">143</text>
+        <text class="labels-small" transform="translate(417.91 340.6)">144</text>
+        <text class="labels-small" transform="translate(500.41 360.6)">101</text>
+        <text class="labels-small" transform="translate(582.45 360.6)">102</text>
+        <text class="labels-small" transform="translate(663.28 360.6)">103</text>
+        <text class="labels-small" transform="translate(744.94 360.6)">104</text>
+        <text class="labels-small" transform="translate(827.53 360.6)">105</text>
+        <text class="labels-small" transform="translate(910.86 360.6)">106</text>
+        <text class="labels-small" transform="translate(991.11 360.6)">107</text>
+        <text class="labels-small" transform="translate(1080.86 360.6)">108</text>
+        <text class="labels-small" transform="translate(500.41 297.6)">201</text>
+        <text class="labels-small" transform="translate(582.45 297.6)">202</text>
+        <text class="labels-small" transform="translate(663.28 297.6)">203</text>
+        <text class="labels-small" transform="translate(744.94 297.6)">204</text>
+        <text class="labels-small" transform="translate(827.53 297.6)">205</text>
+        <text class="labels-small" transform="translate(910.86 297.6)">206</text>
+        <text class="labels-small" transform="translate(991.11 297.6)">207</text>
+        <text class="labels-small" transform="translate(1080.86 297.6)">208</text>
+        <text class="labels-small" transform="translate(1163.03 360.6)">109</text>
+        <text class="labels-small" transform="translate(1163.03 299.27)">209</text>
+        <text class="labels-small" transform="translate(1163.03 212.27)">410</text>
+        <text class="labels-small" transform="translate(1084.11 212.27)">409</text>
+        <text class="labels-small" transform="translate(1005.11 212.27)">408</text>
+        <text class="labels-small" transform="translate(923.78 212.27)">407</text>
+        <text class="labels-small" transform="translate(844.61 212.27)">406</text>
+        <text class="labels-small" transform="translate(761.95 212.27)">405</text>
+        <text class="labels-small" transform="translate(684.11 212.27)">404</text>
+        <text class="labels-small" transform="translate(605.61 212.27)">403</text>
+        <text class="labels-small" transform="translate(569.31 224.96) rotate(-90)">402</text>
+        <text class="labels-small" transform="translate(517.31 224.96) rotate(-90)">401</text>
+        <text class="labels-small" transform="translate(403.91 217.6)">445</text>
+        <text class="labels-small" transform="translate(319.11 270.6)">444</text>
+        <text class="labels-small" transform="translate(270.07 342.35)">443</text>
+        <text class="labels-small" transform="translate(260.07 429.35)">442</text>
+        <text class="labels-small" transform="translate(260.07 506.1)">441</text>
+        <text class="labels-small" transform="translate(260.07 579.77)">440</text>
+        <text class="labels-small" transform="translate(260.07 655.27)">439</text>
+        <text class="labels-small" transform="translate(260.07 732.23)">438</text>
+        <text class="labels-small" transform="translate(517.41 990.91)">121</text>
+        <text class="labels-small" transform="translate(1144.84 972.24)">120</text>
+        <text class="labels-small" transform="translate(1248.61 963.01)">
+            119
+        </text>
+        <text class="labels-small" transform="translate(1315.61 899.01)">
+            118
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 827.76)">
+            117
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 777.01)">
+            116
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 707.68)">
+            115
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 628.93)">
+            114
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 550.43)">
+            113
+
+        </text>
+        <text class="labels-small" transform="translate(1266.75 477.43)">
+            112
+
+        </text>
+        <text class="labels-small" transform="translate(1281.75 395.1)">
+            111
+        </text>
+        <text class="labels-small" transform="translate(1236.75 340.43)">
+            110
+        </text>
+        <text class="labels-small" transform="translate(1253.29 228.07)">411
+        </text>
+        <text class="labels-small" transform="translate(1343.79 271.07)">412</text>
+        <text class="labels-small" transform="translate(1396.79 341.57)">413</text>
+        <text class="labels-small" transform="translate(1411.79 426.07)">414</text>
+        <text class="labels-small" transform="translate(1398.79 492.07)">415</text>
+        <text class="labels-small" transform="translate(1398.79 567.07)">416</text>
+        <text class="labels-small" transform="translate(1398.79 650.32)">417</text>
+        <text class="labels-small" transform="translate(1398.79 719.82)">418</text>
+        <text class="labels-small" transform="translate(1398.79 802.69)">419</text>
+        <text class="labels-small" transform="translate(613.43 981.55)">WS1</text>
+        <text class="labels-small" transform="translate(732.43 981.55)">WS2</text>
+        <text class="labels-small" transform="translate(926.3 981.55)">ES2</text>
+        <text class="labels-small" transform="translate(1035.84 981.55)">ES1</text>
+        <text class="labels-small" transform="translate(1067.46 892.1)">FS7</text>
+        <text class="labels-small" transform="translate(995.21 892.1)">FS6</text>
+        <text class="labels-small" transform="translate(916.29 892.1)">FS5</text>
+        <text class="labels-small" transform="translate(733.29 892.1)">FS3</text>
+        <text class="labels-small" transform="translate(658.62 892.1)">FS2</text>
+        <text class="labels-small" transform="translate(583.87 892.1)">FS1</text>
+        <text class="labels-small" transform="translate(896.04 909.91) rotate(-90)">F4E</text>
+        <text class="labels-small" transform="translate(829.54 913.79) rotate(-90)">F4W</text>
+        <g class="labels-small">
+            <text transform="translate(847.02 1010.05) rotate(-90)">EXEC</text>
+            <text transform="translate(871.29 1010.66) rotate(-90)">CLUB</text>
+        </g>
+        <text class="labels-logo" transform="translate(1170.34 110.19)"></text>
+    </g>
+</svg>
