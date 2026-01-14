@@ -147,9 +147,9 @@ function renderNavbarCategories() {
                         const value = encodeURIComponent(item.dataset.value);
 
                         if (type === 'tournament') {
-                            window.location.href = `http://127.0.0.1:8000/events/all/?tournament=${value}`;
+                            window.location.href = `/events/all/?tournament=${value}`;
                         } else if (type === 'team') {
-                            window.location.href = `http://127.0.0.1:8000/events/all/?team=${value}`;
+                            window.location.href = `/events/all/?team=${value}`;
                         }
                     });
                 });
