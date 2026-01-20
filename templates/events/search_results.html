@@ -264,14 +264,14 @@
         }
 
         .user-info-item {
-            display: flex;
+            display: inline;
             align-items: center;
             gap: 0.6rem;
             margin-bottom: 0.6rem;
             color: var(--primary-dark);
             font-size: 0.85rem;
             font-weight: 500;
-            padding: 0.5rem 0.75rem;
+            padding: 0.5rem;
             background: rgba(77, 147, 112, 0.04);
             border-radius: 12px;
             transition: all 0.3s ease;
@@ -561,22 +561,24 @@
                     <div class="user-card-body">
                         <div class="user-info-item">
                             <i class="bi bi-ticket-perforated"></i>
-                            <span>{{ event.name }} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                &nbsp; &nbsp; {{ event.date }}:{{ event.time }}</span>
+                            <div class="d-flex justify-content-between">{{ event.name }} <span>
+                                    {{ event.date }}:
+                                    {{event.time }}
+                                </span></div>
                             <span class="verification-badge">
                                 <i class="bi bi-clock"></i> {{ event.time_left }}
                             </span>
                         </div>
 
                         <div class="row g-3 mt-2">
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="user-info-item">
                                     <i class="bi bi-geo-alt"></i>
                                     {{ event.stadium_name }}
                                 </div>
                             </div>
 
-                            <div class="col-md-4">
+                            <div class="col-md-12">
                                 <div class="user-info-item">
                                     <i class="bi bi-ticket-detailed"></i>
                                     Tickets: Sold {{ event.sold_tickets }}/{{ event.total_tickets }}

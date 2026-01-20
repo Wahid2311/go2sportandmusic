@@ -4,6 +4,9 @@
 
 {% block dashboard_content %}
 
+<link rel="stylesheet" href="{% static 'events/css/customCountryDropdown.css' %}">
+
+
 <style>
     .add-btn {
         height: 38px;
@@ -128,6 +131,7 @@
 </div>
 
 <script src="{% static 'events/js/countryData.js' %}"></script>
+<script src="{% static 'events/js/customCountryDropdown.js' %}"></script>
 <script>
     // Wait for DOM and COUNTRIES to load
     document.addEventListener('DOMContentLoaded', function () {
@@ -161,7 +165,7 @@
             return `
             <option value="">Select country</option>
             ${COUNTRIES.map(c => `
-                <option value="${c.label}" data-code="${c.code}">
+                <option value="${c.label}" data-code="${c.code}" data-flag="https://flagcdn.com/w20/${c.code.toLowerCase()}.png">
                     ${c.label}
                 </option>
             `).join("")}
@@ -170,11 +174,11 @@
 
         async function callCreateAPI(type, btnElement) {
             const section = btnElement.closest(`.${type}-section`);
-            const countrySelect = section.querySelector(".country-select");
             const nameInput = section.querySelector(".name-input");
-            const flag = section.querySelector(".country-flag");
+            const dropdown = section.dropdownInstance;
 
-            const country = countrySelect.value;
+            const selectedCountry = dropdown ? dropdown.getValue() : null;
+            const country = selectedCountry ? selectedCountry.label : '';
             const name = nameInput.value;
 
             if (!country || !name) {
@@ -200,9 +204,8 @@
                 const data = await response.json();
 
                 if (data.success) {
-                    countrySelect.value = "";
+                    if (dropdown) dropdown.reset();
                     nameInput.value = "";
-                    if (flag) flag.style.display = "none";
                     showToast(`${type.slice(0, -1).charAt(0).toUpperCase() + type.slice(1, -1)} added successfully!`, "success");
                     fetchCategories();
                 } else {
@@ -242,18 +245,26 @@
             wrapper.className = `${type}-section`;
             wrapper.innerHTML = `
             <div class="d-flex gap-2 align-items-center mb-3">
-                <div class="country-select-wrapper">
-                    <img class="country-flag" width="20" alt="" />
-                    <select class="form-select country-select">
-                        ${countryOptions()}
-                    </select>
-                </div>
+                <div class="country-dropdown-container"></div>
                 <input type="text" class="form-control name-input" placeholder="Enter ${type.slice(0, -1)}" />
                 <button type="button" class="btn btn-outline-primary btn-sm add-row" data-type="${type}">
                     <i class="bi bi-plus"></i>
                 </button>
             </div>
         `;
+
+            // Initialize custom dropdown
+            const dropdownContainer = wrapper.querySelector('.country-dropdown-container');
+            const dropdown = new CustomCountryDropdown(dropdownContainer, {
+                onSelect: (country) => {
+                    // Store selected country in a data attribute
+                    wrapper.dataset.selectedCountry = country.label;
+                }
+            });
+
+            // Store dropdown instance for later access
+            wrapper.dropdownInstance = dropdown;
+
             return wrapper;
         }
 
@@ -406,9 +417,13 @@
             // Update flag
             const flag = document.getElementById('editCountryFlag');
             const selectedOption = countrySelect.selectedOptions[0];
-            if (selectedOption && selectedOption.dataset.code) {
-                flag.src = `https://flagcdn.com/w20/${selectedOption.dataset.code.toLowerCase()}.png`;
+            const flagUrl = selectedOption?.dataset.flag;
+            const code = selectedOption?.dataset.code;
+
+            if (code && flagUrl) {
+                flag.src = flagUrl;
                 flag.style.display = "block";
+                flag.alt = selectedOption.value;
             } else {
                 flag.style.display = "none";
             }
@@ -515,25 +530,15 @@
         document.getElementById('editCategoryCountry')?.addEventListener('change', function () {
             const flag = document.getElementById('editCountryFlag');
             const selectedOption = this.selectedOptions[0];
-            if (selectedOption && selectedOption.dataset.code) {
-                flag.src = `https://flagcdn.com/w20/${selectedOption.dataset.code.toLowerCase()}.png`;
+            const flagUrl = selectedOption?.dataset.flag;
+            const code = selectedOption?.dataset.code;
+
+            if (code && flagUrl) {
+                flag.src = flagUrl;
                 flag.style.display = "block";
+                flag.alt = selectedOption.value;
             } else {
                 flag.style.display = "none";
-            }
-        });
-
-        container.addEventListener("change", e => {
-            const select = e.target.closest(".country-select");
-            if (select && !select.id.includes('edit')) {
-                const flag = select.closest(".country-select-wrapper").querySelector(".country-flag");
-                const code = select.selectedOptions[0]?.dataset.code;
-                if (code) {
-                    flag.src = `https://flagcdn.com/w20/${code.toLowerCase()}.png`;
-                    flag.style.display = "block";
-                } else {
-                    flag.style.display = "none";
-                }
             }
         });
 

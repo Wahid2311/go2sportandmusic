@@ -3,7 +3,7 @@ import uuid
 from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.db import transaction
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponseBadRequest, Http404,HttpResponse
@@ -47,21 +47,24 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
     form_class = TicketForm
     template_name = 'tickets/create_listing.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        if self.request.user.is_superadmin:
-            context['base_template'] = 'accounts/superadmin_dashboard.html'
-            return context
-        user_type = self.request.user.user_type 
-        if user_type=='Reseller':
-            context['base_template'] = 'accounts/reseller_dashboard.html'
-            return context
-
     def dispatch(self, request, *args, **kwargs):
         self.event = get_object_or_404(Event, event_id=kwargs['event_id'])
         if not self.event:
             raise Http404("Event does not exist")
         return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['event'] = self.event
+        if self.request.user.is_superadmin:
+            context['base_template'] = 'accounts/superadmin_dashboard.html'
+        else:
+            user_type = self.request.user.user_type 
+            if user_type == 'Reseller':
+                context['base_template'] = 'accounts/reseller_dashboard.html'
+            else:
+                context['base_template'] = 'accounts/normal_dashboard.html'
+        return context
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -72,52 +75,62 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
         return kwargs
 
     def form_valid(self, form):
-        ticket = form.save(commit=False)
-        ticket.seller = self.request.user
-        
-        # Handle bundle creation if sell_together is checked
-        if form.cleaned_data.get('sell_together', False):
-            # Check if there's a bundle_id in session for this event
-            session_key = f'bundle_id_{self.event.event_id}'
-            bundle_id = self.request.session.get(session_key)
+        try:
+            ticket = form.save(commit=False)
+            ticket.seller = self.request.user
+            ticket.event = self.event
             
-            # If no bundle_id in session, create a new one
-            if not bundle_id:
-                bundle_id = uuid.uuid4()
-                self.request.session[session_key] = str(bundle_id)
+            # Handle bundle creation if sell_together is checked
+            if form.cleaned_data.get('sell_together', False):
+                # Check if there's a bundle_id in session for this event
+                session_key = f'bundle_id_{self.event.event_id}'
+                bundle_id = self.request.session.get(session_key)
+                
+                # If no bundle_id in session, create a new one
+                if not bundle_id:
+                    bundle_id = uuid.uuid4()
+                    self.request.session[session_key] = str(bundle_id)
+                else:
+                    bundle_id = uuid.UUID(bundle_id)
+                
+                ticket.bundle_id = bundle_id
             else:
-                bundle_id = uuid.UUID(bundle_id)
+                # Clear bundle_id from session if sell_together is not checked
+                session_key = f'bundle_id_{self.event.event_id}'
+                if session_key in self.request.session:
+                    del self.request.session[session_key]
+                ticket.bundle_id = None
             
-            ticket.bundle_id = bundle_id
-        else:
-            # Clear bundle_id from session if sell_together is not checked
-            session_key = f'bundle_id_{self.event.event_id}'
-            if session_key in self.request.session:
-                del self.request.session[session_key]
-            ticket.bundle_id = None
-        
-        ticket.save()
+            ticket.save()
 
-        subject = f"Ticket Listing Created for {self.event.name}"
-        marketplace_url = self.request.build_absolute_uri(
-            reverse('events:event_tickets', args=[self.event.event_id])
-        )
-        message = (
-            f"Your tickets have been listed.\n\n"
-            f"Event: {self.event.name}\n"
-            f"Ticket ID: {ticket.ticket_id}\n"
-            f"View them here: {marketplace_url}"
-        )
-        send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.request.user.email])
-        send_mail(
-            f"New Ticket Listed: {self.event.name}",
-            f"Reseller {self.request.user.email} listed ticket {ticket.ticket_id}.",
-            settings.DEFAULT_FROM_EMAIL,
-            [settings.SUPERADMIN_EMAIL]
-        )
+            subject = f"Ticket Listing Created for {self.event.name}"
+            marketplace_url = self.request.build_absolute_uri(
+                reverse('events:event_tickets', args=[self.event.event_id])
+            )
+            message = (
+                f"Your tickets have been listed.\n\n"
+                f"Event: {self.event.name}\n"
+                f"Ticket ID: {ticket.ticket_id}\n"
+                f"View them here: {marketplace_url}"
+            )
+            try:
+                send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.request.user.email])
+                send_mail(
+                    f"New Ticket Listed: {self.event.name}",
+                    f"Reseller {self.request.user.email} listed ticket {ticket.ticket_id}.",
+                    settings.DEFAULT_FROM_EMAIL,
+                    [settings.SUPERADMIN_EMAIL]
+                )
+            except Exception as e:
+                logger.error(f"Error sending email notification: {str(e)}")
+                # Don't fail the listing creation if email fails
 
-        messages.success(self.request, "Ticket listing created successfully.")
-        return redirect('events:my_listings')
+            messages.success(self.request, "Ticket listing created successfully.")
+            return redirect('events:my_listings')
+        except Exception as e:
+            logger.error(f"Error creating ticket listing: {str(e)}")
+            messages.error(self.request, f"Error creating ticket listing: {str(e)}")
+            return self.form_invalid(form)
 
 
 class EventTicketListView(ListView):
@@ -224,9 +237,77 @@ class ResellerTicketUpdateView(ResellerRequiredMixin, UpdateView):
         return kwargs
 
     def form_valid(self, form):
+        ticket = self.get_object()
+        # Check if PDF was just uploaded (wasn't there before, but is now)
+        had_pdf_before = ticket.upload_file and ticket.upload_file.name
         form.save()
+        ticket.refresh_from_db()
+        has_pdf_now = ticket.upload_file and ticket.upload_file.name
+        
+        # If ticket is sold and PDF was just uploaded, send it to buyer
+        if ticket.sold and ticket.buyer and not had_pdf_before and has_pdf_now:
+            self.send_pdf_to_buyer(ticket)
+        
         messages.success(self.request, "Ticket updated successfully.")
         return redirect('events:my_listings')
+    
+    def send_pdf_to_buyer(self, ticket):
+        """Send PDF to buyer when reseller uploads it after purchase"""
+        try:
+            # Find the order for this ticket
+            order = Order.objects.filter(
+                ticket_reference=ticket.ticket_id,
+                status='completed'
+            ).first()
+            
+            if not order:
+                return
+            
+            buyer_email = order.buyer.email
+            buyer_subject = f"Your Ticket PDF for {order.event_name}"
+            
+            buyer_message = f"""Dear {order.buyer.first_name or 'Customer'},
+
+Your ticket PDF has been uploaded by the seller and is now available!
+
+Event: {order.event_name}
+Date: {order.event_date.strftime('%B %d, %Y')}
+Time: {order.event_time.strftime('%I:%M %p')}
+Section: {order.ticket_section}
+Row: {order.ticket_row}
+Seats: {', '.join(order.ticket_seats)}
+
+Your ticket PDF is attached to this email.
+
+If you have any questions, please contact our support team.
+
+Thank you!
+"""
+            
+            # Read the PDF file
+            try:
+                pdf_file = ticket.upload_file
+                pdf_file.open('rb')
+                pdf_content = pdf_file.read()
+                pdf_file.close()
+                
+                filename = f"ticket_{ticket.ticket_id}_{order.event_name.replace(' ', '_')}.pdf"
+                
+                # Send email with PDF attachment
+                email = EmailMessage(
+                    buyer_subject,
+                    buyer_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [buyer_email]
+                )
+                email.attach(filename, pdf_content, 'application/pdf')
+                email.send()
+                
+            except Exception as e:
+                logger.error(f"Error reading PDF for ticket {ticket.ticket_id}: {str(e)}")
+                
+        except Exception as e:
+            logger.error(f"Error sending PDF to buyer for ticket {ticket.ticket_id}: {str(e)}")
 
 
 class ResellerTicketDeleteView(ResellerRequiredMixin, View):
@@ -562,25 +643,25 @@ class PaymentReturnView(LoginRequiredMixin, View):
             return redirect('events:home')
     
     def send_notifications(self, order):
-        subject = "Your Ticket Has Been Sold!"
-        message = f"Your ticket for {order.event_name} has been purchased."
+        ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+        
+        # Send email to seller
+        seller_subject = "Your Ticket Has Been Sold!"
+        seller_message = f"Your ticket for {order.event_name} has been purchased."
         
         if not order.ticket_uploaded:
-            message += "\n\nPlease upload the ticket PDF as soon as possible."
-            ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+            seller_message += "\n\nPlease upload the ticket PDF as soon as possible."
             send_mail(
-                subject,
-                message,
+                seller_subject,
+                seller_message,
                 settings.DEFAULT_FROM_EMAIL,
                 [ticket.seller.email]
             )
         else:
-            message += "\n\nPayment will be processed after ticket verification."
-            ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
-            
+            seller_message += "\n\nPayment will be processed after ticket verification."
             send_mail(
-                subject,
-                message,
+                seller_subject,
+                seller_message,
                 settings.DEFAULT_FROM_EMAIL,
                 [ticket.seller.email]
             )
@@ -593,6 +674,96 @@ class PaymentReturnView(LoginRequiredMixin, View):
                 settings.DEFAULT_FROM_EMAIL,
                 [settings.SUPERADMIN_EMAIL]
             )
+        
+        # Send email to buyer with PDF if available
+        self.send_buyer_notification(order, ticket)
+    
+    def send_buyer_notification(self, order, ticket):
+        """Send confirmation email to buyer with PDF attachment if available"""
+        buyer_email = order.buyer.email
+        buyer_subject = f"Your Tickets for {order.event_name}"
+        
+        buyer_message = f"""Dear {order.buyer.first_name or 'Customer'},
+
+Thank you for your purchase!
+
+Your order details:
+- Event: {order.event_name}
+- Date: {order.event_date.strftime('%B %d, %Y')}
+- Time: {order.event_time.strftime('%I:%M %p')}
+- Section: {order.ticket_section}
+- Row: {order.ticket_row}
+- Seats: {', '.join(order.ticket_seats)}
+- Number of Tickets: {order.number_of_tickets}
+- Order ID: {order.id}
+
+"""
+        
+        # Check if ticket is part of a bundle
+        if ticket.is_bundled:
+            bundle_tickets = ticket.get_bundle_tickets()
+            buyer_message += "\nThis purchase includes multiple tickets in a bundle.\n"
+        else:
+            bundle_tickets = [ticket]
+        
+        # Check if PDFs are available and attach them
+        pdf_attachments = []
+        tickets_with_pdf = []
+        tickets_without_pdf = []
+        
+        for t in bundle_tickets:
+            if t.upload_file and t.upload_file.name:
+                try:
+                    # Open the PDF file from S3
+                    pdf_file = t.upload_file
+                    pdf_file.open('rb')
+                    pdf_content = pdf_file.read()
+                    pdf_file.close()
+                    
+                    # Create attachment
+                    filename = f"ticket_{t.ticket_id}_{order.event_name.replace(' ', '_')}.pdf"
+                    pdf_attachments.append((filename, pdf_content, 'application/pdf'))
+                    tickets_with_pdf.append(t)
+                except Exception as e:
+                    logger.error(f"Error reading PDF for ticket {t.ticket_id}: {str(e)}")
+                    tickets_without_pdf.append(t)
+            else:
+                tickets_without_pdf.append(t)
+        
+        if tickets_with_pdf:
+            buyer_message += f"\nYour ticket PDF{'s' if len(tickets_with_pdf) > 1 else ''} {'are' if len(tickets_with_pdf) > 1 else 'is'} attached to this email.\n"
+        
+        if tickets_without_pdf:
+            buyer_message += f"\nNote: Some ticket PDF{'s' if len(tickets_without_pdf) > 1 else ''} will be sent to you once the seller uploads {'them' if len(tickets_without_pdf) > 1 else 'it'}.\n"
+        
+        buyer_message += "\nIf you have any questions, please contact our support team.\n\nThank you for choosing our service!"
+        
+        try:
+            if pdf_attachments:
+                # Use EmailMessage to send with attachments
+                email = EmailMessage(
+                    buyer_subject,
+                    buyer_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [buyer_email]
+                )
+                
+                # Attach all PDFs
+                for filename, content, content_type in pdf_attachments:
+                    email.attach(filename, content, content_type)
+                
+                email.send()
+            else:
+                # No PDFs available, send regular email
+                send_mail(
+                    buyer_subject,
+                    buyer_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [buyer_email]
+                )
+        except Exception as e:
+            logger.error(f"Error sending buyer notification email: {str(e)}")
+            # Don't fail the order if email fails, but log it
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -875,7 +1046,16 @@ class TicketUpdateAPIView(View):
             form = TicketForm(data, instance=ticket, event=ticket.event, user=request.user)
 
             if form.is_valid():
+                # Check if PDF was just uploaded (wasn't there before, but is now)
+                had_pdf_before = ticket.upload_file and ticket.upload_file.name
                 form.save()
+                ticket.refresh_from_db()
+                has_pdf_now = ticket.upload_file and ticket.upload_file.name
+                
+                # If ticket is sold and PDF was just uploaded, send it to buyer
+                if ticket.sold and ticket.buyer and not had_pdf_before and has_pdf_now:
+                    self.send_pdf_to_buyer_api(ticket)
+                
                 return JsonResponse({
                     'success': True,
                     'message': 'Ticket updated successfully',
@@ -883,11 +1063,69 @@ class TicketUpdateAPIView(View):
                 })
             else:
                 return JsonResponse({'error': form.errors}, status=400)
-
+        
         except Ticket.DoesNotExist:
             return JsonResponse({'error': 'Ticket not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': f'Error updating ticket: {str(e)}'}, status=500)
+    
+    def send_pdf_to_buyer_api(self, ticket):
+        """Send PDF to buyer when reseller uploads it after purchase (API version)"""
+        try:
+            # Find the order for this ticket
+            order = Order.objects.filter(
+                ticket_reference=ticket.ticket_id,
+                status='completed'
+            ).first()
+            
+            if not order:
+                return
+            
+            buyer_email = order.buyer.email
+            buyer_subject = f"Your Ticket PDF for {order.event_name}"
+            
+            buyer_message = f"""Dear {order.buyer.first_name or 'Customer'},
+
+Your ticket PDF has been uploaded by the seller and is now available!
+
+Event: {order.event_name}
+Date: {order.event_date.strftime('%B %d, %Y')}
+Time: {order.event_time.strftime('%I:%M %p')}
+Section: {order.ticket_section}
+Row: {order.ticket_row}
+Seats: {', '.join(order.ticket_seats)}
+
+Your ticket PDF is attached to this email.
+
+If you have any questions, please contact our support team.
+
+Thank you!
+"""
+            
+            # Read the PDF file
+            try:
+                pdf_file = ticket.upload_file
+                pdf_file.open('rb')
+                pdf_content = pdf_file.read()
+                pdf_file.close()
+                
+                filename = f"ticket_{ticket.ticket_id}_{order.event_name.replace(' ', '_')}.pdf"
+                
+                # Send email with PDF attachment
+                email = EmailMessage(
+                    buyer_subject,
+                    buyer_message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [buyer_email]
+                )
+                email.attach(filename, pdf_content, 'application/pdf')
+                email.send()
+                
+            except Exception as e:
+                logger.error(f"Error reading PDF for ticket {ticket.ticket_id}: {str(e)}")
+                
+        except Exception as e:
+            logger.error(f"Error sending PDF to buyer for ticket {ticket.ticket_id}: {str(e)}")
 
 
 class TicketDetailAPIView(View):

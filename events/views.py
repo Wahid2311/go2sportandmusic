@@ -1,4 +1,5 @@
 import json
+from datetime import datetime, date, time
 from django.core import serializers
 from django.db import transaction
 from django.views import View
@@ -8,12 +9,13 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Min, Max
 from django.views.generic import CreateView, ListView, UpdateView,TemplateView
 from django.contrib import messages
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.conf import settings
 from django.http import JsonResponse, HttpResponseBadRequest
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q, Count, Sum
+from django.core.exceptions import ValidationError
 from .models import Event, EventSection, ContactMessage, Category
 from .forms import EventCreationForm, SectionForm, EventSearchForm,ContactForm
 from accounts.utils import api_login_required, require_user_type, authenticate_via_id_token
@@ -45,33 +47,111 @@ class EventCreateAPIView(View):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
         
+        # Validate required fields
+        required_fields = ['name', 'category', 'stadium_name', 'stadium_image', 'event_logo', 'date', 'time']
+        missing_fields = [field for field in required_fields if not data.get(field)]
+        if missing_fields:
+            return JsonResponse({
+                'error': f'Missing required fields: {", ".join(missing_fields)}'
+            }, status=400)
+        
         try:
+            # Parse date string to date object
+            date_str = data.get('date')
+            if isinstance(date_str, str):
+                try:
+                    parsed_date = datetime.strptime(date_str, '%Y-%m-%d').date()
+                except ValueError:
+                    try:
+                        parsed_date = datetime.fromisoformat(date_str.replace('Z', '+00:00')).date()
+                    except (ValueError, AttributeError):
+                        return JsonResponse({'error': f'Invalid date format: {date_str}. Expected YYYY-MM-DD'}, status=400)
+            elif isinstance(date_str, date):
+                parsed_date = date_str
+            else:
+                return JsonResponse({'error': 'Date must be a string in YYYY-MM-DD format'}, status=400)
+            
+            # Parse time string to time object
+            time_str = data.get('time')
+            if isinstance(time_str, str):
+                try:
+                    # Try HH:MM:SS format first
+                    parsed_time = datetime.strptime(time_str, '%H:%M:%S').time()
+                except ValueError:
+                    try:
+                        # Try HH:MM format
+                        parsed_time = datetime.strptime(time_str, '%H:%M').time()
+                    except ValueError:
+                        return JsonResponse({'error': f'Invalid time format: {time_str}. Expected HH:MM or HH:MM:SS'}, status=400)
+            elif isinstance(time_str, time):
+                parsed_time = time_str
+            else:
+                return JsonResponse({'error': 'Time must be a string in HH:MM or HH:MM:SS format'}, status=400)
+            
+            # Validate date is not in the past
+            if parsed_date < timezone.now().date():
+                return JsonResponse({'error': 'Event date cannot be in the past'}, status=400)
+            
+            # Validate date and time combination for today
+            if parsed_date == timezone.now().date() and parsed_time < timezone.now().time():
+                return JsonResponse({'error': 'Event time cannot be in the past for today'}, status=400)
+            
+            # Validate category
+            valid_categories = [choice[0] for choice in Event.EVENT_CATEGORIES]
+            if data.get('category') not in valid_categories:
+                return JsonResponse({
+                    'error': f'Invalid category. Must be one of: {", ".join(valid_categories)}'
+                }, status=400)
+            
             with transaction.atomic():
                 event = Event(
                     superadmin=request.user,
                     name=data.get('name'),
                     category=data.get('category'),
-                    sports_type=data.get('sports_type'),
-                    country=data.get('country'),
-                    team=data.get('team'),
+                    sports_type=data.get('sports_type') or '',
+                    country=data.get('country') or '',
+                    team=data.get('team') or '',
                     stadium_name=data.get('stadium_name'),
                     stadium_image=data.get('stadium_image'),
                     event_logo=data.get('event_logo'),
-                    date=data.get('date'),
-                    time=data.get('time'),
+                    date=parsed_date,
+                    time=parsed_time,
                     normal_service_charge=data.get('normal_service_charge', 0),
                     reseller_service_charge=data.get('reseller_service_charge', 0),
                     total_tickets=data.get('total_tickets', 0),  
                     sold_tickets=data.get('sold_tickets', 0),   
                 )
+                
+                # Validate the event before saving
+                try:
+                    event.full_clean()
+                except ValidationError as e:
+                    return JsonResponse({'error': f'Validation error: {str(e)}'}, status=400)
+                
                 event.save()
                 
                 sections_data = data.get('sections', [])
+                if not isinstance(sections_data, list):
+                    return JsonResponse({'error': 'Sections must be a list'}, status=400)
+                
                 for section_data in sections_data:
+                    if not isinstance(section_data, dict):
+                        return JsonResponse({'error': 'Each section must be an object with name and color'}, status=400)
+                    
+                    section_name = section_data.get('name')
+                    section_color = section_data.get('color')
+                    
+                    if not section_name or not section_color:
+                        return JsonResponse({'error': 'Each section must have name and color'}, status=400)
+                    
+                    # Validate color format
+                    if not section_color.startswith('#') or len(section_color) not in [4, 7]:
+                        return JsonResponse({'error': f'Invalid color format: {section_color}. Must be a hex color code'}, status=400)
+                    
                     EventSection.objects.create(
                         event=event,
-                        name=section_data.get('name'),
-                        color=section_data.get('color')
+                        name=section_name,
+                        color=section_color
                     )
                 
                 return JsonResponse({
@@ -82,8 +162,15 @@ class EventCreateAPIView(View):
                     'sold_tickets': event.sold_tickets
                 }, status=201)
                 
+        except ValidationError as e:
+            return JsonResponse({'error': f'Validation error: {str(e)}'}, status=400)
         except Exception as e:
-            return JsonResponse({'error': f'Error creating event: {str(e)}'}, status=500)
+            import traceback
+            error_details = traceback.format_exc()
+            return JsonResponse({
+                'error': f'Error creating event: {str(e)}',
+                'details': error_details if settings.DEBUG else None
+            }, status=500)
 
 class EventCreateView(SuperAdminMixin, CreateView):
     model = Event

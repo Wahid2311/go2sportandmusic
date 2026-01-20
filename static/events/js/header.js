@@ -54,20 +54,21 @@ async function fetchNavCategories() {
 }
 
 function getCountryFlag(countryName) {
+    const COUNTRIES = window.COUNTRIES || [];
+
+    const country = COUNTRIES.find(c =>
+        c.label.toLowerCase() === countryName.toLowerCase()
+    );
+
+    if (country) {
+        return `https://flagcdn.com/w40/${country.code.toLowerCase()}.png`;
+    }
+
     const countryCodeMap = {
         'United Kingdom': 'gb',
         'UK': 'gb',
         'United States': 'us',
-        'USA': 'us',
-        'Spain': 'es',
-        'Germany': 'de',
-        'France': 'fr',
-        'Italy': 'it',
-        'Brazil': 'br',
-        'Argentina': 'ar',
-        'Portugal': 'pt',
-        'Netherlands': 'nl',
-        'Belgium': 'be'
+        'USA': 'us'
     };
 
     const code = countryCodeMap[countryName] || countryName.toLowerCase().slice(0, 2);
@@ -147,9 +148,9 @@ function renderNavbarCategories() {
                         const value = encodeURIComponent(item.dataset.value);
 
                         if (type === 'tournament') {
-                            window.location.href = `/events/all/?tournament=${value}`;
+                            window.location.href = `/events/search-results/?query=${value}`;
                         } else if (type === 'team') {
-                            window.location.href = `/events/all/?team=${value}`;
+                            window.location.href = `/events/search-results/?query=${value}`;
                         }
                     });
                 });

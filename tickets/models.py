@@ -122,34 +122,39 @@ class Ticket(models.Model):
             raise ValidationError("Number of seats must match the number of tickets.")
 
     def save(self, *args, **kwargs):
-        normal_charge = self.event.normal_service_charge or 0
-        reseller_charge = self.event.reseller_service_charge or 0
-        
-        self.sell_price_for_normal = self.sell_price + (((self.sell_price * normal_charge)/100) or 0)
-        self.sell_price_for_reseller = self.sell_price + (((self.sell_price * reseller_charge)/100) or 0)
-        is_new = self.pk is None
-        
-        super().save(*args, **kwargs)
+        try:
+            normal_charge = self.event.normal_service_charge or 0
+            reseller_charge = self.event.reseller_service_charge or 0
+            
+            self.sell_price_for_normal = self.sell_price + (((self.sell_price * normal_charge)/100) or 0)
+            self.sell_price_for_reseller = self.sell_price + (((self.sell_price * reseller_charge)/100) or 0)
+            is_new = self.pk is None
+            
+            super().save(*args, **kwargs)
 
-        section = self.section
-        event = self.event
-        all_tickets = section.tickets.all()
-        
-        
-        if all_tickets.exists():
-            prices = [float(t.sell_price_for_normal) for t in all_tickets]
-            section.lower_price = min(prices)
-            section.upper_price = max(prices)
-            section.save()
-        if is_new:
-            logger.info(f"For event {event.name}, For section {section.name} , For quantity {self.number_of_tickets}")
-            logger.info(f"This ticket is new")
-            logger.info(f"current total tickets {event.total_tickets}")
-            event.total_tickets += self.number_of_tickets
-            logger.info(f"after adding,current total tickets {event.total_tickets}")
-            event.save()
-        else:
-            logger.info(f"This ticket is updating")
+            section = self.section
+            event = self.event
+            all_tickets = section.tickets.all()
+            
+            
+            if all_tickets.exists():
+                prices = [float(t.sell_price_for_normal) for t in all_tickets if t.sell_price_for_normal is not None]
+                if prices:
+                    section.lower_price = min(prices)
+                    section.upper_price = max(prices)
+                    section.save()
+            if is_new:
+                logger.info(f"For event {event.name}, For section {section.name} , For quantity {self.number_of_tickets}")
+                logger.info(f"This ticket is new")
+                logger.info(f"current total tickets {event.total_tickets}")
+                event.total_tickets += self.number_of_tickets
+                logger.info(f"after adding,current total tickets {event.total_tickets}")
+                event.save()
+            else:
+                logger.info(f"This ticket is updating")
+        except Exception as e:
+            logger.error(f"Error saving ticket: {str(e)}")
+            raise
             
 
     def update_section_aggregates(self, section):

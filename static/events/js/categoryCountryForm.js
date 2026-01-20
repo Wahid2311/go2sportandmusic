@@ -9,7 +9,7 @@ function countryOptions() {
     return `
         <option value="">Select country</option>
         ${COUNTRIES.map(c => `
-            <option value="${c.label}" data-code="${c.code}">
+            <option value="${c.label}" data-code="${c.code}" data-flag="https://flagcdn.com/w20/${c.code.toLowerCase()}.png">
                 ${c.label}
             </option>
         `).join("")}
@@ -288,11 +288,14 @@ document.addEventListener("DOMContentLoaded", () => {
             .closest(".country-select-wrapper")
             .querySelector(".country-flag");
 
-        const code = select.selectedOptions[0]?.dataset.code;
+        const selectedOption = select.selectedOptions[0];
+        const code = selectedOption?.dataset.code;
+        const flagUrl = selectedOption?.dataset.flag;
 
-        if (code) {
-            flag.src = `https://flagcdn.com/w20/${code.toLowerCase()}.png`;
+        if (code && flagUrl) {
+            flag.src = flagUrl;
             flag.style.display = "block";
+            flag.alt = selectedOption.value;
         } else {
             flag.style.display = "none";
         }
