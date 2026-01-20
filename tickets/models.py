@@ -100,14 +100,31 @@ class Ticket(models.Model):
     def delete(self, *args, **kwargs):
         event = self.event
         section = self.section
-        ticket_number=self.number_of_tickets
+        ticket_number = self.number_of_tickets
         super().delete(*args, **kwargs)
+        
+        # Update section prices if there are remaining tickets
         all_tickets = section.tickets.all()
-        prices = [float(t.sell_price_for_normal) for t in all_tickets]
-        section.lower_price = min(prices)
-        section.upper_price = max(prices)
+        if all_tickets.exists():
+            prices = [float(t.sell_price_for_normal) for t in all_tickets if t.sell_price_for_normal is not None]
+            if prices:
+                section.lower_price = min(prices)
+                section.upper_price = max(prices)
+            else:
+                section.lower_price = 0
+                section.upper_price = 0
+        else:
+            # No tickets left in section
+            section.lower_price = 0
+            section.upper_price = 0
         section.save()
-        event.total_tickets -=ticket_number 
+        
+        # Update event total tickets count
+        if event.total_tickets >= ticket_number:
+            event.total_tickets -= ticket_number
+        else:
+            # Prevent negative count
+            event.total_tickets = 0
         event.save()
         
 

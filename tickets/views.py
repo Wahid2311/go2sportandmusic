@@ -363,11 +363,42 @@ Thank you!
 
 
 class ResellerTicketDeleteView(ResellerRequiredMixin, View):
-    def post(self, request, ticket_id):
-        ticket = get_object_or_404(Ticket, ticket_id=ticket_id, seller=request.user)
-        ticket.delete()
-        messages.success(request, "Ticket deleted successfully.")
+    def get(self, request, ticket_id):
+        # Redirect GET requests to my_listings with a message
+        messages.info(request, "Please use the delete button on the listing page to delete tickets.")
         return redirect('events:my_listings')
+    
+    def post(self, request, ticket_id):
+        try:
+            ticket = get_object_or_404(Ticket, ticket_id=ticket_id, seller=request.user)
+            
+            # Check if ticket is sold - don't allow deletion of sold tickets
+            if ticket.sold:
+                messages.error(request, "Cannot delete listing: This ticket has already been sold and cannot be deleted.")
+                return redirect('events:my_listings')
+            
+            # Store ticket info before deletion for logging
+            ticket_info = {
+                'ticket_id': str(ticket.ticket_id),
+                'event_name': ticket.event.name,
+                'number_of_tickets': ticket.number_of_tickets
+            }
+            
+            # Delete the ticket (this will update event.total_tickets via the model's delete method)
+            ticket.delete()
+            
+            messages.success(request, f"Ticket listing {ticket_info['ticket_id']} deleted successfully. The tickets are now available again.")
+            return redirect('events:my_listings')
+            
+        except Http404:
+            messages.error(request, "Ticket not found or you don't have permission to delete it.")
+            return redirect('events:my_listings')
+        except Exception as e:
+            logger.error(f"Error deleting ticket {ticket_id}: {str(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            messages.error(request, f"Error deleting ticket listing: {str(e)}")
+            return redirect('events:my_listings')
 
 
 class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
@@ -408,10 +439,30 @@ class SuperadminTicketUpdateView(SuperAdminRequiredMixin, UpdateView):
 
 class SuperadminTicketDeleteView(SuperAdminRequiredMixin, View):
     def post(self, request, ticket_id):
-        ticket = get_object_or_404(Ticket, ticket_id=ticket_id)
-        ticket.delete()
-        messages.success(request, "Ticket deleted successfully.")
-        return redirect('events:superadmin_list')
+        try:
+            ticket = get_object_or_404(Ticket, ticket_id=ticket_id)
+            
+            # Check if ticket is sold - warn but allow superadmin to delete
+            if ticket.sold:
+                messages.warning(request, f"Warning: Ticket {ticket.ticket_id} has been sold, but deletion was allowed for administrative purposes.")
+            
+            # Store ticket info before deletion
+            ticket_info = {
+                'ticket_id': str(ticket.ticket_id),
+                'event_name': ticket.event.name,
+                'number_of_tickets': ticket.number_of_tickets
+            }
+            
+            # Delete the ticket
+            ticket.delete()
+            
+            messages.success(request, f"Ticket listing {ticket_info['ticket_id']} deleted successfully.")
+            return redirect('events:superadmin_list')
+            
+        except Exception as e:
+            logger.error(f"Error deleting ticket {ticket_id}: {str(e)}")
+            messages.error(request, f"Error deleting ticket listing: {str(e)}")
+            return redirect('events:superadmin_list')
 
 
 class ExpiredTicketListView(SuperAdminRequiredMixin, ListView):
@@ -1347,15 +1398,38 @@ class TicketDeleteAPIView(View):
             if ticket.seller != request.user and not request.user.is_superadmin:
                 return JsonResponse({'error': 'You can only delete your own listings'}, status=403)
 
+            # Check if ticket is sold - don't allow deletion of sold tickets (unless superadmin)
+            if ticket.sold and not request.user.is_superadmin:
+                return JsonResponse({
+                    'error': 'Cannot delete listing: This ticket has already been sold and cannot be deleted.'
+                }, status=400)
+
+            # Store ticket info before deletion
+            ticket_info = {
+                'ticket_id': str(ticket.ticket_id),
+                'event_name': ticket.event.name,
+                'number_of_tickets': ticket.number_of_tickets,
+                'sold': ticket.sold
+            }
+            
+            # Delete the ticket
             ticket.delete()
-            return JsonResponse({
-                'success': True,
-                'message': 'Ticket deleted successfully'
-            })
+            
+            if ticket_info['sold'] and request.user.is_superadmin:
+                return JsonResponse({
+                    'success': True,
+                    'message': f"Ticket listing {ticket_info['ticket_id']} deleted successfully (was sold, but deletion allowed for admin)."
+                })
+            else:
+                return JsonResponse({
+                    'success': True,
+                    'message': f"Ticket listing {ticket_info['ticket_id']} deleted successfully. The tickets are now available again."
+                })
 
         except Ticket.DoesNotExist:
             return JsonResponse({'error': 'Ticket not found'}, status=404)
         except Exception as e:
+            logger.error(f"Error deleting ticket {ticket_id}: {str(e)}")
             return JsonResponse({'error': f'Error deleting ticket: {str(e)}'}, status=500)
 
 
