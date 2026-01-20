@@ -49,8 +49,17 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
 
     def dispatch(self, request, *args, **kwargs):
         self.event = get_object_or_404(Event, event_id=kwargs['event_id'])
-        if not self.event:
-            raise Http404("Event does not exist")
+        
+        # Check if event is expired (date/time is in the past)
+        if self.event.is_expired:
+            messages.error(request, f"Cannot create listing: The event '{self.event.name}' has already passed. Event date was {self.event.date.strftime('%B %d, %Y')} at {self.event.time.strftime('%I:%M %p')}.")
+            return redirect('events:home')
+        
+        # Check if event has sections available
+        if not self.event.sections.exists():
+            messages.error(request, f"Cannot create listing: The event '{self.event.name}' has no sections available. Please contact the administrator.")
+            return redirect('events:home')
+        
         return super().dispatch(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -76,9 +85,32 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
 
     def form_valid(self, form):
         try:
+            # Double-check event is not expired (in case it changed between dispatch and form submission)
+            if self.event.is_expired:
+                messages.error(self.request, f"Cannot create listing: The event '{self.event.name}' has already passed. Event date was {self.event.date.strftime('%B %d, %Y')} at {self.event.time.strftime('%I:%M %p')}.")
+                return self.form_invalid(form)
+            
+            # Validate event has sections
+            if not self.event.sections.exists():
+                messages.error(self.request, f"Cannot create listing: The event '{self.event.name}' has no sections available. Please contact the administrator.")
+                return self.form_invalid(form)
+            
             ticket = form.save(commit=False)
             ticket.seller = self.request.user
             ticket.event = self.event
+            
+            # Validate event and section are set
+            if not ticket.event:
+                messages.error(self.request, "Error: Event is required. Please try again.")
+                return self.form_invalid(form)
+            if not ticket.section:
+                messages.error(self.request, "Error: Section is required. Please select a section.")
+                return self.form_invalid(form)
+            
+            # Validate section belongs to event
+            if ticket.section.event != ticket.event:
+                messages.error(self.request, "Error: Selected section does not belong to this event. Please select a valid section.")
+                return self.form_invalid(form)
             
             # Handle bundle creation if sell_together is checked
             if form.cleaned_data.get('sell_together', False):
@@ -127,9 +159,29 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
 
             messages.success(self.request, "Ticket listing created successfully.")
             return redirect('events:my_listings')
+        except ValueError as e:
+            error_msg = str(e)
+            if "date" in error_msg.lower() or "time" in error_msg.lower():
+                messages.error(self.request, f"Cannot create listing: The event date/time is invalid or has passed. {error_msg}")
+            else:
+                messages.error(self.request, f"Validation error: {error_msg}")
+            logger.error(f"Validation error creating ticket listing: {str(e)}")
+            return self.form_invalid(form)
         except Exception as e:
+            import traceback
+            error_msg = str(e)
             logger.error(f"Error creating ticket listing: {str(e)}")
-            messages.error(self.request, f"Error creating ticket listing: {str(e)}")
+            logger.error(f"Traceback: {traceback.format_exc()}")
+            
+            # Provide user-friendly error messages
+            if "expired" in error_msg.lower() or "past" in error_msg.lower():
+                messages.error(self.request, f"Cannot create listing: The event '{self.event.name}' has already passed. Event date was {self.event.date.strftime('%B %d, %Y')} at {self.event.time.strftime('%I:%M %p')}.")
+            elif "section" in error_msg.lower():
+                messages.error(self.request, f"Cannot create listing: Section error. {error_msg}")
+            elif "seats" in error_msg.lower():
+                messages.error(self.request, f"Cannot create listing: Invalid seat information. Please check that the number of seats matches the number of tickets.")
+            else:
+                messages.error(self.request, f"Error creating ticket listing: {error_msg}. Please check all fields and try again.")
             return self.form_invalid(form)
 
 
@@ -941,6 +993,18 @@ class CreateListingAPIView(View):
         except Event.DoesNotExist:
             return JsonResponse({'error': 'Event not found'}, status=404)
 
+        # Check if event is expired (date/time is in the past)
+        if event.is_expired:
+            return JsonResponse({
+                'error': f"Cannot create listing: The event '{event.name}' has already passed. Event date was {event.date.strftime('%B %d, %Y')} at {event.time.strftime('%I:%M %p')}."
+            }, status=400)
+
+        # Check if event has sections available
+        if not event.sections.exists():
+            return JsonResponse({
+                'error': f"Cannot create listing: The event '{event.name}' has no sections available. Please contact the administrator."
+            }, status=400)
+
         try:
             data = json.loads(request.body)
         except json.JSONDecodeError:
@@ -961,6 +1025,23 @@ class CreateListingAPIView(View):
                     ticket = form.save(commit=False)
                     ticket.seller = request.user
                     ticket.event = event
+                    
+                    # Validate event and section are set
+                    if not ticket.event:
+                        return JsonResponse({'error': 'Event is required. Please try again.'}, status=400)
+                    if not ticket.section:
+                        return JsonResponse({'error': 'Section is required. Please select a section.'}, status=400)
+                    
+                    # Validate section belongs to event
+                    if ticket.section.event != ticket.event:
+                        return JsonResponse({'error': 'Selected section does not belong to this event. Please select a valid section.'}, status=400)
+                    
+                    # Double-check event is not expired
+                    if event.is_expired:
+                        return JsonResponse({
+                            'error': f"Cannot create listing: The event '{event.name}' has already passed. Event date was {event.date.strftime('%B %d, %Y')} at {event.time.strftime('%I:%M %p')}."
+                        }, status=400)
+                    
                     ticket.save()
 
                     #self.send_notification_emails(ticket, request)
@@ -971,10 +1052,56 @@ class CreateListingAPIView(View):
                         'ticket_id': str(ticket.ticket_id)
                     }, status=201)
 
+            except ValueError as e:
+                error_msg = str(e)
+                if "date" in error_msg.lower() or "time" in error_msg.lower() or "expired" in error_msg.lower() or "past" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: The event date/time is invalid or has passed. {error_msg}"
+                    }, status=400)
+                elif "section" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: Section error. {error_msg}"
+                    }, status=400)
+                elif "seats" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: Invalid seat information. Please check that the number of seats matches the number of tickets."
+                    }, status=400)
+                else:
+                    return JsonResponse({'error': f'Validation error: {error_msg}'}, status=400)
             except Exception as e:
-                return JsonResponse({'error': f'Error creating listing: {str(e)}'}, status=500)
+                error_msg = str(e)
+                if "expired" in error_msg.lower() or "past" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: The event '{event.name}' has already passed. Event date was {event.date.strftime('%B %d, %Y')} at {event.time.strftime('%I:%M %p')}."
+                    }, status=400)
+                elif "section" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: Section error. {error_msg}"
+                    }, status=400)
+                elif "seats" in error_msg.lower():
+                    return JsonResponse({
+                        'error': f"Cannot create listing: Invalid seat information. Please check that the number of seats matches the number of tickets."
+                    }, status=400)
+                else:
+                    return JsonResponse({'error': f'Error creating listing: {error_msg}. Please check all fields and try again.'}, status=500)
         else:
-            return JsonResponse({'error': form.errors}, status=400)
+            # Format form errors for better user experience
+            error_messages = []
+            for field, errors in form.errors.items():
+                for error in errors:
+                    if "date" in str(error).lower() or "time" in str(error).lower():
+                        error_messages.append(f"Event date/time issue: {error}")
+                    elif "section" in str(error).lower():
+                        error_messages.append(f"Section issue: {error}")
+                    elif "seats" in str(error).lower():
+                        error_messages.append(f"Seat information issue: {error}")
+                    else:
+                        error_messages.append(f"{field}: {error}")
+            
+            return JsonResponse({
+                'error': ' '.join(error_messages) if error_messages else 'Please check all fields and try again.',
+                'form_errors': form.errors
+            }, status=400)
 
     def send_notification_emails(self, ticket, request):
         subject = f"Ticket Listing Created for {ticket.event.name}"
