@@ -439,6 +439,29 @@ class HomeView(ListView):
 
     def get_context_data(self, **kwargs):
         from .models import EventCategory
+        from django.utils.text import slugify
+        
+        # Auto-populate categories from xs2events if they don't exist
+        categories_data = [
+            {'name': 'Football', 'icon': 'bi-soccer', 'order': 1},
+            {'name': 'Formula 1', 'icon': 'bi-speedometer2', 'order': 2},
+            {'name': 'MotoGP', 'icon': 'bi-speedometer2', 'order': 3},
+            {'name': 'Tennis', 'icon': 'bi-racquet', 'order': 4},
+            {'name': 'Other events', 'icon': 'bi-calendar-event', 'order': 5},
+        ]
+        
+        for cat_data in categories_data:
+            slug = slugify(cat_data['name'])
+            EventCategory.objects.get_or_create(
+                slug=slug,
+                defaults={
+                    'name': cat_data['name'],
+                    'icon': cat_data['icon'],
+                    'order': cat_data['order'],
+                    'is_active': True,
+                }
+            )
+        
         context = super().get_context_data(**kwargs)
         context['search_form'] = EventSearchForm()
         context['today'] = timezone.now().date()
