@@ -110,8 +110,13 @@ SESSION_SAVE_EVERY_REQUEST = True
 SUPERADMIN_EMAIL = os.environ.get('SUPERADMIN_EMAIL')
 SUPERADMIN_PASSWORD = os.environ.get('SUPERADMIN_PASSWORD')
 
-REVOLUT_API_KEY =os.environ.get('REVOLUT_API_KEY', '')
-REVOLUT_PRODUCTION =True
+# Stripe Configuration
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
+
+# Legacy Revolut Configuration (deprecated)
+REVOLUT_API_KEY = os.environ.get('REVOLUT_API_KEY', '')
+REVOLUT_PRODUCTION = True
 
 BASE_URL =os.environ.get('BASE_URL', 'http://localhost:8000')
 CSRF_TRUSTED_ORIGINS = [BASE_URL, 'https://web-production-f679c.up.railway.app']

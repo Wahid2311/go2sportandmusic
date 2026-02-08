@@ -239,8 +239,12 @@ class Order(models.Model):
     ticket_sell_price = models.DecimalField(max_digits=8, decimal_places=2)
     buyer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='orders')
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    revolut_order_id = models.CharField(max_length=100)
-    revolut_checkout_url = models.URLField()
+    # Stripe payment fields
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    # Legacy Revolut fields (kept for backward compatibility)
+    revolut_order_id = models.CharField(max_length=100, blank=True, null=True)
+    revolut_checkout_url = models.URLField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[
         ('pending', 'Pending'),

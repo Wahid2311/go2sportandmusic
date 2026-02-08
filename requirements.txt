@@ -24,3 +24,4 @@ packaging==25.0
 whitenoise==6.9.0
 django-anymail[resend]
 python-dotenv
+stripe==11.0.0

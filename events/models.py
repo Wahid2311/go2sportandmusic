@@ -12,6 +12,23 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
+class EventCategory(BaseModel):
+    """Dynamic event categories fetched from xs2events portal"""
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(unique=True)
+    description = models.TextField(blank=True, null=True)
+    icon = models.CharField(max_length=50, blank=True, null=True)  # For Bootstrap icon classes
+    is_active = models.BooleanField(default=True)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ['order', 'name']
+        verbose_name_plural = "Event Categories"
+
+    def __str__(self):
+        return self.name
+
+
 class Event(BaseModel):
     EVENT_CATEGORIES = [
         ('concert', 'Concert'),
@@ -51,7 +68,8 @@ class Event(BaseModel):
     name = models.CharField(max_length=255, validators=[
         RegexValidator(r'^[a-zA-Z0-9\s\-\.]+$', 'Only letters, numbers, spaces, hyphens and periods allowed')
     ])
-    category = models.CharField(max_length=20, choices=EVENT_CATEGORIES)
+    category = models.ForeignKey(EventCategory, on_delete=models.PROTECT, related_name='events', null=True, blank=True)
+    category_legacy = models.CharField(max_length=20, choices=EVENT_CATEGORIES, null=True, blank=True)  # For backward compatibility
     sports_type = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)
     team = models.CharField(max_length=100, blank=True, null=True)
@@ -150,6 +168,14 @@ class Event(BaseModel):
     def has_interactive_map(self):
         """Check if this event has an interactive SVG stadium map available"""
         return self.stadium_svg_key is not None and self.stadium_svg_key != ''
+    
+    def get_category_display(self):
+        """Get category display name from dynamic or legacy category"""
+        if self.category:
+            return self.category.name
+        elif self.category_legacy:
+            return dict(self.EVENT_CATEGORIES).get(self.category_legacy, self.category_legacy)
+        return 'Other'
 
 class EventSection(BaseModel):
     COLORS = [

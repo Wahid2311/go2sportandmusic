@@ -23,6 +23,9 @@ from events.models import EventSection, Event
 from accounts.models import User
 from django.conf import settings
 import logging
+import stripe
+import requests
+from .stripe_utils import StripeAPI
 
 logger = logging.getLogger(__name__)
 
@@ -511,29 +514,8 @@ from django.conf import settings
 from django.urls import reverse
 from .models import Order, Sale
 
-class RevolutAPI:
-    
-    def create_order(self, amount, currency, customer_email, description, order_id):
-        url = f"https://merchant.revolut.com/api/orders"
-        headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            'Revolut-Api-Version': '2024-09-01',
-            "Authorization": f"Bearer {settings.REVOLUT_API_KEY}",
-        }
-        payload = {
-            "amount": int(amount * 100), 
-            "currency": currency,
-            "customer_email": customer_email,
-            "description": description,
-            "merchant_order_ext_ref": str(order_id),
-            "capture_mode": "automatic",
-            "redirect_url": settings.BASE_URL + reverse('events:payment_return') + "?status=success&order_id=" + str(order_id),
-        }
-        response = requests.post(url, json=payload, headers=headers)
-        print(response.text)
-        response.raise_for_status()
-        return response.json()
+# RevolutAPI class has been replaced with StripeAPI
+# See stripe_utils.py for the new Stripe payment implementation
 
 class TicketDetailView(LoginRequiredMixin, DetailView):
     model = Ticket
@@ -672,9 +654,9 @@ class CreateOrderView(LoginRequiredMixin, View):
                 revolut_checkout_url=""
             )
         
-        revolut_api = RevolutAPI()
+        stripe_api = StripeAPI()
         try:
-            revolut_order = revolut_api.create_order(
+            stripe_session = stripe_api.create_checkout_session(
                 amount=total_price,
                 currency="GBP",
                 customer_email=request.user.email,
@@ -682,11 +664,11 @@ class CreateOrderView(LoginRequiredMixin, View):
                 order_id=order.id
             )
             
-            order.revolut_order_id = revolut_order['id']
-            order.revolut_checkout_url = revolut_order['checkout_url']
+            order.stripe_session_id = stripe_session['session_id']
+            order.stripe_payment_intent_id = stripe_session['payment_intent_id']
             order.save()
             
-            return redirect(revolut_order['checkout_url'])
+            return redirect(stripe_session['checkout_url'])
             
         except Exception as e:
             order.delete()
@@ -697,11 +679,28 @@ class PaymentReturnView(LoginRequiredMixin, View):
     def get(self, request):
         status = request.GET.get('status')
         order_id = request.GET.get('order_id')
+        session_id = request.GET.get('session_id')
         
         try:
             order = Order.objects.get(id=order_id, buyer=request.user)
             
             if status == 'success':
+                # Verify the Stripe session
+                if session_id:
+                    try:
+                        stripe_api = StripeAPI()
+                        session = stripe_api.retrieve_session(session_id)
+                        if session.payment_status != 'paid':
+                            order.status = 'failed'
+                            order.save()
+                            messages.error(request, "Payment verification failed.")
+                            return redirect('events:home')
+                    except Exception as e:
+                        logger.error(f"Error verifying Stripe session: {str(e)}")
+                        order.status = 'failed'
+                        order.save()
+                        messages.error(request, "Payment verification error.")
+                        return redirect('events:home')
                 order.status = 'completed'
                 order.save()
                 

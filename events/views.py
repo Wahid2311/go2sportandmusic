@@ -433,13 +433,16 @@ class EventUpdateView(SuperAdminMixin, UpdateView):
             return self.form_invalid(form)
 
 class HomeView(ListView):
-    template_name = 'events/home.html'
+    template_name = 'events/home_new.html'
     context_object_name = 'events'
     paginate_by = 10
 
     def get_context_data(self, **kwargs):
+        from .models import EventCategory
         context = super().get_context_data(**kwargs)
         context['search_form'] = EventSearchForm()
+        context['today'] = timezone.now().date()
+        context['categories'] = EventCategory.objects.filter(is_active=True).order_by('order')
         context['upcoming_events'] = Event.objects.filter(
             date__gte=timezone.now().date()
         ).order_by('date', 'time')[:8]
