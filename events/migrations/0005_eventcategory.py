@@ -15,8 +15,8 @@ class Migration(migrations.Migration):
             name='EventCategory',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                ('created', models.DateTimeField(auto_now_add=True)),
+                ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=100, unique=True)),
                 ('slug', models.SlugField(unique=True)),
                 ('description', models.TextField(blank=True, null=True)),
@@ -27,6 +27,7 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Event Categories',
                 'ordering': ['order', 'name'],
+                'abstract': False,
             },
         ),
         migrations.AddField(
