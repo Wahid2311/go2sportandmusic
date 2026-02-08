@@ -27,7 +27,6 @@ class Migration(migrations.Migration):
             options={
                 'verbose_name_plural': 'Event Categories',
                 'ordering': ['order', 'name'],
-                'abstract': False,
             },
         ),
         migrations.AddField(
