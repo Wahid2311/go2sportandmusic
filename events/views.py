@@ -518,11 +518,16 @@ class AllEventsView(ListView):
         sort = self.request.GET.get('sort', 'upcoming')
         team = self.request.GET.get('team')
         tournament = self.request.GET.get('tournament')
+        category = self.request.GET.get('category')
         
         qs = Event.objects.annotate(
             min_price=Min('sections__lower_price'),
             max_price=Max('sections__upper_price')
         )
+        
+        # Filter by category if provided
+        if category:
+            qs = qs.filter(category__slug=category)
         
         # Filter by team if provided
         if team:
@@ -548,6 +553,7 @@ class AllEventsView(ListView):
         context = super().get_context_data(**kwargs)
         context['current_team'] = self.request.GET.get('team', '')
         context['current_tournament'] = self.request.GET.get('tournament', '')
+        context['current_category'] = self.request.GET.get('category', '')
         context['current_sort'] = self.request.GET.get('sort', 'upcoming')
         return context
 

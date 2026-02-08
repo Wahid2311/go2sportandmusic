@@ -548,7 +548,11 @@
         {% for category in categories %}
         <a href="{% url 'events:all_events' %}?category={{ category.slug }}" class="category-card">
           <div class="category-icon">
-            <i class="bi {{ category.icon }}"></i>
+            {% if category.icon %}
+              <i class="bi {{ category.icon }}"></i>
+            {% else %}
+              <i class="bi bi-calendar-event"></i>
+            {% endif %}
           </div>
           <div class="category-name">{{ category.name }}</div>
         </a>
