@@ -12,8 +12,10 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
 
-class EventCategory(BaseModel):
+class EventCategory(models.Model):
     """Dynamic event categories fetched from xs2events portal"""
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, null=True)
