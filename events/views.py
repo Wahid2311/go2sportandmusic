@@ -470,7 +470,7 @@ class EventSearchView(ListView):
             qs = qs.filter(
                 Q(name__icontains=query) |
                 Q(stadium_name__icontains=query) |
-                Q(category__icontains=query)
+                Q(category__name__icontains=query)
             )
         
         if start_date and end_date:

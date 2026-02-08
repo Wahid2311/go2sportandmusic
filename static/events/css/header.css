@@ -222,28 +222,94 @@
     @media (max-width: 991px) {
         .header {
             border-radius: 0;
+            height: auto;
+            padding: 0.5rem 0;
+        }
+
+        .navbar {
+            padding: 0.5rem 1rem;
+            flex-wrap: wrap;
+        }
+
+        .navbar-brand {
+            flex: 0 0 auto;
+        }
+
+        .navbar-toggler {
+            order: 3;
+            margin-left: auto;
+        }
+
+        #categoryNavbar {
+            order: 2;
+            width: 100%;
+            margin: 0.5rem 0;
+            flex-wrap: wrap;
+            gap: 0.3rem !important;
+        }
+
+        #categoryNavbar .nav-item {
+            flex: 0 1 auto;
+        }
+
+        #categoryNavbar .nav-link {
+            padding: 6px 10px !important;
+            font-size: 0.85rem;
+            white-space: nowrap;
         }
 
         .navbar-collapse {
             background: white;
             padding: 1rem;
-            margin-top: 12px;
+            margin-top: 0.5rem;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            order: 4;
+        }
+
+        .d-flex.ms-lg-auto {
+            flex-direction: column;
+            width: 100%;
+            gap: 0.5rem;
         }
 
         .nav-link {
-            margin: 8px 5px;
+            margin: 0.5rem 0;
             text-align: center;
-            padding: 12px !important;
+            padding: 10px !important;
             width: 100%;
-            max-width: 280px;
         }
 
         .search-trigger {
-            margin: 8px auto;
+            margin: 0.5rem auto;
             width: 100%;
-            max-width: 280px;
+            padding: 10px 14px !important;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .navbar {
+            padding: 0.5rem 0.75rem;
+        }
+
+        #categoryNavbar {
+            gap: 0.2rem !important;
+        }
+
+        #categoryNavbar .nav-link {
+            padding: 5px 8px !important;
+            font-size: 0.75rem;
+        }
+
+        .category-dropdown {
+            min-width: 180px;
+            left: -50px;
+        }
+
+        .country-submenu {
+            width: 280px;
+            left: -150px;
         }
     }
 
