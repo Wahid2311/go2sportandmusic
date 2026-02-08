@@ -1,9 +1,8 @@
-.header {
+    .header {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
-        height: var(--header-height);
         background: white;
         border-radius: 0 0 12px 12px;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
@@ -12,8 +11,11 @@
     }
 
     .navbar {
-        padding: 0 2rem;
-        height: 100%;
+        padding: 0.75rem 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
     }
 
     .logo {
@@ -220,32 +222,31 @@
     }
 
     @media (max-width: 991px) {
-        .header {
-            border-radius: 0;
-            height: auto;
-            padding: 0.5rem 0;
-        }
-
         .navbar {
-            padding: 0.5rem 1rem;
-            flex-wrap: wrap;
+            padding: 0.5rem 0.75rem;
+            gap: 0.3rem;
         }
 
         .navbar-brand {
             flex: 0 0 auto;
+            margin-right: auto;
         }
 
         .navbar-toggler {
-            order: 3;
-            margin-left: auto;
+            flex: 0 0 auto;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid rgba(64, 145, 108, 0.2);
+            border-radius: 6px;
         }
 
         #categoryNavbar {
             order: 2;
             width: 100%;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0 0 0;
+            padding: 0.3rem 0;
             flex-wrap: wrap;
-            gap: 0.3rem !important;
+            gap: 0.2rem !important;
+            display: flex;
         }
 
         #categoryNavbar .nav-item {
@@ -253,63 +254,86 @@
         }
 
         #categoryNavbar .nav-link {
-            padding: 6px 10px !important;
-            font-size: 0.85rem;
+            padding: 5px 8px !important;
+            font-size: 0.8rem;
             white-space: nowrap;
+            margin: 0 !important;
         }
 
         .navbar-collapse {
             background: white;
-            padding: 1rem;
-            margin-top: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 0.3rem;
             border-radius: 8px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
             width: 100%;
-            order: 4;
+            order: 3;
         }
 
         .d-flex.ms-lg-auto {
             flex-direction: column;
             width: 100%;
-            gap: 0.5rem;
+            gap: 0.3rem;
         }
 
         .nav-link {
-            margin: 0.5rem 0;
+            margin: 0.3rem 0 !important;
             text-align: center;
-            padding: 10px !important;
+            padding: 8px !important;
             width: 100%;
+            font-size: 0.9rem;
         }
 
         .search-trigger {
-            margin: 0.5rem auto;
+            margin: 0.3rem auto !important;
             width: 100%;
-            padding: 10px 14px !important;
+            padding: 8px 12px !important;
         }
     }
 
     @media (max-width: 576px) {
         .navbar {
-            padding: 0.5rem 0.75rem;
+            padding: 0.4rem 0.5rem;
+            gap: 0.2rem;
+        }
+
+        .logo {
+            height: 35px;
         }
 
         #categoryNavbar {
-            gap: 0.2rem !important;
+            gap: 0.15rem !important;
+            margin: 0.2rem 0 0 0;
         }
 
         #categoryNavbar .nav-link {
-            padding: 5px 8px !important;
-            font-size: 0.75rem;
+            padding: 4px 6px !important;
+            font-size: 0.7rem;
+        }
+
+        .navbar-collapse {
+            padding: 0.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .nav-link {
+            padding: 6px !important;
+            font-size: 0.85rem;
+        }
+
+        .search-trigger {
+            padding: 6px 10px !important;
+            font-size: 0.9rem;
         }
 
         .category-dropdown {
-            min-width: 180px;
-            left: -50px;
+            min-width: 160px;
+            left: -40px;
         }
 
         .country-submenu {
-            width: 280px;
-            left: -150px;
+            width: 250px;
+            left: -120px;
         }
     }
 
