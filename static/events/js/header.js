@@ -17,17 +17,17 @@ async function fetchNavCategories() {
                 name: cat.name,
                 slug: cat.slug,
                 icon: cat.icon,
-                url: `/events/all-events/?category=${cat.slug}`,
+                url: `/events/events/all/?category=${cat.slug}`,
                 countries: []
             }));
         } else {
             // Fallback to default categories
             NAV_CATEGORIES = [
-                { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/all-events/?category=football", countries: [] },
-                { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/all-events/?category=formula-1", countries: [] },
-                { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/all-events/?category=motogp", countries: [] },
-                { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/all-events/?category=tennis", countries: [] },
-                { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/all-events/?category=other-events", countries: [] }
+                { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/events/all/?category=football", countries: [] },
+                { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/events/all/?category=formula-1", countries: [] },
+                { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/events/all/?category=motogp", countries: [] },
+                { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/events/all/?category=tennis", countries: [] },
+                { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/events/all/?category=other-events", countries: [] }
             ];
         }
 
@@ -36,11 +36,11 @@ async function fetchNavCategories() {
         console.error('Error fetching categories:', error);
         // Fallback to default categories
         NAV_CATEGORIES = [
-            { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/all-events/?category=football", countries: [] },
-            { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/all-events/?category=formula-1", countries: [] },
-            { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/all-events/?category=motogp", countries: [] },
-            { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/all-events/?category=tennis", countries: [] },
-            { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/all-events/?category=other-events", countries: [] }
+            { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/events/all/?category=football", countries: [] },
+            { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/events/all/?category=formula-1", countries: [] },
+            { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/events/all/?category=motogp", countries: [] },
+            { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/events/all/?category=tennis", countries: [] },
+            { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/events/all/?category=other-events", countries: [] }
         ];
         renderNavbarCategories();
     }
