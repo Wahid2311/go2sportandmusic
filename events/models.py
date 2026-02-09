@@ -70,7 +70,6 @@ class Event(BaseModel):
     name = models.CharField(max_length=255, validators=[
         RegexValidator(r'^[a-zA-Z0-9\s\-\.]+$', 'Only letters, numbers, spaces, hyphens and periods allowed')
     ])
-    category = models.ForeignKey(EventCategory, on_delete=models.PROTECT, related_name='events', null=True, blank=False)
     category_legacy = models.CharField(max_length=20, choices=EVENT_CATEGORIES, null=True, blank=True)  # For backward compatibility
     sports_type = models.CharField(max_length=100, blank=True, null=True)
     country = models.CharField(max_length=100, blank=True, null=True)

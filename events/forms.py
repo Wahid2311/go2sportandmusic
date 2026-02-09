@@ -31,29 +31,12 @@ class ContactForm(forms.ModelForm):
         }
 
 class EventCreationForm(forms.ModelForm):
-    category = forms.ModelChoiceField(
-        queryset=EventCategory.objects.filter(is_active=True).order_by('order'),
-        widget=forms.Select(attrs={
-            'class': 'form-control event-form-select',
-            'data-behavior': 'category-select'
-        }),
-        required=False,
-        empty_label="Select a category"
-    )
-    
-    def clean_category(self):
-        category = self.cleaned_data.get('category')
-        if not category:
-            # Get the first active category as default
-            category = EventCategory.objects.filter(is_active=True).first()
-            if not category:
-                raise forms.ValidationError("No categories available. Please create a category first.")
-        return category
+    # Category field removed - using category_legacy instead
     
     class Meta:
         model = Event
         fields = [
-            'name', 'category', 'sports_type', 'country', 'team',
+            'name', 'category_legacy', 'sports_type', 'country', 'team',
             'stadium_name', 'stadium_image',
             'event_logo', 'date', 'time', 'normal_service_charge',
             'reseller_service_charge'
