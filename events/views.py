@@ -187,6 +187,14 @@ class EventCreateView(SuperAdminMixin, CreateView):
             with transaction.atomic():
                 event = form.save(commit=False)
                 event.superadmin = self.request.user
+                
+                # Ensure category is set
+                if not event.category:
+                    from .models import EventCategory
+                    event.category = EventCategory.objects.filter(is_active=True).first()
+                    if not event.category:
+                        raise ValueError("No active categories available")
+                
                 event.save()
                 
                 sections = json.loads(self.request.POST.get('sections', '[]'))

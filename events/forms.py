@@ -38,7 +38,7 @@ class EventCreationForm(forms.ModelForm):
             'data-behavior': 'category-select'
         }),
         required=True,
-        empty_label="Select a category"
+        empty_label=None  # No empty option - user must select
     )
     
     class Meta:
