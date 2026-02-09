@@ -1,27 +1,26 @@
-# Migration to fix NULL category values
+# Migration to fix NULL category values using raw SQL
 
 from django.db import migrations
 
 
 def fix_null_categories(apps, schema_editor):
-    """Set all NULL categories to Football (id=1)"""
-    Event = apps.get_model('events', 'Event')
-    EventCategory = apps.get_model('events', 'EventCategory')
-    
-    # Get or create Football category
-    football, created = EventCategory.objects.get_or_create(
-        slug='football',
-        defaults={
-            'name': 'Football',
-            'description': 'Football events',
-            'icon': 'bi-soccer',
-            'is_active': True,
-            'order': 1
-        }
-    )
-    
-    # Update all NULL categories to Football
-    Event.objects.filter(category__isnull=True).update(category=football)
+    """Set all NULL categories using raw SQL to avoid ORM column mismatch"""
+    # Use raw SQL to ensure Football category exists
+    with schema_editor.connection.cursor() as cursor:
+        # First, ensure Football category exists
+        cursor.execute("""
+            INSERT INTO events_eventcategory (name, slug, description, icon, is_active, "order", created_at, updated_at)
+            VALUES ('Football', 'football', 'Football events', 'bi-soccer', true, 1, NOW(), NOW())
+            ON CONFLICT (slug) DO NOTHING;
+        """)
+        
+        # Get the Football category ID
+        cursor.execute("SELECT id FROM events_eventcategory WHERE slug = 'football' LIMIT 1;")
+        result = cursor.fetchone()
+        if result:
+            football_id = result[0]
+            # Update all NULL categories to Football
+            cursor.execute(f"UPDATE events_event SET category_id = {football_id} WHERE category_id IS NULL;")
 
 
 class Migration(migrations.Migration):
@@ -31,5 +30,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(fix_null_categories),
+        migrations.RunPython(fix_null_categories, migrations.RunPython.noop),
     ]
