@@ -103,8 +103,9 @@ class EventCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['date'].widget.attrs['min'] = timezone.now().date().isoformat()
-        # Ensure category field always shows active categories
-        self.fields['category'].queryset = EventCategory.objects.filter(is_active=True).order_by('order')
+        # Add category_legacy widget if it exists
+        if 'category_legacy' in self.fields:
+            self.fields['category_legacy'].widget = forms.Select(attrs={'class': 'form-control event-form-input'})
 
     def clean(self):
         cleaned_data = super().clean()
