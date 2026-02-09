@@ -1,4 +1,4 @@
-# Migration to make category field nullable
+# Final migration to fix category field and clean up all issues
 
 from django.db import migrations, models
 
@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        # Make category field nullable and blank
         migrations.AlterField(
             model_name='event',
             name='category',
