@@ -187,6 +187,10 @@ class EventCreateView(SuperAdminMixin, CreateView):
             with transaction.atomic():
                 event = form.save(commit=False)
                 event.superadmin = self.request.user
+                # Store the selected category name in category_legacy
+                category = form.cleaned_data.get('category')
+                if category:
+                    event.category_legacy = category.name
                 event.save()
                 
                 sections = json.loads(self.request.POST.get('sections', '[]'))

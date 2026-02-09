@@ -31,12 +31,20 @@ class ContactForm(forms.ModelForm):
         }
 
 class EventCreationForm(forms.ModelForm):
-    # Category field removed - using category_legacy instead
+    # Use ModelChoiceField to dynamically get categories from EventCategory model
+    category = forms.ModelChoiceField(
+        queryset=EventCategory.objects.filter(is_active=True).order_by('order'),
+        widget=forms.Select(attrs={
+            'class': 'form-control event-form-input'
+        }),
+        required=False,
+        label='Category'
+    )
     
     class Meta:
         model = Event
         fields = [
-            'name', 'category_legacy', 'sports_type', 'country', 'team',
+            'name', 'sports_type', 'country', 'team',
             'stadium_name', 'stadium_image',
             'event_logo', 'date', 'time', 'normal_service_charge',
             'reseller_service_charge'
@@ -46,9 +54,6 @@ class EventCreationForm(forms.ModelForm):
                 'class': 'form-control event-form-input',
                 'data-validation': 'event-name',
                 'placeholder': 'Enter event name'
-            }),
-            'category_legacy': forms.Select(attrs={
-                'class': 'form-control event-form-input'
             }),
             'sports_type': forms.TextInput(attrs={
                 'class': 'form-control event-form-input',
