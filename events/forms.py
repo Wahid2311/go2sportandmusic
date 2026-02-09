@@ -1,6 +1,6 @@
 from django import forms
 from django.utils import timezone
-from .models import Event,ContactMessage,EventSection
+from .models import Event, ContactMessage, EventSection, EventCategory
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -31,6 +31,16 @@ class ContactForm(forms.ModelForm):
         }
 
 class EventCreationForm(forms.ModelForm):
+    category = forms.ModelChoiceField(
+        queryset=EventCategory.objects.filter(is_active=True).order_by('order'),
+        widget=forms.Select(attrs={
+            'class': 'form-control event-form-select',
+            'data-behavior': 'category-select'
+        }),
+        required=True,
+        empty_label="Select a category"
+    )
+    
     class Meta:
         model = Event
         fields = [
@@ -44,10 +54,6 @@ class EventCreationForm(forms.ModelForm):
                 'class': 'form-control event-form-input',
                 'data-validation': 'event-name',
                 'placeholder': 'Enter event name'
-            }),
-            'category': forms.Select(attrs={
-                'class': 'form-control event-form-select',
-                'data-behavior': 'category-select'
             }),
             'sports_type': forms.TextInput(attrs={
                 'class': 'form-control event-form-input',
@@ -105,6 +111,8 @@ class EventCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['date'].widget.attrs['min'] = timezone.now().date().isoformat()
+        # Ensure category field always shows active categories
+        self.fields['category'].queryset = EventCategory.objects.filter(is_active=True).order_by('order')
 
     def clean(self):
         cleaned_data = super().clean()
