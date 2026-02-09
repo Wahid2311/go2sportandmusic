@@ -107,7 +107,6 @@ class Event(BaseModel):
         indexes = [
             models.Index(fields=['event_id']),
             models.Index(fields=['date', 'time']),
-            models.Index(fields=['category']),
         ]
         ordering = ['-date', '-time']
 
