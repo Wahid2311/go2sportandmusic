@@ -11,7 +11,7 @@ class EventAdmin(admin.ModelAdmin):
         'event_id', 'name', 'category_badge', 'date', 'time',
         'stadium_name', 'tickets_info', 'price_range', 'status_badge', 'created'
     )
-    list_filter = ('category', 'date', 'created', 'superadmin')
+    list_filter = ('date', 'created', 'superadmin')
     search_fields = ('event_id', 'name', 'stadium_name', 'superadmin__email')
     ordering = ('-date', '-time')
     readonly_fields = (
@@ -24,7 +24,7 @@ class EventAdmin(admin.ModelAdmin):
     
     fieldsets = (
         ('Event Identification', {
-            'fields': ('event_id', 'name', 'category', 'superadmin')
+            'fields': ('event_id', 'name', 'category_legacy', 'superadmin')
         }),
         ('Venue Information', {
             'fields': ('stadium_name', 'stadium_image', 'event_logo')
@@ -62,10 +62,10 @@ class EventAdmin(admin.ModelAdmin):
             'festival': '#F58231',
             'other': '#808080'
         }
-        color = color_map.get(obj.category, '#808080')
+        color = color_map.get(obj.category_legacy, '#808080')
         return format_html(
             '<span style="background-color: {}; color: white; padding: 5px 10px; border-radius: 3px; font-weight: bold;">{}</span>',
-            color, obj.get_category_display()
+            color, obj.get_category_legacy_display() if obj.category_legacy else 'N/A'
         )
     category_badge.short_description = 'Category'
     
