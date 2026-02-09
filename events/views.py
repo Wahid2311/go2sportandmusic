@@ -188,12 +188,16 @@ class EventCreateView(SuperAdminMixin, CreateView):
                 event = form.save(commit=False)
                 event.superadmin = self.request.user
                 
-                # Ensure category is set
-                if not event.category:
+                # Get category from form cleaned data
+                category = form.cleaned_data.get('category')
+                if category:
+                    event.category = category
+                else:
+                    # If no category selected, use the first active category
                     from .models import EventCategory
                     event.category = EventCategory.objects.filter(is_active=True).first()
                     if not event.category:
-                        raise ValueError("No active categories available")
+                        raise ValueError("No active categories available. Please create a category first.")
                 
                 event.save()
                 
