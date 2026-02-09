@@ -90,12 +90,14 @@ class Event(BaseModel):
     time = models.TimeField()
     
     normal_service_charge = models.DecimalField(
-        max_digits=5, decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)]
+        max_digits=10, decimal_places=2,
+        validators=[MinValueValidator(0)],
+        help_text="Service charge for normal users (no maximum limit)"
     )
     reseller_service_charge = models.DecimalField(
-        max_digits=5, decimal_places=2,
-        validators=[MinValueValidator(0), MaxValueValidator(100)]
+        max_digits=10, decimal_places=2,
+        validators=[MinValueValidator(0)],
+        help_text="Service charge for resellers (no maximum limit)"
     )
     
     total_tickets = models.PositiveIntegerField(default=0)
