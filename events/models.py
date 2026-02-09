@@ -173,7 +173,7 @@ class Event(BaseModel):
     
     def get_category_display(self):
         """Get category display name from dynamic or legacy category"""
-        if self.category:
+        if hasattr(self, 'category') and self.category:
             return self.category.name
         elif self.category_legacy:
             return dict(self.EVENT_CATEGORIES).get(self.category_legacy, self.category_legacy)
