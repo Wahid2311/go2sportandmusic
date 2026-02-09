@@ -37,9 +37,18 @@ class EventCreationForm(forms.ModelForm):
             'class': 'form-control event-form-select',
             'data-behavior': 'category-select'
         }),
-        required=True,
-        empty_label=None  # No empty option - user must select
+        required=False,
+        empty_label="Select a category"
     )
+    
+    def clean_category(self):
+        category = self.cleaned_data.get('category')
+        if not category:
+            # Get the first active category as default
+            category = EventCategory.objects.filter(is_active=True).first()
+            if not category:
+                raise forms.ValidationError("No categories available. Please create a category first.")
+        return category
     
     class Meta:
         model = Event
