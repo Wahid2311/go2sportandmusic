@@ -38,8 +38,8 @@
 
 2. **Set environment variables** in `.env`:
    ```
-   STRIPE_SECRET_KEY=publishable_key
-   STRIPE_PUBLISHABLE_KEY=publishable_key
+   STRIPE_SECRET_KEY=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
+   STRIPE_PUBLISHABLE_KEY=pk_live_51O55u9CYST4WEcsb3bneSEe7uBMJJ5NCpGVy85JPpi4bDf0UaAVQspvr9odIvJuV3jC66r4aOlaIkkmSaHytGwjL00JdSkP9rH
    ```
 
 3. **Run migrations**:

@@ -119,8 +119,8 @@ category_legacy = CharField(max_length=20, choices=EVENT_CATEGORIES, null=True, 
 #### Environment Variables Required
 Add these to your `.env` file:
 ```
-STRIPE_SECRET_KEY=publishable_key
-STRIPE_PUBLISHABLE_KEY=publishable_key
+STRIPE_SECRET_KEY=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
+STRIPE_PUBLISHABLE_KEY=pk_live_51O55u9CYST4WEcsb3bneSEe7uBMJJ5NCpGVy85JPpi4bDf0UaAVQspvr9odIvJuV3jC66r4aOlaIkkmSaHytGwjL00JdSkP9rH
 ```
 
 #### Database Fields Added to Order Model
