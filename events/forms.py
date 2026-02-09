@@ -47,6 +47,9 @@ class EventCreationForm(forms.ModelForm):
                 'data-validation': 'event-name',
                 'placeholder': 'Enter event name'
             }),
+            'category_legacy': forms.Select(attrs={
+                'class': 'form-control event-form-input'
+            }),
             'sports_type': forms.TextInput(attrs={
                 'class': 'form-control event-form-input',
                 'placeholder': 'e.g. Football, Basketball (Optional)'
@@ -103,9 +106,6 @@ class EventCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['date'].widget.attrs['min'] = timezone.now().date().isoformat()
-        # Add category_legacy widget if it exists
-        if 'category_legacy' in self.fields:
-            self.fields['category_legacy'].widget = forms.Select(attrs={'class': 'form-control event-form-input'})
 
     def clean(self):
         cleaned_data = super().clean()
