@@ -87,8 +87,8 @@ Files Modified/Created:
 - requirements.txt (stripe==11.0.0 added)
 
 Environment Variables Required:
-STRIPE_SECRET_KEY=STRIPE_PUBLISHABLE_KEY
-STRIPE_PUBLISHABLE_KEY=STRIPE_PUBLISHABLE_KEY
+STRIPE_SECRET_KEY=your_stripe_secret_key_here
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key_here
 
 Payment Flow:
 1. User initiates purchase

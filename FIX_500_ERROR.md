@@ -16,8 +16,8 @@ Go to Railway Dashboard → Your Project → Settings → Environment Variables
 
 Make sure these are set:
 ```
-STRIPE_SECRET_KEY=Publishable_key
-STRIPE_PUBLISHABLE_KEY=Publishable_key
+STRIPE_SECRET_KEY=your_stripe_secret_key_here
+STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key_here
 ```
 
 ### Step 2: Trigger New Deployment
