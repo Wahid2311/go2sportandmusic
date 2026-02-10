@@ -60,12 +60,13 @@ class TicketForm(forms.ModelForm):
         })
     )
 
-    seats = forms.CharField(
-        widget=forms.TextInput(attrs={
+    seats = forms.MultipleChoiceField(
+        choices=[(str(i), str(i)) for i in range(1, 51)],
+        widget=forms.SelectMultiple(attrs={
             'class': 'form-control ticket-input',
-            'placeholder': 'e.g. A1, A2, A3',
             'data-validation': 'seats'
-        })
+        }),
+        help_text='Select the number of seats'
     )
 
     face_value = forms.DecimalField(
@@ -136,8 +137,7 @@ class TicketForm(forms.ModelForm):
         
 
     def clean_seats(self):
-        seats_str = self.cleaned_data['seats']
-        seats = [s.strip() for s in seats_str.split(',') if s.strip()]
+        seats = self.cleaned_data['seats']
         if len(seats) != self.cleaned_data.get('number_of_tickets', 0):
             raise ValidationError("Number of seats must equal number of tickets.")
         return seats
