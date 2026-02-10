@@ -1,2 +1,2 @@
-release: rm -f db.sqlite3 && python manage.py migrate && python manage.py populate_categories
+release: bash -c "cd /app && rm -f db.sqlite3 && python manage.py migrate && python manage.py populate_categories"
 web: python manage.py collectstatic --noinput && gunicorn go2events.wsgi
