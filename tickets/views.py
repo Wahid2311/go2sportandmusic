@@ -58,10 +58,24 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
             messages.error(request, f"Cannot create listing: The event '{self.event.name}' has already passed. Event date was {self.event.date.strftime('%B %d, %Y')} at {self.event.time.strftime('%I:%M %p')}.")
             return redirect('events:home')
         
-        # Check if event has sections available
+        # Check if event has sections available, create default sections if not
         if not self.event.sections.exists():
-            messages.error(request, f"Cannot create listing: The event '{self.event.name}' has no sections available. Please contact the administrator.")
-            return redirect('events:home')
+            from events.models import EventSection
+            default_sections = [
+                {'name': 'General Admission', 'color': '#3CB44B', 'lower_price': 0, 'upper_price': 0},
+                {'name': 'VIP', 'color': '#911EB4', 'lower_price': 0, 'upper_price': 0},
+                {'name': 'Premium', 'color': '#F58231', 'lower_price': 0, 'upper_price': 0},
+            ]
+            for section_data in default_sections:
+                EventSection.objects.create(
+                    event=self.event,
+                    name=section_data['name'],
+                    color=section_data['color'],
+                    lower_price=section_data['lower_price'],
+                    upper_price=section_data['upper_price']
+                )
+            messages.success(request, f"Default sections have been created for '{self.event.name}'. You can now create a listing.")
+            return redirect(request.path)
         
         return super().dispatch(request, *args, **kwargs)
 
