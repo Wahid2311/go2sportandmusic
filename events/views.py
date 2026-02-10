@@ -531,7 +531,7 @@ class AllEventsView(ListView):
         
         # Filter by category if provided
         if category:
-            qs = qs.filter(category__slug=category)
+            qs = qs.filter(category_legacy=category)
         
         # Filter by team if provided
         if team:
