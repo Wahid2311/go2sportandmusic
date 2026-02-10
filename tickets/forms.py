@@ -60,15 +60,6 @@ class TicketForm(forms.ModelForm):
         })
     )
 
-    seats = forms.MultipleChoiceField(
-        choices=[(str(i), str(i)) for i in range(1, 51)],
-        widget=forms.SelectMultiple(attrs={
-            'class': 'form-control ticket-input',
-            'data-validation': 'seats'
-        }),
-        help_text='Select the number of seats'
-    )
-
     face_value = forms.DecimalField(
         max_digits=8, decimal_places=2,
         widget=forms.NumberInput(attrs={
@@ -114,7 +105,7 @@ class TicketForm(forms.ModelForm):
         model = Ticket
         fields = [
             'upload_choice', 'upload_file', 'upload_by',
-            'number_of_tickets', 'section', 'row', 'seats',
+            'number_of_tickets', 'section', 'row',
             'face_value', 'ticket_type', 'benefits_and_Restrictions', 'sell_price', 'sell_together'
         ]
 
@@ -123,8 +114,6 @@ class TicketForm(forms.ModelForm):
         event = kwargs.pop('event', None)
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        if self.instance and self.instance.seats:
-            self.initial['seats'] = ', '.join(self.instance.seats)
 
         self.event = event
 
@@ -135,12 +124,6 @@ class TicketForm(forms.ModelForm):
             self.fields['upload_by'].widget.attrs['max'] = max_date.isoformat()
 
         
-
-    def clean_seats(self):
-        seats = self.cleaned_data['seats']
-        if len(seats) != self.cleaned_data.get('number_of_tickets', 0):
-            raise ValidationError("Number of seats must equal number of tickets.")
-        return seats
 
     def clean(self):
         cleaned = super().clean()
@@ -159,7 +142,6 @@ class TicketForm(forms.ModelForm):
         return cleaned
 
     def save(self, commit=True):
-        self.instance.seats = self.cleaned_data['seats']
         if self.cleaned_data.get('upload_file'):
             self.instance.upload_file = self.cleaned_data['upload_file']
         return super().save(commit=commit)
