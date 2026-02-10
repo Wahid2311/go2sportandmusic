@@ -114,9 +114,26 @@ class Event(BaseModel):
         return f"{self.name} ({self.event_id})"
 
     def save(self, *args, **kwargs):
+        is_new = not self.pk
         if not self.event_id:
             self.event_id = self.generate_unique_event_id()
         super().save(*args, **kwargs)
+        
+        # Create default sections for new events if they don't have any
+        if is_new and not self.sections.exists():
+            default_sections = [
+                {'name': 'General Admission', 'color': '#3CB44B', 'lower_price': 0, 'upper_price': 0},
+                {'name': 'VIP', 'color': '#911EB4', 'lower_price': 0, 'upper_price': 0},
+                {'name': 'Premium', 'color': '#F58231', 'lower_price': 0, 'upper_price': 0},
+            ]
+            for section_data in default_sections:
+                EventSection.objects.create(
+                    event=self,
+                    name=section_data['name'],
+                    color=section_data['color'],
+                    lower_price=section_data['lower_price'],
+                    upper_price=section_data['upper_price']
+                )
 
     def generate_unique_event_id(self):
         while True:
