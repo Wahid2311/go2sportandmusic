@@ -69,16 +69,20 @@
         {{ form.ticket_type }}
       </div>
 
-      <div class="col-md-6">
+      <div class="col-md-12">
         <label class="form-label">Sell Options</label>
-        <div class="d-flex align-items-center" style="height: 38px; gap: 20px;">
-          <div class="form-check mb-0">
-            <input class="form-check-input" type="radio" name="sell_together" id="radio_altogether" value="true">
-            <label class="form-check-label" for="radio_altogether">Select Altogether</label>
+        <div class="d-flex flex-wrap" style="gap: 30px;">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="sell_together" id="sell_all_together" value="true" checked>
+            <label class="form-check-label" for="sell_all_together">Sell all together</label>
           </div>
-          <div class="form-check mb-0">
-            <input class="form-check-input" type="radio" name="sell_together" id="radio_limit" value="false">
-            <label class="form-check-label" for="radio_limit">Select Limit</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="sell_together" id="sell_pairs_only" value="false">
+            <label class="form-check-label" for="sell_pairs_only">Sell only pairs</label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="sell_together" id="sell_pairs_no_single" value="false">
+            <label class="form-check-label" for="sell_pairs_no_single">Sell pairs but not leave any single</label>
           </div>
         </div>
       </div>
