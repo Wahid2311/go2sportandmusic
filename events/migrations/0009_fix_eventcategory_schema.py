@@ -1,7 +1,7 @@
 # Migration to fix EventCategory schema - convert created/modified to created_at/updated_at
 
 from django.db import migrations, models
-import django.utils.timezone
+from django.utils import timezone
 
 
 def fix_schema(apps, schema_editor):
@@ -11,39 +11,38 @@ def fix_schema(apps, schema_editor):
     from django.db import connection
     
     with connection.cursor() as cursor:
-        # Check if the columns already exist
-        cursor.execute("PRAGMA table_info(events_eventcategory)")
-        columns = {row[1] for row in cursor.fetchall()}
-        
-        # If new columns already exist, we're done
-        if 'created_at' in columns and 'updated_at' in columns:
-            print("✓ EventCategory already has created_at/updated_at columns")
-            return
-        
-        # If old columns exist, we need to migrate them
-        if 'created' in columns and 'modified' in columns:
-            print("Migrating EventCategory schema from created/modified to created_at/updated_at...")
+        try:
+            # Check if the columns already exist
+            cursor.execute("PRAGMA table_info(events_eventcategory)")
+            columns = {row[1] for row in cursor.fetchall()}
             
-            try:
-                # Add new columns if they don't exist
-                cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN created_at_new DATETIME DEFAULT CURRENT_TIMESTAMP")
-                cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated_at_new DATETIME DEFAULT CURRENT_TIMESTAMP")
-                print("✓ Added new timestamp columns")
-            except Exception as e:
-                print(f"⚠ Could not add new columns (they might already exist): {e}")
+            # If new columns already exist, we're done
+            if 'created_at' in columns and 'updated_at' in columns:
+                print("✓ EventCategory already has created_at/updated_at columns")
+                return
             
-            try:
+            # If old columns exist, we need to migrate them
+            if 'created' in columns and 'modified' in columns:
+                print("Migrating EventCategory schema from created/modified to created_at/updated_at...")
+                
+                # First, update any NULL values in the old columns
+                cursor.execute("""
+                    UPDATE events_eventcategory 
+                    SET created = CURRENT_TIMESTAMP, modified = CURRENT_TIMESTAMP
+                    WHERE created IS NULL OR modified IS NULL
+                """)
+                print(f"✓ Updated NULL values in old columns")
+                
                 # Copy data from old columns to new columns
                 cursor.execute("""
                     UPDATE events_eventcategory 
-                    SET created_at_new = created, updated_at_new = modified
-                    WHERE created_at_new IS NULL OR updated_at_new IS NULL
+                    SET created_at = created, updated_at = modified
                 """)
-                print(f"✓ Copied data from old columns to new columns (affected: {cursor.rowcount} rows)")
-            except Exception as e:
-                print(f"⚠ Could not copy data: {e}")
-        else:
-            print(f"⚠ EventCategory schema is unclear. Columns: {columns}")
+                print(f"✓ Copied data from old columns to new columns")
+        except Exception as e:
+            print(f"⚠ Error in fix_schema: {e}")
+            # Don't fail the migration, just continue
+            pass
 
 
 def reverse_fix(apps, schema_editor):
@@ -58,16 +57,18 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        # First, try to add the new columns using migrations
+        # First, add the new columns with null=True and a default value
         migrations.AddField(
             model_name='eventcategory',
             name='created_at',
-            field=models.DateTimeField(auto_now_add=True, null=True),
+            field=models.DateTimeField(default=timezone.now, null=True),
+            preserve_default=False,
         ),
         migrations.AddField(
             model_name='eventcategory',
             name='updated_at',
-            field=models.DateTimeField(auto_now=True, null=True),
+            field=models.DateTimeField(default=timezone.now, null=True),
+            preserve_default=False,
         ),
         # Then run the Python function to handle the migration
         migrations.RunPython(fix_schema, reverse_fix),
