@@ -461,10 +461,10 @@ class HomeView(ListView):
             {'name': 'Other events', 'icon': 'bi-calendar-event', 'order': 5},
         ]
         
+        categories_to_update = []
         for cat_data in categories_data:
             slug = slugify(cat_data['name'])
-            # Update or create the category
-            EventCategory.objects.update_or_create(
+            category, created = EventCategory.objects.get_or_create(
                 slug=slug,
                 defaults={
                     'name': cat_data['name'],
@@ -473,6 +473,13 @@ class HomeView(ListView):
                     'is_active': True,
                 }
             )
+            if category.icon != cat_data['icon'] or category.order != cat_data['order']:
+                category.icon = cat_data['icon']
+                category.order = cat_data['order']
+                categories_to_update.append(category)
+        
+        if categories_to_update:
+            EventCategory.objects.bulk_update(categories_to_update, ['icon', 'order'])
         
         context = super().get_context_data(**kwargs)
         context['search_form'] = EventSearchForm()
