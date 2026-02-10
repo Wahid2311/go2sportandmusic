@@ -13,8 +13,8 @@ class Migration(migrations.Migration):
             # Forward migration - fix the database
             """
             -- Ensure Football category exists
-            INSERT INTO events_eventcategory (name, slug, description, icon, is_active, "order", created_at, updated_at)
-            VALUES ('Football', 'football', 'Football events', 'bi-soccer', true, 1, NOW(), NOW())
+            INSERT INTO events_eventcategory (name, slug, description, icon, is_active, "order")
+            VALUES ('Football', 'football', 'Football events', 'bi-soccer', true, 1)
             ON CONFLICT (slug) DO NOTHING;
             
             -- Update all NULL categories to Football
