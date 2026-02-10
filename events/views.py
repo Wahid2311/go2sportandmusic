@@ -400,7 +400,14 @@ class EventUpdateView(SuperAdminMixin, UpdateView):
     def form_valid(self, form):
         try:
             with transaction.atomic():
-                event = form.save()
+                event = form.save(commit=False)
+                
+                # Handle category field - save the category name to category_legacy
+                if 'category' in form.cleaned_data and form.cleaned_data['category']:
+                    category_obj = form.cleaned_data['category']
+                    event.category_legacy = category_obj.name
+                
+                event.save()
                 
                 existing_sections = {str(s.id): s for s in event.sections.all()}
                 sections = json.loads(self.request.POST.get('sections', '[]'))
