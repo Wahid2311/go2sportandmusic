@@ -1,2 +1,2 @@
-release: bash cleanup_migrations.sh && python manage.py migrate && python manage.py populate_categories
+release: python cleanup_db.py && python manage.py migrate && python manage.py populate_categories
 web: python manage.py collectstatic --noinput && gunicorn go2events.wsgi
