@@ -9,8 +9,8 @@ def fix_null_categories(apps, schema_editor):
     with schema_editor.connection.cursor() as cursor:
         # First, ensure Football category exists
         cursor.execute("""
-            INSERT INTO events_eventcategory (name, slug, description, icon, is_active, "order", created_at, updated_at)
-            VALUES ('Football', 'football', 'Football events', 'bi-soccer', true, 1, NOW(), NOW())
+            INSERT INTO events_eventcategory (name, slug, description, icon, is_active, "order")
+            VALUES ('Football', 'football', 'Football events', 'bi-soccer', true, 1)
             ON CONFLICT (slug) DO NOTHING;
         """)
         
