@@ -5,6 +5,7 @@ Direct database fix script - runs before migrations to clean up broken migration
 import os
 import sys
 import django
+from datetime import datetime
 
 # Setup Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'go2events.settings')
@@ -28,13 +29,14 @@ def fix_database():
         except Exception as e:
             print(f"⚠ Could not delete migration records: {e}")
         
-        # 2. Ensure Football category exists
+        # 2. Ensure Football category exists with correct field names
         try:
+            now = datetime.now().isoformat()
             cursor.execute("""
                 INSERT OR IGNORE INTO events_eventcategory 
-                (name, slug, description, icon, is_active, "order", created, modified)
-                VALUES ('Football', 'football', 'Football events', 'bi-soccer', 1, 1, datetime('now'), datetime('now'))
-            """)
+                (name, slug, description, icon, is_active, "order", created_at, updated_at)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, ['Football', 'football', 'Football events', 'bi-soccer', 1, 1, now, now])
             print(f"✓ Ensured Football category exists (affected: {cursor.rowcount} rows)")
         except Exception as e:
             print(f"⚠ Could not insert Football category: {e}")
