@@ -111,6 +111,21 @@ class EventCreationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['date'].widget.attrs['min'] = timezone.now().date().isoformat()
+        
+        # FIX: When editing an existing event, pre-populate the category field
+        # by matching the category_legacy string value to the EventCategory object
+        if self.instance and self.instance.pk and self.instance.category_legacy:
+            try:
+                # Find the EventCategory object that matches the category_legacy name
+                category_obj = EventCategory.objects.get(
+                    name=self.instance.category_legacy,
+                    is_active=True
+                )
+                # Set the initial value to the EventCategory object
+                self.fields['category'].initial = category_obj
+            except EventCategory.DoesNotExist:
+                # If the category doesn't exist, leave it empty
+                pass
 
     def clean(self):
         cleaned_data = super().clean()
