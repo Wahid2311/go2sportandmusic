@@ -537,8 +537,17 @@ class AllEventsView(ListView):
         )
         
         # Filter by category if provided
+        # The category parameter comes as a slug (e.g., 'formula-1')
+        # We need to find the EventCategory by slug and then filter by its name
         if category:
-            qs = qs.filter(category_legacy=category)
+            try:
+                # Try to find the EventCategory object with matching slug
+                category_obj = EventCategory.objects.get(slug=category)
+                # Filter events by the category name
+                qs = qs.filter(category_legacy=category_obj.name)
+            except EventCategory.DoesNotExist:
+                # If category doesn't exist, return empty queryset
+                qs = qs.none()
         
         # Filter by team if provided
         if team:
