@@ -16,7 +16,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.db.models import Q, Count, Sum
 from django.core.exceptions import ValidationError
-from .models import Event, EventSection, ContactMessage, Category
+from .models import Event, EventSection, ContactMessage, Category, EventCategory
 from .forms import EventCreationForm, SectionForm, EventSearchForm,ContactForm
 from accounts.utils import api_login_required, require_user_type, authenticate_via_id_token
 from django.views.decorators.csrf import csrf_exempt
