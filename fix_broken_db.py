@@ -44,12 +44,13 @@ def fix_postgres_database(database_url):
         )
         cursor = conn.cursor()
         
-        # 1. Delete all broken migration records for 0009 and later
+        # 1. Delete all broken migration records (including the old 0009)
         print("Deleting broken migration records...")
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
-                name LIKE '0009_%' OR 
+                name = '0009_fix_eventcategory_schema' OR
+                name = '0009_fix_null_categories' OR
                 name LIKE '0010_%' OR 
                 name LIKE '0011_%' OR 
                 name LIKE '0012_%' OR 
@@ -118,12 +119,13 @@ def fix_sqlite_database(db_path):
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
-        # 1. Delete all broken migration records for 0009 and later
+        # 1. Delete all broken migration records (including the old 0009)
         print("Deleting broken migration records...")
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
-                name LIKE '0009_%' OR 
+                name = '0009_fix_eventcategory_schema' OR
+                name = '0009_fix_null_categories' OR
                 name LIKE '0010_%' OR 
                 name LIKE '0011_%' OR 
                 name LIKE '0012_%' OR 
