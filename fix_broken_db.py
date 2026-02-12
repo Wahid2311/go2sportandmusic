@@ -49,7 +49,8 @@ def fix_postgres_database(database_url):
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
-                name = '0006_placeholder' OR
+                name = '0006_add_eventcategory_timestamps' OR
+                name = '0007_set_default_category' OR
                 name = '0009_fix_eventcategory_schema' OR
                 name = '0009_fix_null_categories' OR
                 name LIKE '0010_%' OR 
@@ -125,7 +126,8 @@ def fix_sqlite_database(db_path):
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
-                name = '0006_placeholder' OR
+                name = '0006_add_eventcategory_timestamps' OR
+                name = '0007_set_default_category' OR
                 name = '0009_fix_eventcategory_schema' OR
                 name = '0009_fix_null_categories' OR
                 name LIKE '0010_%' OR 

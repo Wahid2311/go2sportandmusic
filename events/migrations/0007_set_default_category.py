@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0006_placeholder'),
+        ('events', '0006_add_eventcategory_timestamps'),
     ]
 
     operations = [
