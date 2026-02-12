@@ -69,7 +69,7 @@ class Ticket(models.Model):
     number_of_tickets = models.PositiveIntegerField()
     section = models.ForeignKey('events.EventSection', on_delete=models.CASCADE, related_name='tickets')
     row = models.CharField(max_length=20)
-    seats = ArrayField(models.CharField(max_length=10), help_text="Comma separated seat numbers.")
+    seats = ArrayField(models.CharField(max_length=10), help_text="Comma separated seat numbers.", null=True, blank=True, default=list)
     face_value = models.DecimalField(max_digits=8, decimal_places=2)
     ticket_type = models.CharField(max_length=20, choices=TICKET_TYPES)
     benefits_and_Restrictions = ArrayField(models.CharField(max_length=50, choices=RESTRICTIONS_CHOICES), default=list, blank=True)
@@ -135,7 +135,8 @@ class Ticket(models.Model):
             raise ValidationError("Upload by date is required if 'Upload Later' is selected.")
         if self.upload_by and self.upload_by >= self.event.date:
             raise ValidationError("Upload date must be before the event date.")
-        if len(self.seats) != self.number_of_tickets:
+        # Only validate seats if they are provided
+        if self.seats and len(self.seats) != self.number_of_tickets:
             raise ValidationError("Number of seats must match the number of tickets.")
 
     def save(self, *args, **kwargs):
