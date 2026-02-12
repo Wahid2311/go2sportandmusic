@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tickets', '0002_alter_ticket_upload_file'),
+        ('tickets', '0002_alter_ticket_seats'),
     ]
 
     operations = [
