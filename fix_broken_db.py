@@ -44,15 +44,17 @@ def fix_postgres_database(database_url):
         )
         cursor = conn.cursor()
         
-        # 1. Delete all broken migration records (including the old 0009 and 0006_placeholder)
-        print("Deleting broken migration records...")
+        # 1. Delete ALL problematic migration records from both apps
+        print("Deleting broken migration records from events app...")
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
                 name = '0006_add_eventcategory_timestamps' OR
+                name = '0006_placeholder' OR
                 name = '0007_set_default_category' OR
                 name = '0009_fix_eventcategory_schema' OR
                 name = '0009_fix_null_categories' OR
+                name = '0009_verify_schema' OR
                 name LIKE '0010_%' OR 
                 name LIKE '0011_%' OR 
                 name LIKE '0012_%' OR 
@@ -65,42 +67,26 @@ def fix_postgres_database(database_url):
                 name LIKE '0019_%'
             )
         """)
-        deleted_count = cursor.rowcount
-        print(f"✓ Deleted {deleted_count} broken migration records")
+        events_deleted = cursor.rowcount
+        print(f"✓ Deleted {events_deleted} broken migration records from events app")
         
-        # 2. Check if the EventCategory table exists
+        print("Deleting broken migration records from tickets app...")
         cursor.execute("""
-            SELECT EXISTS (
-                SELECT 1 FROM information_schema.tables 
-                WHERE table_name = 'events_eventcategory'
+            DELETE FROM django_migrations 
+            WHERE app = 'tickets' AND (
+                name = '0002_alter_ticket_upload_file' OR
+                name = '0003_ticket_bundle_id_ticket_sell_together' OR
+                name = '0004_stripe_fields' OR
+                name = '0005_alter_ticket_upload_file' OR
+                name LIKE '0006_%' OR 
+                name LIKE '0007_%' OR 
+                name LIKE '0008_%' OR 
+                name LIKE '0009_%' OR 
+                name LIKE '0010_%'
             )
         """)
-        table_exists = cursor.fetchone()[0]
-        
-        if table_exists:
-            print("Checking EventCategory table schema...")
-            cursor.execute("""
-                SELECT column_name FROM information_schema.columns 
-                WHERE table_name = 'events_eventcategory'
-                ORDER BY column_name
-            """)
-            columns = {row[0] for row in cursor.fetchall()}
-            print(f"Current columns: {sorted(columns)}")
-            
-            # 3. If the table has old columns but not new ones, we need to add them
-            if 'created' in columns and 'created_at' not in columns:
-                print("Adding new timestamp columns...")
-                cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN created_at TIMESTAMP")
-                cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated_at TIMESTAMP")
-                print("✓ Added new timestamp columns")
-                
-                # Copy data from old columns to new columns
-                print("Copying data from old columns to new columns...")
-                cursor.execute("""
-                    UPDATE events_eventcategory 
-                    SET created_at = created, updated_at = modified
-                """)
-                print(f"✓ Copied data ({cursor.rowcount} rows)")
+        tickets_deleted = cursor.rowcount
+        print(f"✓ Deleted {tickets_deleted} broken migration records from tickets app")
         
         conn.commit()
         conn.close()
@@ -121,15 +107,17 @@ def fix_sqlite_database(db_path):
         conn = sqlite3.connect(db_path)
         cursor = conn.cursor()
         
-        # 1. Delete all broken migration records (including the old 0009 and 0006_placeholder)
-        print("Deleting broken migration records...")
+        # 1. Delete ALL problematic migration records from both apps
+        print("Deleting broken migration records from events app...")
         cursor.execute("""
             DELETE FROM django_migrations 
             WHERE app = 'events' AND (
                 name = '0006_add_eventcategory_timestamps' OR
+                name = '0006_placeholder' OR
                 name = '0007_set_default_category' OR
                 name = '0009_fix_eventcategory_schema' OR
                 name = '0009_fix_null_categories' OR
+                name = '0009_verify_schema' OR
                 name LIKE '0010_%' OR 
                 name LIKE '0011_%' OR 
                 name LIKE '0012_%' OR 
@@ -142,29 +130,26 @@ def fix_sqlite_database(db_path):
                 name LIKE '0019_%'
             )
         """)
-        deleted_count = cursor.rowcount
-        print(f"✓ Deleted {deleted_count} broken migration records")
+        events_deleted = cursor.rowcount
+        print(f"✓ Deleted {events_deleted} broken migration records from events app")
         
-        # 2. Check the current EventCategory table schema
-        print("Checking EventCategory table schema...")
-        cursor.execute("PRAGMA table_info(events_eventcategory)")
-        columns = {row[1]: row for row in cursor.fetchall()}
-        print(f"Current columns: {list(columns.keys())}")
-        
-        # 3. If the table has old columns but not new ones, we need to add them
-        if 'created' in columns and 'created_at' not in columns:
-            print("Adding new timestamp columns...")
-            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN created_at DATETIME")
-            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated_at DATETIME")
-            print("✓ Added new timestamp columns")
-            
-            # Copy data from old columns to new columns
-            print("Copying data from old columns to new columns...")
-            cursor.execute("""
-                UPDATE events_eventcategory 
-                SET created_at = created, updated_at = modified
-            """)
-            print(f"✓ Copied data ({cursor.rowcount} rows)")
+        print("Deleting broken migration records from tickets app...")
+        cursor.execute("""
+            DELETE FROM django_migrations 
+            WHERE app = 'tickets' AND (
+                name = '0002_alter_ticket_upload_file' OR
+                name = '0003_ticket_bundle_id_ticket_sell_together' OR
+                name = '0004_stripe_fields' OR
+                name = '0005_alter_ticket_upload_file' OR
+                name LIKE '0006_%' OR 
+                name LIKE '0007_%' OR 
+                name LIKE '0008_%' OR 
+                name LIKE '0009_%' OR 
+                name LIKE '0010_%'
+            )
+        """)
+        tickets_deleted = cursor.rowcount
+        print(f"✓ Deleted {tickets_deleted} broken migration records from tickets app")
         
         conn.commit()
         conn.close()
