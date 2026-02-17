@@ -1,68 +1,213 @@
 #!/usr/bin/env python
 """
 Script to fix the broken database state before running migrations.
-This script uses Django ORM to safely delete broken migration records.
+This script uses raw database connections to safely delete broken migration records.
 """
 
 import os
 import sys
-import django
 
-# Setup Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'go2events.settings')
-sys.path.insert(0, '/app')
+def fix_database():
+    """Fix the broken database state"""
+    
+    database_url = os.environ.get('DATABASE_URL')
+    db_path = '/app/db.sqlite3'
+    
+    # Determine if we're using PostgreSQL or SQLite
+    if database_url and database_url.startswith('postgres'):
+        print("Using PostgreSQL database...")
+        fix_postgres_database(database_url)
+    elif os.path.exists(db_path):
+        print(f"Using SQLite database at {db_path}...")
+        fix_sqlite_database(db_path)
+    else:
+        print("No database found. Will be created by migrations.")
+        return
 
-try:
-    django.setup()
-    from django.db import connection
-    from django.db.migrations.recorder import MigrationRecorder
-    
-    print("=" * 60)
-    print("FIXING BROKEN DATABASE STATE")
-    print("=" * 60)
-    
-    # Get the migration recorder
-    recorder = MigrationRecorder(connection)
-    
-    # List of broken migrations to delete
-    broken_migrations = [
-        ('events', '0006_add_eventcategory_timestamps'),
-        ('events', '0006_placeholder'),
-        ('events', '0007_set_default_category'),
-        ('events', '0009_fix_eventcategory_schema'),
-        ('events', '0009_fix_null_categories'),
-        ('events', '0009_verify_schema'),
-        ('events', '0006_final_fix_all_issues'),
-        ('tickets', '0002_alter_ticket_upload_file'),
-        ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
-        ('tickets', '0004_stripe_fields'),
-        ('tickets', '0005_alter_ticket_upload_file'),
-        ('tickets', '0006_recalculate_ticket_prices'),
-    ]
-    
-    # Delete broken migrations
-    deleted_count = 0
-    for app, migration_name in broken_migrations:
-        try:
-            # Use the recorder to unapply the migration
-            recorder.record_unapplied(app, migration_name)
-            print(f"✓ Deleted migration record: {app}.{migration_name}")
-            deleted_count += 1
-        except Exception as e:
-            # Try direct deletion if recorder method fails
-            try:
-                from django.db.migrations.models import Migration
-                Migration.objects.filter(app=app, name=migration_name).delete()
-                print(f"✓ Deleted migration record (direct): {app}.{migration_name}")
-                deleted_count += 1
-            except Exception as e2:
-                print(f"⚠ Could not delete {app}.{migration_name}: {e2}")
-    
-    print(f"\n✓ Successfully deleted {deleted_count} broken migration records")
-    print("=" * 60)
-    
-except Exception as e:
-    print(f"✗ Error during database fix: {e}")
-    import traceback
-    traceback.print_exc()
-    print("Continuing with migrations anyway...")
+
+def fix_postgres_database(database_url):
+    """Fix the PostgreSQL database using raw psycopg2"""
+    try:
+        import psycopg2
+        from urllib.parse import urlparse
+        
+        # Parse the database URL
+        parsed = urlparse(database_url)
+        
+        print(f"Connecting to PostgreSQL database at {parsed.hostname}:{parsed.port}...")
+        conn = psycopg2.connect(
+            host=parsed.hostname,
+            port=parsed.port or 5432,
+            database=parsed.path[1:],  # Remove leading /
+            user=parsed.username,
+            password=parsed.password
+        )
+        cursor = conn.cursor()
+        
+        # Check if django_migrations table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT 1 FROM information_schema.tables 
+                WHERE table_name = 'django_migrations'
+            )
+        """)
+        table_exists = cursor.fetchone()[0]
+        
+        if not table_exists:
+            print("✓ django_migrations table doesn't exist yet. Skipping cleanup.")
+            conn.close()
+            return
+        
+        # List all current migrations in the database
+        print("\nCurrent migrations in database:")
+        cursor.execute("SELECT app, name FROM django_migrations ORDER BY app, name")
+        current_migrations = cursor.fetchall()
+        for app, name in current_migrations:
+            print(f"  - {app}.{name}")
+        
+        # Delete ALL problematic migrations
+        print("\n" + "=" * 60)
+        print("DELETING BROKEN MIGRATIONS")
+        print("=" * 60)
+        
+        broken_migrations = [
+            ('events', '0006_add_eventcategory_timestamps'),
+            ('events', '0006_placeholder'),
+            ('events', '0006_final_fix_all_issues'),
+            ('events', '0007_set_default_category'),
+            ('events', '0008_fix_service_charges_and_reseller_purchase'),
+            ('events', '0009_fix_eventcategory_schema'),
+            ('events', '0009_fix_null_categories'),
+            ('events', '0009_verify_schema'),
+            ('tickets', '0002_alter_ticket_upload_file'),
+            ('tickets', '0002_alter_ticket_seats'),
+            ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
+            ('tickets', '0004_stripe_fields'),
+            ('tickets', '0005_alter_ticket_upload_file'),
+            ('tickets', '0006_recalculate_ticket_prices'),
+        ]
+        
+        deleted_count = 0
+        for app, migration_name in broken_migrations:
+            cursor.execute(
+                "DELETE FROM django_migrations WHERE app = %s AND name = %s",
+                (app, migration_name)
+            )
+            if cursor.rowcount > 0:
+                print(f"✓ Deleted: {app}.{migration_name}")
+                deleted_count += cursor.rowcount
+        
+        conn.commit()
+        
+        print(f"\n✓ Successfully deleted {deleted_count} broken migration records")
+        print("=" * 60)
+        
+        # Show remaining migrations
+        print("\nRemaining migrations in database:")
+        cursor.execute("SELECT app, name FROM django_migrations ORDER BY app, name")
+        remaining_migrations = cursor.fetchall()
+        if remaining_migrations:
+            for app, name in remaining_migrations:
+                print(f"  - {app}.{name}")
+        else:
+            print("  (none)")
+        
+        conn.close()
+        print("\n✓ PostgreSQL database fixed successfully!")
+        
+    except ImportError:
+        print("✗ psycopg2 not installed. Skipping PostgreSQL fix.")
+    except Exception as e:
+        print(f"✗ Error fixing PostgreSQL database: {e}")
+        import traceback
+        traceback.print_exc()
+        # Don't fail, just continue
+
+
+def fix_sqlite_database(db_path):
+    """Fix the SQLite database using raw sqlite3"""
+    try:
+        import sqlite3
+        
+        print(f"Connecting to SQLite database at {db_path}...")
+        conn = sqlite3.connect(db_path)
+        cursor = conn.cursor()
+        
+        # Check if django_migrations table exists
+        cursor.execute("""
+            SELECT name FROM sqlite_master 
+            WHERE type='table' AND name='django_migrations'
+        """)
+        table_exists = cursor.fetchone() is not None
+        
+        if not table_exists:
+            print("✓ django_migrations table doesn't exist yet. Skipping cleanup.")
+            conn.close()
+            return
+        
+        # List all current migrations in the database
+        print("\nCurrent migrations in database:")
+        cursor.execute("SELECT app, name FROM django_migrations ORDER BY app, name")
+        current_migrations = cursor.fetchall()
+        for app, name in current_migrations:
+            print(f"  - {app}.{name}")
+        
+        # Delete ALL problematic migrations
+        print("\n" + "=" * 60)
+        print("DELETING BROKEN MIGRATIONS")
+        print("=" * 60)
+        
+        broken_migrations = [
+            ('events', '0006_add_eventcategory_timestamps'),
+            ('events', '0006_placeholder'),
+            ('events', '0006_final_fix_all_issues'),
+            ('events', '0007_set_default_category'),
+            ('events', '0008_fix_service_charges_and_reseller_purchase'),
+            ('events', '0009_fix_eventcategory_schema'),
+            ('events', '0009_fix_null_categories'),
+            ('events', '0009_verify_schema'),
+            ('tickets', '0002_alter_ticket_upload_file'),
+            ('tickets', '0002_alter_ticket_seats'),
+            ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
+            ('tickets', '0004_stripe_fields'),
+            ('tickets', '0005_alter_ticket_upload_file'),
+            ('tickets', '0006_recalculate_ticket_prices'),
+        ]
+        
+        deleted_count = 0
+        for app, migration_name in broken_migrations:
+            cursor.execute(
+                "DELETE FROM django_migrations WHERE app = ? AND name = ?",
+                (app, migration_name)
+            )
+            if cursor.rowcount > 0:
+                print(f"✓ Deleted: {app}.{migration_name}")
+                deleted_count += cursor.rowcount
+        
+        conn.commit()
+        
+        print(f"\n✓ Successfully deleted {deleted_count} broken migration records")
+        print("=" * 60)
+        
+        # Show remaining migrations
+        print("\nRemaining migrations in database:")
+        cursor.execute("SELECT app, name FROM django_migrations ORDER BY app, name")
+        remaining_migrations = cursor.fetchall()
+        if remaining_migrations:
+            for app, name in remaining_migrations:
+                print(f"  - {app}.{name}")
+        else:
+            print("  (none)")
+        
+        conn.close()
+        print("\n✓ SQLite database fixed successfully!")
+        
+    except Exception as e:
+        print(f"✗ Error fixing SQLite database: {e}")
+        import traceback
+        traceback.print_exc()
+        # Don't fail, just continue
+
+
+if __name__ == '__main__':
+    fix_database()
