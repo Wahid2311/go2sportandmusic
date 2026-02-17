@@ -541,7 +541,10 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         ticket = self.object
-        price_per_ticket = ticket.sell_price_for_reseller if self.request.user.user_type == 'Reseller' else ticket.sell_price_for_normal
+        # Determine user type safely
+        user_type = getattr(self.request.user, 'user_type', 'Normal')
+        is_reseller = user_type == 'Reseller' or self.request.user.is_superadmin
+        price_per_ticket = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
         
         # Check if ticket is part of a bundle
         if ticket.is_bundled:
@@ -550,7 +553,7 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
             context['bundle_tickets'] = bundle_tickets
             # Calculate total price for all tickets in bundle
             total_price = sum(
-                t.number_of_tickets * (t.sell_price_for_reseller if self.request.user.user_type == 'Reseller' else t.sell_price_for_normal)
+                t.number_of_tickets * (t.sell_price_for_reseller if is_reseller else t.sell_price_for_normal)
                 for t in bundle_tickets
             )
             context['total_price'] = total_price
@@ -559,11 +562,19 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
             context['price_per_ticket'] = price_per_ticket
             context['total_price'] = ticket.number_of_tickets * price_per_ticket
         
+        # Add user type info to context so template can use it
+        context['is_reseller'] = is_reseller
+        context['user_type'] = user_type
+        
         return context
 
 class CreateOrderView(LoginRequiredMixin, View):
     def post(self, request, ticket_id):
         ticket = get_object_or_404(Ticket, ticket_id=ticket_id, sold=False)
+        
+        # Determine user type safely
+        user_type = getattr(request.user, 'user_type', 'Normal')
+        is_reseller = user_type == 'Reseller' or request.user.is_superadmin
         
         # Check if ticket is part of a bundle
         if ticket.is_bundled:
@@ -578,7 +589,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             
             # Calculate total price for bundle
             price = sum(
-                t.number_of_tickets * (t.sell_price_for_reseller if request.user.user_type == 'Reseller' else t.sell_price_for_normal)
+                t.number_of_tickets * (t.sell_price_for_reseller if is_reseller else t.sell_price_for_normal)
                 for t in bundle_tickets
             )
             total_price = price
@@ -642,7 +653,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                     # upload_file logic tricky if splitting file? inheriting for now
                 )
             
-            price = ticket.sell_price_for_reseller if request.user.user_type == 'Reseller' else ticket.sell_price_for_normal
+            price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
             total_price = ticket.number_of_tickets * price
             ticket_uploaded = False
             if ticket.upload_choice == 'now':
