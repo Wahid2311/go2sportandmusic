@@ -65,42 +65,26 @@ def fix_postgres_database(database_url):
         for app, name in current_migrations:
             print(f"  - {app}.{name}")
         
-        # Delete ALL problematic migrations
+        # Delete ALL migrations except 0001_initial and 0002_comprehensive_schema_fix
         print("\n" + "=" * 60)
-        print("DELETING BROKEN MIGRATIONS")
+        print("DELETING ALL BROKEN MIGRATIONS")
         print("=" * 60)
         
-        broken_migrations = [
-            ('events', '0006_add_eventcategory_timestamps'),
-            ('events', '0006_placeholder'),
-            ('events', '0006_final_fix_all_issues'),
-            ('events', '0006_comprehensive_fix'),
-            ('events', '0007_set_default_category'),
-            ('events', '0008_fix_service_charges_and_reseller_purchase'),
-            ('events', '0009_fix_eventcategory_schema'),
-            ('events', '0009_fix_null_categories'),
-            ('events', '0009_verify_schema'),
-            ('tickets', '0002_alter_ticket_upload_file'),
-            ('tickets', '0002_alter_ticket_seats'),
-            ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
-            ('tickets', '0004_stripe_fields'),
-            ('tickets', '0005_alter_ticket_upload_file'),
-            ('tickets', '0006_recalculate_ticket_prices'),
-        ]
-        
-        deleted_count = 0
-        for app, migration_name in broken_migrations:
-            cursor.execute(
-                "DELETE FROM django_migrations WHERE app = %s AND name = %s",
-                (app, migration_name)
+        # Delete all migrations except the ones we want to keep
+        cursor.execute("""
+            DELETE FROM django_migrations 
+            WHERE NOT (
+                (app = 'events' AND name = '0001_initial') OR
+                (app = 'events' AND name = '0002_comprehensive_schema_fix') OR
+                (app = 'tickets' AND name = '0001_initial') OR
+                (app = 'tickets' AND name = '0002_comprehensive_schema_fix')
             )
-            if cursor.rowcount > 0:
-                print(f"✓ Deleted: {app}.{migration_name}")
-                deleted_count += cursor.rowcount
+        """)
         
+        deleted_count = cursor.rowcount
         conn.commit()
         
-        print(f"\n✓ Successfully deleted {deleted_count} broken migration records")
+        print(f"✓ Successfully deleted {deleted_count} broken migration records")
         print("=" * 60)
         
         # Show remaining migrations
@@ -111,7 +95,7 @@ def fix_postgres_database(database_url):
             for app, name in remaining_migrations:
                 print(f"  - {app}.{name}")
         else:
-            print("  (none)")
+            print("  (none - will be created by migrations)")
         
         conn.close()
         print("\n✓ PostgreSQL database fixed successfully!")
@@ -153,42 +137,26 @@ def fix_sqlite_database(db_path):
         for app, name in current_migrations:
             print(f"  - {app}.{name}")
         
-        # Delete ALL problematic migrations
+        # Delete ALL migrations except 0001_initial and 0002_comprehensive_schema_fix
         print("\n" + "=" * 60)
-        print("DELETING BROKEN MIGRATIONS")
+        print("DELETING ALL BROKEN MIGRATIONS")
         print("=" * 60)
         
-        broken_migrations = [
-            ('events', '0006_add_eventcategory_timestamps'),
-            ('events', '0006_placeholder'),
-            ('events', '0006_final_fix_all_issues'),
-            ('events', '0006_comprehensive_fix'),
-            ('events', '0007_set_default_category'),
-            ('events', '0008_fix_service_charges_and_reseller_purchase'),
-            ('events', '0009_fix_eventcategory_schema'),
-            ('events', '0009_fix_null_categories'),
-            ('events', '0009_verify_schema'),
-            ('tickets', '0002_alter_ticket_upload_file'),
-            ('tickets', '0002_alter_ticket_seats'),
-            ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
-            ('tickets', '0004_stripe_fields'),
-            ('tickets', '0005_alter_ticket_upload_file'),
-            ('tickets', '0006_recalculate_ticket_prices'),
-        ]
-        
-        deleted_count = 0
-        for app, migration_name in broken_migrations:
-            cursor.execute(
-                "DELETE FROM django_migrations WHERE app = ? AND name = ?",
-                (app, migration_name)
+        # Delete all migrations except the ones we want to keep
+        cursor.execute("""
+            DELETE FROM django_migrations 
+            WHERE NOT (
+                (app = 'events' AND name = '0001_initial') OR
+                (app = 'events' AND name = '0002_comprehensive_schema_fix') OR
+                (app = 'tickets' AND name = '0001_initial') OR
+                (app = 'tickets' AND name = '0002_comprehensive_schema_fix')
             )
-            if cursor.rowcount > 0:
-                print(f"✓ Deleted: {app}.{migration_name}")
-                deleted_count += cursor.rowcount
+        """)
         
+        deleted_count = cursor.rowcount
         conn.commit()
         
-        print(f"\n✓ Successfully deleted {deleted_count} broken migration records")
+        print(f"✓ Successfully deleted {deleted_count} broken migration records")
         print("=" * 60)
         
         # Show remaining migrations
@@ -199,7 +167,7 @@ def fix_sqlite_database(db_path):
             for app, name in remaining_migrations:
                 print(f"  - {app}.{name}")
         else:
-            print("  (none)")
+            print("  (none - will be created by migrations)")
         
         conn.close()
         print("\n✓ SQLite database fixed successfully!")
