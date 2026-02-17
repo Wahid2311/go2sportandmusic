@@ -24,7 +24,7 @@ def reverse_fix(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('events', '0007_set_default_category'),
+        ('events', '0006_reset_migration_history'),
     ]
 
     operations = [
