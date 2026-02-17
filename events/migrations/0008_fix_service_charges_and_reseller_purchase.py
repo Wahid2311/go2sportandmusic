@@ -4,8 +4,9 @@ from django.db import migrations
 
 
 def fix_service_charges(apps, schema_editor):
-    """Set correct service charges: 20% for normal, 12% for reseller"""
+    """Set correct service charges: 20% for normal, 12% for reseller and recalculate ticket prices"""
     Event = apps.get_model('events', 'Event')
+    Ticket = apps.get_model('tickets', 'Ticket')
     
     # Update all events with correct service charges
     Event.objects.all().update(
@@ -14,6 +15,17 @@ def fix_service_charges(apps, schema_editor):
     )
     
     print("✓ Updated service charges: Normal=20%, Reseller=12%")
+    
+    # Recalculate all ticket prices based on the new service charges
+    for ticket in Ticket.objects.all():
+        normal_charge = ticket.event.normal_service_charge or 0
+        reseller_charge = ticket.event.reseller_service_charge or 0
+        
+        ticket.sell_price_for_normal = ticket.sell_price + (((ticket.sell_price * normal_charge) / 100) or 0)
+        ticket.sell_price_for_reseller = ticket.sell_price + (((ticket.sell_price * reseller_charge) / 100) or 0)
+        ticket.save(update_fields=['sell_price_for_normal', 'sell_price_for_reseller'])
+    
+    print(f"✓ Recalculated prices for {Ticket.objects.count()} tickets")
 
 
 def reverse_fix(apps, schema_editor):
