@@ -7,7 +7,7 @@ def fix_everything(apps, schema_editor):
     """
     Comprehensive fix that:
     1. Clears all broken migration records from django_migrations table
-    2. Adds missing columns to EventCategory
+    2. Adds missing columns to EventCategory with proper defaults
     3. Sets correct service charges (20% for normal, 12% for reseller)
     4. Recalculates ticket prices
     """
@@ -40,14 +40,14 @@ def fix_everything(apps, schema_editor):
             except:
                 pass
         
-        # Add missing columns to EventCategory
+        # Add missing columns to EventCategory with proper defaults
         try:
-            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN created TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
         except:
             pass
         
         try:
-            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+            cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP")
         except:
             pass
         
