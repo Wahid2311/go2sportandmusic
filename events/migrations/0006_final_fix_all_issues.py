@@ -6,53 +6,39 @@ import django.db.models.deletion
 def reset_migration_history_and_fix_schema(apps, schema_editor):
     """
     This migration:
-    1. Clears all broken migration records from the database
-    2. Re-inserts only valid migrations
-    3. Adds missing columns to EventCategory table
-    4. Sets correct service charges (20% for normal, 12% for reseller)
+    1. Deletes only the broken migration records from the database
+    2. Adds missing columns to EventCategory table
+    3. Sets correct service charges (20% for normal, 12% for reseller)
     """
     from django.db import connection
     
     with connection.cursor() as cursor:
-        # Get the database engine type
-        db_engine = connection.settings_dict['ENGINE']
-        is_postgres = 'postgresql' in db_engine
-        is_sqlite = 'sqlite' in db_engine
+        # Delete ONLY the broken migration records that are causing issues
+        broken_migrations = [
+            ('events', '0006_add_eventcategory_timestamps'),
+            ('events', '0006_placeholder'),
+            ('events', '0007_set_default_category'),
+            ('events', '0008_fix_service_charges_and_reseller_purchase'),
+            ('events', '0009_fix_eventcategory_schema'),
+            ('events', '0009_fix_null_categories'),
+            ('events', '0009_verify_schema'),
+            ('events', '0006_final_fix_all_issues'),
+            ('tickets', '0002_alter_ticket_upload_file'),
+            ('tickets', '0002_alter_ticket_seats'),
+            ('tickets', '0003_ticket_bundle_id_ticket_sell_together'),
+            ('tickets', '0004_stripe_fields'),
+            ('tickets', '0005_alter_ticket_upload_file'),
+            ('tickets', '0006_recalculate_ticket_prices'),
+        ]
         
-        # Delete all migration records to start fresh
-        cursor.execute("DELETE FROM django_migrations WHERE app IN ('events', 'tickets')")
-        
-        # Re-insert only the valid migrations
-        if is_postgres:
-            cursor.execute("""
-                INSERT INTO django_migrations (app, name, applied) VALUES
-                ('events', '0001_initial', NOW()),
-                ('events', '0002_event_country_event_sports_type_and_more', NOW()),
-                ('events', '0003_category', NOW()),
-                ('events', '0004_category_country_category_type_and_more', NOW()),
-                ('events', '0005_eventcategory', NOW()),
-                ('tickets', '0001_initial', NOW()),
-                ('tickets', '0002_alter_ticket_seats', NOW()),
-                ('tickets', '0003_ticket_bundle_id_ticket_sell_together', NOW()),
-                ('tickets', '0004_alter_ticket_sell_price_for_normal_and_more', NOW()),
-                ('tickets', '0005_alter_ticket_upload_file', NOW())
-            """)
-        elif is_sqlite:
-            from datetime import datetime
-            now = datetime.now().isoformat()
-            cursor.execute(f"""
-                INSERT INTO django_migrations (app, name, applied) VALUES
-                ('events', '0001_initial', '{now}'),
-                ('events', '0002_event_country_event_sports_type_and_more', '{now}'),
-                ('events', '0003_category', '{now}'),
-                ('events', '0004_category_country_category_type_and_more', '{now}'),
-                ('events', '0005_eventcategory', '{now}'),
-                ('tickets', '0001_initial', '{now}'),
-                ('tickets', '0002_alter_ticket_seats', '{now}'),
-                ('tickets', '0003_ticket_bundle_id_ticket_sell_together', '{now}'),
-                ('tickets', '0004_alter_ticket_sell_price_for_normal_and_more', '{now}'),
-                ('tickets', '0005_alter_ticket_upload_file', '{now}')
-            """)
+        for app, name in broken_migrations:
+            try:
+                cursor.execute(
+                    "DELETE FROM django_migrations WHERE app = %s AND name = %s",
+                    (app, name)
+                )
+            except:
+                pass  # Migration record doesn't exist, that's fine
         
         # Add missing columns to EventCategory if they don't exist
         try:
@@ -64,6 +50,13 @@ def reset_migration_history_and_fix_schema(apps, schema_editor):
             cursor.execute("ALTER TABLE events_eventcategory ADD COLUMN updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
         except:
             pass  # Column already exists
+        
+        # Update Event service charges to correct values
+        try:
+            cursor.execute("UPDATE events_event SET normal_service_charge = 20 WHERE normal_service_charge != 20")
+            cursor.execute("UPDATE events_event SET reseller_service_charge = 12 WHERE reseller_service_charge != 12")
+        except:
+            pass  # Table might not exist yet
 
 
 def reverse_migration(apps, schema_editor):
@@ -89,16 +82,5 @@ class Migration(migrations.Migration):
             model_name='eventcategory',
             name='updated',
             field=models.DateTimeField(auto_now=True, null=True),
-        ),
-        # Update Event model to set correct service charges
-        migrations.AlterField(
-            model_name='event',
-            name='normal_service_charge',
-            field=models.DecimalField(decimal_places=2, default=20, max_digits=5),
-        ),
-        migrations.AlterField(
-            model_name='event',
-            name='reseller_service_charge',
-            field=models.DecimalField(decimal_places=2, default=12, max_digits=5),
         ),
     ]
