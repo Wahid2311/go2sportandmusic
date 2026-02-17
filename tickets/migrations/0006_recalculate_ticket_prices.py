@@ -26,7 +26,7 @@ def reverse_calc(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('tickets', '0005_alter_ticket_upload_file'),
+        ('tickets', '0001_initial'),
     ]
 
     operations = [
