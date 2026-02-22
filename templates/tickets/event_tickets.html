@@ -883,17 +883,15 @@
 
                 <!-- Action Button -->
                 <div onclick="event.stopPropagation()">
-                {% if user.is_authenticated and user.user_type != 'Reseller' %}
+                {% if user.is_authenticated %}
                   <form action="/tickets/${ticket.ticket_id}/buy/" method="post">
                     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                     <button type="submit" class="btn btn-primary w-100 btn-sm py-2 fw-bold" style="font-size: 0.9rem;">
                         Buy Now
                     </button>
                   </form>
-                {% elif not user.is_authenticated %}
-                  <a href="{% url 'accounts:sign_in' %}?next={{ request.path }}" class="btn btn-outline-primary w-100 btn-sm py-2" style="font-size: 0.9rem;">Login to Buy</a>
                 {% else %}
-                   <button disabled class="btn btn-secondary w-100 btn-sm py-2" style="font-size: 0.9rem;">Resellers cannot buy</button>
+                  <a href="{% url 'accounts:sign_in' %}?next={{ request.path }}" class="btn btn-outline-primary w-100 btn-sm py-2" style="font-size: 0.9rem;">Login to Buy</a>
                 {% endif %}
                 </div>
                 
