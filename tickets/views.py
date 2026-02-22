@@ -679,8 +679,15 @@ class CreateOrderView(LoginRequiredMixin, View):
                 revolut_checkout_url=""
             )
         
-        stripe_api = StripeAPI()
+        # Check if Stripe is configured
+        is_configured, config_message = StripeAPI.validate_config()
+        if not is_configured:
+            order.delete()
+            messages.error(request, f"Payment system is not configured: {config_message}. Please contact support.")
+            return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
+        
         try:
+            stripe_api = StripeAPI()
             stripe_session = stripe_api.create_checkout_session(
                 amount=total_price,
                 currency="GBP",
@@ -695,9 +702,14 @@ class CreateOrderView(LoginRequiredMixin, View):
             
             return redirect(stripe_session['checkout_url'])
             
+        except ValueError as e:
+            order.delete()
+            messages.error(request, f"Payment error: {str(e)}")
+            return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
         except Exception as e:
             order.delete()
-            messages.error(request, f"Payment processing error: {str(e)}")
+            logger.error(f"Unexpected error during payment processing: {str(e)}")
+            messages.error(request, f"Payment processing error: {str(e)}. Please try again or contact support.")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
 
 class PaymentReturnView(LoginRequiredMixin, View):

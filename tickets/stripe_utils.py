@@ -11,7 +11,18 @@ class StripeAPI:
     """Stripe payment processing API"""
     
     def __init__(self):
+        if not settings.STRIPE_SECRET_KEY:
+            raise ValueError("Stripe secret key is not configured. Please set STRIPE_SECRET_KEY environment variable.")
         stripe.api_key = settings.STRIPE_SECRET_KEY
+    
+    @staticmethod
+    def validate_config():
+        """Validate that Stripe is properly configured"""
+        if not settings.STRIPE_SECRET_KEY:
+            return False, "Stripe secret key is not configured"
+        if not settings.STRIPE_PUBLISHABLE_KEY:
+            return False, "Stripe publishable key is not configured"
+        return True, "Stripe is properly configured"
     
     def create_checkout_session(self, amount, currency, customer_email, description, order_id):
         """
@@ -59,9 +70,15 @@ class StripeAPI:
                 'checkout_url': session.url,
                 'payment_intent_id': session.payment_intent
             }
+        except stripe.error.AuthenticationError as e:
+            logger.error(f"Stripe authentication error: {str(e)}")
+            raise ValueError(f"Stripe authentication failed. Please check your API keys. Error: {str(e)}")
+        except stripe.error.InvalidRequestError as e:
+            logger.error(f"Stripe invalid request error: {str(e)}")
+            raise ValueError(f"Invalid Stripe request. Error: {str(e)}")
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error creating checkout session: {str(e)}")
-            raise
+            raise ValueError(f"Stripe payment processing failed. Error: {str(e)}")
     
     def retrieve_session(self, session_id):
         """
@@ -71,7 +88,7 @@ class StripeAPI:
             return stripe.checkout.Session.retrieve(session_id)
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error retrieving session: {str(e)}")
-            raise
+            raise ValueError(f"Failed to retrieve Stripe session. Error: {str(e)}")
     
     def retrieve_payment_intent(self, payment_intent_id):
         """
@@ -81,4 +98,8 @@ class StripeAPI:
             return stripe.PaymentIntent.retrieve(payment_intent_id)
         except stripe.error.StripeError as e:
             logger.error(f"Stripe error retrieving payment intent: {str(e)}")
-            raise
+            raise ValueError(f"Failed to retrieve Stripe payment intent. Error: {str(e)}")
+    
+    def is_configured(self):
+        """Check if Stripe is properly configured"""
+        return bool(settings.STRIPE_SECRET_KEY and settings.STRIPE_PUBLISHABLE_KEY)
