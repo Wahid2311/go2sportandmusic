@@ -1,0 +1,58 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'events/css/header.css' %}">
+
+<!-- Header HTML -->
+<header class="header">
+    <nav class="navbar navbar-expand-lg align-items-center">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'events:home' %}">
+                <img src="{% static 'images/newLogo.png' %}" alt="Go2Events" class="logo">
+            </a>
+
+            <ul class="navbar-nav ms-4 d-flex flex-row gap-2" id="categoryNavbar">
+                <!-- Categories JS se inject hongi -->
+            </ul>
+
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex ms-lg-auto mt-3 mt-lg-0 align-items-center">
+                    <div class="search-trigger" id="searchTrigger">
+                        <i class="bi bi-search"></i>
+                    </div>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                    <a href="{% url 'accounts:profile' %}" class="nav-link">Dashboard</a>
+                    <a href="{% url 'accounts:sign_out' %}" class="nav-link">Sign Out</a>
+                    {% else %}
+                    <a href="{% url 'events:contact' %}" class="nav-link">Support</a>
+                    <a href="{% url 'accounts:sign_up' %}" class="nav-link">Sign Up</a>
+                    <a href="{% url 'accounts:sign_in' %}" class="nav-link">Sign In</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<!-- Search Overlay -->
+<div class="search-overlay" id="searchOverlay">
+    <button class="close-search" id="closeSearch">
+        <i class="bi bi-x-lg"></i>
+    </button>
+    <div class="search-modal">
+        <div id="navbar-search-results" class="autocomplete-results"></div>
+        <form action="{% url 'events:search_results' %}">
+            <input type="text" name="query" class="form-control search-modal-input"
+                placeholder="Search events, stadiums, or categories..." data-behavior="search-autocomplete"
+                id="searchModalInput" />
+            <button type="submit" class="btn-search-modal">
+                <i class="bi bi-search"></i>
+            </button>
+        </form>
+    </div>
+</div>
+<script src="{% static 'events/js/countryData.js' %}"></script>
+<script type="module" src="{% static 'events/js/header.js' %}"></script>
