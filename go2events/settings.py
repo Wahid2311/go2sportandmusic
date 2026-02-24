@@ -111,7 +111,8 @@ SUPERADMIN_EMAIL = os.environ.get('SUPERADMIN_EMAIL')
 SUPERADMIN_PASSWORD = os.environ.get('SUPERADMIN_PASSWORD')
 
 # Stripe Configuration
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
+# Using new variable name to bypass cached old key
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_API_KEY_LIVE', os.environ.get('STRIPE_SECRET_KEY', ''))
 STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
 
 # Legacy Revolut Configuration (deprecated)
