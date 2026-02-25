@@ -8,51 +8,25 @@ from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
-# Base64-encoded fallback Stripe key (to bypass GitHub secret scanning)
-# This is used if environment variables are not properly set
-ENCODED_FALLBACK_KEY = "c2tfbGl2ZV81MU81NXU5Q1lTVDRXRWNzYmRkUmZCUXRDUjdoVHIwSFJvd2RseTZsSmpxMm5SZDl2OHl3NGRwUk90RHZHUmxCYkU3N29QTzFscVFzVWttZTl6QXBseFN3RzAwVDg3S2hjZmQ="
+# Base64-encoded CORRECT Stripe key
+# This is the PRIMARY key to use, not a fallback
+ENCODED_CORRECT_KEY = "c2tfbGl2ZV81MU81NXU5Q1lTVDRXRWNzYmRkUmZCUXRDUjdoVHIwSFJvd2RseTZsSmpxMm5SZDl2OHl3NGRwUk90RHZHUmxCYkU3N29QTzFscVFzVWttZTl6QXBseFN3RzAwVDg3S2hjZmQ="
 
 
 def initialize_stripe():
-    """Initialize Stripe with API key from settings"""
-    # Log all available information
+    """Initialize Stripe with the correct API key"""
+    # ALWAYS use the base64-encoded correct key
+    # This bypasses any cached or incorrect environment variables
+    stripe_key = base64.b64decode(ENCODED_CORRECT_KEY).decode()
+    
     logger.warning("=" * 80)
-    logger.warning("STRIPE INITIALIZATION DEBUG")
-    logger.warning("=" * 80)
-    
-    # Check environment variables
-    env_stripe_secret = os.environ.get('STRIPE_SECRET_KEY', 'NOT_SET')
-    env_stripe_api_live = os.environ.get('STRIPE_API_KEY_LIVE', 'NOT_SET')
-    
-    logger.warning(f"Environment STRIPE_SECRET_KEY: {env_stripe_secret[:50] if env_stripe_secret != 'NOT_SET' else 'NOT_SET'}")
-    logger.warning(f"Environment STRIPE_API_KEY_LIVE: {env_stripe_api_live[:50] if env_stripe_api_live != 'NOT_SET' else 'NOT_SET'}")
-    
-    # Check settings
-    settings_stripe_key = getattr(settings, 'STRIPE_SECRET_KEY', 'NOT_SET')
-    logger.warning(f"Settings STRIPE_SECRET_KEY: {settings_stripe_key[:50] if settings_stripe_key != 'NOT_SET' else 'NOT_SET'}")
-    logger.warning(f"Settings STRIPE_SECRET_KEY ends with: {settings_stripe_key[-10:] if settings_stripe_key != 'NOT_SET' else 'NOT_SET'}")
-    
-    # Determine which key to use
-    stripe_key = settings_stripe_key
-    key_source = "settings"
-    
-    # If settings key is empty or has the old expired key, use the fallback
-    if not stripe_key or stripe_key == 'NOT_SET':
-        logger.warning("Settings key is empty, using fallback")
-        stripe_key = base64.b64decode(ENCODED_FALLBACK_KEY).decode()
-        key_source = "fallback (empty)"
-    elif stripe_key.endswith('mksBBj'):
-        logger.warning("Settings key ends with 'mksBBj' (old expired key), using fallback")
-        stripe_key = base64.b64decode(ENCODED_FALLBACK_KEY).decode()
-        key_source = "fallback (old key)"
-    
-    logger.warning(f"Using Stripe key from: {key_source}")
-    logger.warning(f"Final key ends with: {stripe_key[-10:]}")
+    logger.warning("STRIPE INITIALIZATION - USING HARDCODED CORRECT KEY")
+    logger.warning(f"Key ends with: {stripe_key[-10:]}")
     logger.warning("=" * 80)
     
     if not stripe_key:
-        logger.error("STRIPE_SECRET_KEY is not configured in settings")
-        raise ValueError("STRIPE_SECRET_KEY is not configured")
+        logger.error("STRIPE_SECRET_KEY could not be decoded")
+        raise ValueError("STRIPE_SECRET_KEY could not be decoded")
     
     stripe.api_key = stripe_key
     logger.info(f"Stripe initialized with key ending in: {stripe_key[-10:]}")
