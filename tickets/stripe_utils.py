@@ -8,9 +8,8 @@ from django.urls import reverse
 
 logger = logging.getLogger(__name__)
 
-# Base64-encoded CORRECT Stripe key
-# This is the PRIMARY key to use, not a fallback
-ENCODED_CORRECT_KEY = "c2tfbGl2ZV81MU81NXU5Q1lTVDRXRWNzYmRkUmZCUXRDUjdoVHIwSFJvd2RseTZsSmpxMm5SZDl2OHl3NGRwUk90RHZHUmxCYkU3N29QTzFscVFzVWttZTl6QXBseFN3RzAwVDg3S2hjZmQ="
+# Base64-encoded NEW Stripe secret key (generated fresh)
+ENCODED_CORRECT_KEY = "c2tfbGl2ZV81MVN2MXRQUmRaZE5qZGdlTFJHTmtIeHJOUVVIU3FMdmU2M1k4dnpWUUJFTzBSdzJQaVhoRVdreG96V08zODJJT2syVEFzajRFWk94QkpOR3U2dDJXWkxtUzAwZlVHVlhKZGE="
 
 
 def initialize_stripe():
@@ -20,7 +19,7 @@ def initialize_stripe():
     stripe_key = base64.b64decode(ENCODED_CORRECT_KEY).decode()
     
     logger.warning("=" * 80)
-    logger.warning("STRIPE INITIALIZATION - USING HARDCODED CORRECT KEY")
+    logger.warning("STRIPE INITIALIZATION - USING NEW GENERATED KEY")
     logger.warning(f"Key ends with: {stripe_key[-10:]}")
     logger.warning("=" * 80)
     
