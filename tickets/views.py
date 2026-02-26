@@ -970,11 +970,13 @@ class SaleListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_superadmin:
             context['base_template'] = 'accounts/superadmin_dashboard.html'
-            return context
-        user_type = self.request.user.user_type 
-        if user_type=='Reseller':
-            context['base_template'] = 'accounts/reseller_dashboard.html'
-            return context
+        else:
+            user_type = self.request.user.user_type 
+            if user_type=='Reseller':
+                context['base_template'] = 'accounts/reseller_dashboard.html'
+            else:
+                context['base_template'] = 'accounts/normal_dashboard.html'
+        return context
     
     def get_queryset(self):
         return Sale.objects.filter(seller=self.request.user).order_by('-created_at')
