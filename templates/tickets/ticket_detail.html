@@ -475,7 +475,7 @@
                         <div class="mb-3">
                             <label for="quantity" class="form-label fw-bold">Quantity (Tickets Available: {{ ticket.number_of_tickets }})</label>
                             <input type="number" name="quantity" id="quantity" class="form-control" 
-                                   value="{{ ticket.number_of_tickets }}" min="1" max="{{ ticket.number_of_tickets }}">
+                                   value="1" min="1" max="{{ ticket.number_of_tickets }}">
                         </div>
                         {% endif %}
                         <button type="submit" class="btn btn-primary btn-lg w-100 py-3">

@@ -637,7 +637,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                                 # Create new ticket instance for the order
                 # Mark as sold=True to prevent double-counting in total_tickets
                 # It will remain sold after payment confirmation
-                ticket = Ticket.objects.create(
+                order_ticket = Ticket.objects.create(
                     event=ticket.event,
                     seller=ticket.seller,
                     buyer=request.user.email, # Will be confirmed on payment
@@ -655,6 +655,8 @@ class CreateOrderView(LoginRequiredMixin, View):
                     sold=True,  # Mark as sold to prevent incrementing total_tickets
                     # upload_file logic tricky if splitting file? inheriting for now
                 )
+                # Use the order_ticket for the order, but keep original ticket reference
+                ticket = order_ticket
             
             price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
             total_price = ticket.number_of_tickets * price
