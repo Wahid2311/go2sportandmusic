@@ -34,8 +34,8 @@
                             </div>
                         </td>
                         <td>
-                            {{ sale.order.ticket.number_of_tickets }} ticket{{ sale.order.ticket.number_of_tickets|pluralize }}<br>
-                            <small class="text-muted">Sec {{ sale.order.ticket.section.name }}, Row {{ sale.order.ticket.row }}</small>
+                            {{ sale.order.number_of_tickets }} ticket{{ sale.order.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ sale.order.ticket_section }}, Row {{ sale.order.ticket_row }}</small>
                         </td>
                         <td class="fw-bold">£{{ sale.amount }}</td>
                         <td>{{ sale.created_at|date:"M d, Y" }}</td>
