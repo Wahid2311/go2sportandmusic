@@ -25,3 +25,4 @@ whitenoise==6.9.0
 django-anymail[resend]
 python-dotenv
 stripe==11.0.0
+reportlab==4.0.9
