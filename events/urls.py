@@ -134,6 +134,21 @@ path(
     ticket_views.MarkAsPaidView.as_view(),
     name='mark_as_paid'
 ),
+path(
+    'orders/<uuid:order_id>/upload-ticket/',
+    ticket_views.UploadTicketView.as_view(),
+    name='upload_ticket'
+),
+path(
+    'orders/<uuid:order_id>/download-ticket/',
+    ticket_views.DownloadTicketView.as_view(),
+    name='download_ticket'
+),
+path(
+    'my-tickets/',
+    ticket_views.MyTicketsView.as_view(),
+    name='my_tickets'
+),
 path('api/events/<str:event_id>/create-listing/',
          ticket_views.CreateListingAPIView.as_view(),
          name='api_create_listing'),

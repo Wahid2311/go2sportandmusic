@@ -6,7 +6,7 @@ from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail, EmailMessage
 from django.db import transaction
 from django.db.models import Sum
-from django.http import JsonResponse, HttpResponseBadRequest, Http404, HttpResponse, FileResponse
+from django.http import JsonResponse, HttpResponseBadRequest, Http404,HttpResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -637,7 +637,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                                 # Create new ticket instance for the order
                 # Mark as sold=True to prevent double-counting in total_tickets
                 # It will remain sold after payment confirmation
-                order_ticket = Ticket.objects.create(
+                ticket = Ticket.objects.create(
                     event=ticket.event,
                     seller=ticket.seller,
                     buyer=request.user.email, # Will be confirmed on payment
@@ -655,8 +655,6 @@ class CreateOrderView(LoginRequiredMixin, View):
                     sold=True,  # Mark as sold to prevent incrementing total_tickets
                     # upload_file logic tricky if splitting file? inheriting for now
                 )
-                # Use the order_ticket for the order, but keep original ticket reference
-                ticket = order_ticket
             
             price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
             total_price = ticket.number_of_tickets * price
@@ -758,30 +756,6 @@ class PaymentReturnView(LoginRequiredMixin, View):
                     ticket.event.sold_tickets += ticket.number_of_tickets
                     ticket.save()
                     ticket.event.save()
-                
-                # Create Sale record(s) for the seller(s)
-                if ticket.is_bundled:
-                    # For bundled tickets, create a sale for each unique seller
-                    sellers_set = set()
-                    for t in bundle_tickets:
-                        if t.seller:
-                            sellers_set.add(t.seller.id)
-                    for seller_id in sellers_set:
-                        seller = User.objects.get(id=seller_id)
-                        Sale.objects.create(
-                            order=order,
-                            seller=seller,
-                            amount=order.amount
-                        )
-                else:
-                    # For individual tickets, create a sale for the seller
-                    seller = ticket.seller
-                    if seller:
-                        Sale.objects.create(
-                            order=order,
-                            seller=seller,
-                            amount=order.amount
-                        )
                 
                 self.send_notifications(order)
                 
@@ -970,13 +944,11 @@ class SaleListView(LoginRequiredMixin, ListView):
         context = super().get_context_data(**kwargs)
         if self.request.user.is_superadmin:
             context['base_template'] = 'accounts/superadmin_dashboard.html'
-        else:
-            user_type = self.request.user.user_type 
-            if user_type=='Reseller':
-                context['base_template'] = 'accounts/reseller_dashboard.html'
-            else:
-                context['base_template'] = 'accounts/normal_dashboard.html'
-        return context
+            return context
+        user_type = self.request.user.user_type 
+        if user_type=='Reseller':
+            context['base_template'] = 'accounts/reseller_dashboard.html'
+            return context
     
     def get_queryset(self):
         return Sale.objects.filter(seller=self.request.user).order_by('-created_at')
@@ -1669,93 +1641,3 @@ class EventTicketListAPIView(View):
                 }
             }
         })
-
-
-
-class UploadTicketView(LoginRequiredMixin, View):
-    """View for sellers to upload ticket files"""
-    
-    def post(self, request, order_id):
-        try:
-            order = Order.objects.get(id=order_id)
-            sale = order.sale
-            
-            # Check if the user is the seller
-            if sale.seller != request.user:
-                return JsonResponse({'error': 'Unauthorized'}, status=403)
-            
-            # Handle file upload
-            if 'ticket_file' in request.FILES:
-                ticket_file = request.FILES['ticket_file']
-                
-                # Validate file type
-                valid_extensions = ['pdf', 'jpg', 'jpeg', 'png']
-                file_ext = ticket_file.name.split('.')[-1].lower()
-                
-                if file_ext not in valid_extensions:
-                    return JsonResponse({'error': 'Invalid file type'}, status=400)
-                
-                # Save the file
-                order.ticket_file = ticket_file
-                order.ticket_uploaded = True
-                order.save()
-                
-                # Send notification to buyer (optional)
-                # You can add email notification here
-                
-                return JsonResponse({'success': True, 'message': 'Ticket uploaded successfully'})
-            
-            return JsonResponse({'error': 'No file provided'}, status=400)
-        
-        except Order.DoesNotExist:
-            return JsonResponse({'error': 'Order not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-
-
-class DownloadTicketView(LoginRequiredMixin, View):
-    """View for buyers to download their tickets"""
-    
-    def get(self, request, order_id):
-        try:
-            order = Order.objects.get(id=order_id)
-            
-            # Check if the user is the buyer
-            if order.buyer != request.user:
-                return JsonResponse({'error': 'Unauthorized'}, status=403)
-            
-            # Check if ticket file exists
-            if not order.ticket_file:
-                return JsonResponse({'error': 'Ticket file not available'}, status=404)
-            
-            # Return the file
-            response = FileResponse(order.ticket_file.open('rb'))
-            response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
-            return response
-        
-        except Order.DoesNotExist:
-            return JsonResponse({'error': 'Order not found'}, status=404)
-        except Exception as e:
-            return JsonResponse({'error': str(e)}, status=500)
-
-
-class MyTicketsView(LoginRequiredMixin, ListView):
-    """View for buyers to see their purchased tickets"""
-    model = Order
-    template_name = 'tickets/my_tickets.html'
-    context_object_name = 'tickets'
-    paginate_by = 10
-    
-    def get_queryset(self):
-        return Order.objects.filter(buyer=self.request.user, status='completed').order_by('-created_at')
-    
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['base_template'] = 'base.html'
-        
-        if self.request.user.is_superadmin:
-            context['base_template'] = 'accounts/superadmin_dashboard.html'
-        elif self.request.user.is_reseller:
-            context['base_template'] = 'accounts/reseller_dashboard.html'
-        
-        return context

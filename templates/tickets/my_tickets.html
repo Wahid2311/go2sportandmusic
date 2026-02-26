@@ -1,0 +1,121 @@
+{% extends base_template %}
+{% block title %} My Tickets {% endblock %}
+{% block dashboard_content %}
+{% load static %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">My Tickets</h1>
+    </div>
+    
+    {% if tickets %}
+    <div class="row">
+        {% for ticket in tickets %}
+        <div class="col-md-6 col-lg-4 mb-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden h-100">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">{{ ticket.event_name }}</h5>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Event Date</small>
+                        <p class="mb-0">{{ ticket.event_date|date:"M d, Y" }} at {{ ticket.event_time|time:"H:i" }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Tickets</small>
+                        <p class="mb-0">{{ ticket.number_of_tickets }} ticket{{ ticket.number_of_tickets|pluralize }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Section & Row</small>
+                        <p class="mb-0">{{ ticket.ticket_section }}, Row {{ ticket.ticket_row }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Price</small>
+                        <p class="mb-0 fw-bold">£{{ ticket.ticket_sell_price }}</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Ticket Type</small>
+                        <p class="mb-0">
+                            {% if ticket.ticket_upload_type == 'e-ticket' %}
+                            <span class="badge bg-info">E-Ticket</span>
+                            {% elif ticket.ticket_upload_type == 'paper' %}
+                            <span class="badge bg-warning">Paper Ticket</span>
+                            {% elif ticket.ticket_upload_type == 'mobile-transfer' %}
+                            <span class="badge bg-success">Mobile Transfer</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Order Status</small>
+                        <p class="mb-0">
+                            {% if ticket.status == 'completed' %}
+                            <span class="badge bg-success">Completed</span>
+                            {% elif ticket.status == 'pending' %}
+                            <span class="badge bg-warning">Pending</span>
+                            {% elif ticket.status == 'failed' %}
+                            <span class="badge bg-danger">Failed</span>
+                            {% endif %}
+                        </p>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        {% if ticket.ticket_uploaded %}
+                        <a href="{% url 'events:download_ticket' ticket.id %}" class="btn btn-success btn-sm">
+                            <i class="bi bi-download me-1"></i> Download Ticket
+                        </a>
+                        {% else %}
+                        <button class="btn btn-secondary btn-sm" disabled>
+                            <i class="bi bi-clock me-1"></i> Awaiting Ticket Upload
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <img src="{% static 'images/empty-orders.png' %}" alt="No tickets" class="img-fluid" style="max-height: 200px;">
+        </div>
+        <h3 class="h4 mb-3">You haven't purchased any tickets yet</h3>
+        <p class="text-muted mb-4">Browse events and purchase tickets to get started</p>
+        <a href="{% url 'events:all_events' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-ticket me-2"></i> Browse Events
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -257,7 +257,6 @@ class Order(models.Model):
     ], default='pending')
     ticket_uploaded = models.BooleanField(default=False)
     paid_to_reseller = models.BooleanField(default=False)
-    ticket_file = models.FileField(upload_to='tickets/', null=True, blank=True, help_text="PDF or image file of the ticket")
 
     def __str__(self):
         return f"Order {self.id} for {self.ticket}"
