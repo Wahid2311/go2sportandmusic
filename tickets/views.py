@@ -1728,10 +1728,11 @@ class DownloadTicketView(LoginRequiredMixin, View):
             if not order.ticket_file:
                 return JsonResponse({'error': 'Ticket file not available'}, status=404)
             
-            # Return the file
-            response = FileResponse(order.ticket_file.open('rb'))
-            response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
-            return response
+            # Get the file URL from S3
+            file_url = order.ticket_file.url
+            
+            # Redirect to S3 URL for download
+            return redirect(file_url)
         
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)
