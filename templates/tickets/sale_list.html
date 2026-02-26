@@ -26,10 +26,9 @@
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ sale.order.ticket.event.image_url }}" alt="{{ sale.order.ticket.event.name }}" class="rounded-2" width="60" height="40" style="object-fit: cover;">
                                 <div class="ms-3">
-                                    <p class="fw-bold mb-0">{{ sale.order.ticket.event.name }}</p>
-                                    <small class="text-muted">{{ sale.order.ticket.event.date|date:"M d, Y" }}</small>
+                                    <p class="fw-bold mb-0">{{ sale.order.event_name }}</p>
+                                    <small class="text-muted">{{ sale.order.event_date|date:"M d, Y" }}</small>
                                 </div>
                             </div>
                         </td>
@@ -52,7 +51,7 @@
                                 <i class="bi bi-cloud-upload me-1"></i> Upload
                             </button>
                             {% else %}
-                            <a href="{% url 'tickets:download_ticket' sale.order.id %}" class="btn btn-sm btn-success">
+                            <a href="{% url 'events:download_ticket' sale.order.id %}" class="btn btn-sm btn-success">
                                 <i class="bi bi-download me-1"></i> Download
                             </a>
                             {% endif %}
@@ -112,10 +111,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Upload Ticket - {{ sale.order.event_name }}</h5>
+                <h5 class="modal-title">Upload Ticket</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
-            <form method="post" action="{% url 'tickets:upload_ticket' sale.order.id %}" enctype="multipart/form-data">
+            <form method="post" action="{% url 'events:upload_ticket' sale.order.id %}" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="modal-body">
                     <div class="mb-3">
@@ -133,3 +132,46 @@
     </div>
 </div>
 {% endfor %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle modal form submissions
+    const forms = document.querySelectorAll('form[action*="upload-ticket"]');
+    forms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const action = this.getAttribute('action');
+            
+            fetch(action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close the modal
+                    const modal = this.closest('.modal');
+                    const bsModal = bootstrap.Modal.getInstance(modal);
+                    if (bsModal) bsModal.hide();
+                    
+                    // Show success message
+                    alert('Ticket uploaded successfully!');
+                    
+                    // Reload the page after a short delay
+                    setTimeout(() => location.reload(), 500);
+                } else {
+                    alert('Error: ' + (data.error || 'Upload failed'));
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred during upload');
+            });
+        });
+    });
+});
+</script>
