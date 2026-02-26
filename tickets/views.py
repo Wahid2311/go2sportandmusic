@@ -757,6 +757,30 @@ class PaymentReturnView(LoginRequiredMixin, View):
                     ticket.save()
                     ticket.event.save()
                 
+                # Create Sale record(s) for the seller(s)
+                if ticket.is_bundled:
+                    # For bundled tickets, create a sale for each unique seller
+                    sellers_set = set()
+                    for t in bundle_tickets:
+                        if t.seller:
+                            sellers_set.add(t.seller.id)
+                    for seller_id in sellers_set:
+                        seller = User.objects.get(id=seller_id)
+                        Sale.objects.create(
+                            order=order,
+                            seller=seller,
+                            amount=order.amount
+                        )
+                else:
+                    # For individual tickets, create a sale for the seller
+                    seller = ticket.seller
+                    if seller:
+                        Sale.objects.create(
+                            order=order,
+                            seller=seller,
+                            amount=order.amount
+                        )
+                
                 self.send_notifications(order)
                 
                 messages.success(request, "Payment successful! Your tickets are secured.")
