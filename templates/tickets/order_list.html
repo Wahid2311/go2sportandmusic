@@ -25,20 +25,21 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for order in orders %}
+                    {% for item in orders %}
+                    {% if item.order %}
+                    {% with order=item.order %}
                     <tr>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="{{ order.ticket.event.image_url }}" alt="{{ order.ticket.event.name }}" class="rounded-2" width="60" height="40" style="object-fit: cover;">
                                 <div class="ms-3">
-                                    <p class="fw-bold mb-0">{{ order.ticket.event.name }}</p>
-                                    <small class="text-muted">{{ order.ticket.event.date|date:"M d, Y" }}</small>
+                                    <p class="fw-bold mb-0">{{ order.event_name }}</p>
+                                    <small class="text-muted">{{ order.event_date|date:"M d, Y" }}</small>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            {{ order.ticket.number_of_tickets }} ticket{{ order.ticket.number_of_tickets|pluralize }}<br>
-                            <small class="text-muted">Sec {{ order.ticket.section.name }}, Row {{ order.ticket.row }}</small>
+                            {{ order.number_of_tickets }} ticket{{ order.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ order.ticket_section }}, Row {{ order.ticket_row }}</small>
                         </td>
                         <td class="fw-bold">£{{ order.amount }}</td>
                         <td>{{ order.created_at|date:"M d, Y" }}</td>
@@ -50,16 +51,59 @@
                                 {% endif %}">
                                 {{ order.status }}
                             </span>
-                            {% if order.ticket_upload_choice == 'now' %}
+                            {% if item.ticket_upload_choice == 'now' %}
                             <div class="text small mt-1">Ticket uploaded</div>
                             {% else %}
-                            <div class="text-warning small mt-1">{{ order.ticket_upload_choice }}</div>
+                            <div class="text-warning small mt-1">{{ item.ticket_upload_choice }}</div>
                             {% endif %}
                         </td>
                         <td class="text-end">
-                            <a href="{% url 'events:privacy' %}" class="btn btn-sm btn-outline-primary">Details</a>
+                            {% if order.ticket_uploaded %}
+                            <a href="{% url 'events:download_ticket' order.id %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-download me-1"></i> Download
+                            </a>
+                            {% else %}
+                            <span class="text-muted small">Awaiting ticket</span>
+                            {% endif %}
                         </td>
                     </tr>
+                    {% endwith %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-0">{{ order.event_name }}</p>
+                                    <small class="text-muted">{{ order.event_date|date:"M d, Y" }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ order.number_of_tickets }} ticket{{ order.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ order.ticket_section }}, Row {{ order.ticket_row }}</small>
+                        </td>
+                        <td class="fw-bold">£{{ order.amount }}</td>
+                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'completed' %}bg-success
+                                {% elif order.status == 'pending' %}bg-warning
+                                {% else %}bg-danger
+                                {% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            {% if order.ticket_uploaded %}
+                            <a href="{% url 'events:download_ticket' order.id %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-download me-1"></i> Download
+                            </a>
+                            {% else %}
+                            <span class="text-muted small">Awaiting ticket</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>

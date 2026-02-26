@@ -133,7 +133,75 @@
 </div>
 {% endblock %}
 
+<style>
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.toast-success {
+    background-color: #28a745;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+}
+
+.toast-error {
+    background-color: #dc3545;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        transform: translateX(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(400px);
+        opacity: 0;
+    }
+}
+</style>
+
 <script>
+function showToast(message, type = 'success') {
+    const container = document.querySelector('.toast-container') || (() => {
+        const div = document.createElement('div');
+        div.className = 'toast-container';
+        document.body.appendChild(div);
+        return div;
+    })();
+    
+    const toast = document.createElement('div');
+    toast.className = `toast-${type}`;
+    toast.textContent = message;
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease-out';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     // Handle modal form submissions
     const forms = document.querySelectorAll('form[action*="upload-ticket"]');
@@ -142,6 +210,12 @@ document.addEventListener('DOMContentLoaded', function() {
             e.preventDefault();
             const formData = new FormData(this);
             const action = this.getAttribute('action');
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Uploading...';
             
             fetch(action, {
                 method: 'POST',
@@ -152,6 +226,9 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                
                 if (data.success) {
                     // Close the modal
                     const modal = this.closest('.modal');
@@ -159,17 +236,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (bsModal) bsModal.hide();
                     
                     // Show success message
-                    alert('Ticket uploaded successfully!');
+                    showToast('✅ Ticket uploaded successfully!', 'success');
                     
                     // Reload the page after a short delay
-                    setTimeout(() => location.reload(), 500);
+                    setTimeout(() => location.reload(), 1500);
                 } else {
-                    alert('Error: ' + (data.error || 'Upload failed'));
+                    showToast('❌ Error: ' + (data.error || 'Upload failed'), 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('An error occurred during upload');
+                submitBtn.disabled = false;
+                submitBtn.textContent = originalText;
+                showToast('❌ An error occurred during upload', 'error');
             });
         });
     });
