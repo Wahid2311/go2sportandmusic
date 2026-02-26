@@ -151,7 +151,7 @@ AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 # Use local file storage instead of S3
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = '/app/media'  # Absolute path for container
 MEDIA_URL = '/media/'
 
 LOGGING = {
