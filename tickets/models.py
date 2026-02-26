@@ -165,8 +165,11 @@ class Ticket(models.Model):
                 logger.info(f"For event {event.name}, For section {section.name} , For quantity {self.number_of_tickets}")
                 logger.info(f"This ticket is new")
                 logger.info(f"current total tickets {event.total_tickets}")
-                event.total_tickets += self.number_of_tickets
-                logger.info(f"after adding,current total tickets {event.total_tickets}")
+                if not self.sold:
+                    event.total_tickets += self.number_of_tickets
+                    logger.info(f"after adding,current total tickets {event.total_tickets}")
+                else:
+                    logger.info(f"Ticket created as sold, not incrementing total_tickets")
                 event.save()
             else:
                 logger.info(f"This ticket is updating")

@@ -634,7 +634,9 @@ class CreateOrderView(LoginRequiredMixin, View):
                 ticket.seats = remaining_seats
                 ticket.save()
                 
-                # Create new ticket instance for the order
+                                # Create new ticket instance for the order
+                # Mark as sold=True to prevent double-counting in total_tickets
+                # It will remain sold after payment confirmation
                 ticket = Ticket.objects.create(
                     event=ticket.event,
                     seller=ticket.seller,
@@ -650,6 +652,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                     sell_together=False, # It's a split ticket now
                     upload_choice=ticket.upload_choice,
                     upload_by=ticket.upload_by,
+                    sold=True,  # Mark as sold to prevent incrementing total_tickets
                     # upload_file logic tricky if splitting file? inheriting for now
                 )
             
