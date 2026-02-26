@@ -47,7 +47,7 @@ class StripeAPI:
             
             # Create checkout session
             session = stripe.checkout.Session.create(
-                payment_method_types=['card'],
+                payment_method_types=['card', 'link'],
                 line_items=[
                     {
                         'price_data': {
