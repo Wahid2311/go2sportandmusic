@@ -1728,30 +1728,43 @@ class DownloadTicketView(LoginRequiredMixin, View):
             if not order.ticket_file:
                 return JsonResponse({'error': 'Ticket file not available'}, status=404)
             
-            # Generate presigned URL for S3 file
+            # Try to generate presigned URL using boto3
             try:
-                from django.core.files.storage import default_storage
-                from botocore.exceptions import ClientError
+                import boto3
+                from django.conf import settings
                 
-                # Get the file path
+                # Get S3 client
+                s3_client = boto3.client(
+                    's3',
+                    aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                    aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                    region_name=settings.AWS_S3_REGION_NAME
+                )
+                
+                # Get the file path and bucket
                 file_path = order.ticket_file.name
+                bucket_name = settings.AWS_STORAGE_BUCKET_NAME
                 
                 # Generate presigned URL with 1 hour expiration
-                presigned_url = default_storage.url(file_path, parameters={"ResponseContentDisposition": f"attachment; filename={order.event_name}_ticket.pdf"})
+                presigned_url = s3_client.generate_presigned_url(
+                    'get_object',
+                    Params={
+                        'Bucket': bucket_name,
+                        'Key': file_path,
+                        'ResponseContentDisposition': f'attachment; filename="{order.event_name}_ticket.pdf"'
+                    },
+                    ExpiresIn=3600
+                )
                 
-                # If the storage doesn't support presigned URLs, try direct URL
-                if not presigned_url or presigned_url.startswith('http'):
-                    return redirect(presigned_url)
-                
-                # Fallback: serve the file directly
-                response = FileResponse(order.ticket_file.open('rb'))
-                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
-                return response
-            except Exception as url_error:
-                # If presigned URL fails, try to serve directly
-                response = FileResponse(order.ticket_file.open('rb'))
-                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
-                return response
+                return redirect(presigned_url)
+            except Exception as s3_error:
+                # If presigned URL generation fails, serve the file directly
+                try:
+                    response = FileResponse(order.ticket_file.open('rb'))
+                    response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                    return response
+                except Exception as file_error:
+                    return JsonResponse({'error': f'Could not download file: {str(file_error)}'}, status=500)
         
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)
