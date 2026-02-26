@@ -145,14 +145,13 @@ AWS_STORAGE_BUCKET_NAME =os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
 AWS_S3_FILE_OVERWRITE = False 
 AWS_DEFAULT_ACL = 'private' 
-USE_S3 = False  # Disabled - using local storage
+USE_S3 = True
 AWS_S3_ADDRESSING_STYLE = 'virtual' 
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
-# Use local file storage instead of S3
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-MEDIA_ROOT = '/app/media'  # Absolute path for container
-MEDIA_URL = '/media/'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/' if AWS_STORAGE_BUCKET_NAME and AWS_STORAGE_BUCKET_NAME != 'none' else '/media/'
+MEDIA_ROOT = '/app/media'
 
 LOGGING = {
     'version': 1,
