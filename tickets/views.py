@@ -1718,6 +1718,9 @@ class DownloadTicketView(LoginRequiredMixin, View):
     
     def get(self, request, order_id):
         try:
+            import os
+            from django.conf import settings
+            
             order = Order.objects.get(id=order_id)
             
             # Check if the user is the buyer
@@ -1729,20 +1732,49 @@ class DownloadTicketView(LoginRequiredMixin, View):
                 return JsonResponse({'error': 'Ticket file not available'}, status=404)
             
             try:
-                # Get the file URL and redirect to it
-                file_url = order.ticket_file.url
+                file_obj = order.ticket_file
+                file_name = str(file_obj.name)
                 
-                # Add content disposition to force download
-                # Note: This works for S3 and local files
-                if '?' in file_url:
-                    file_url += f'&response-content-disposition=attachment%3B%20filename%3D{order.event_name}_ticket.pdf'
-                else:
-                    file_url += f'?response-content-disposition=attachment%3B%20filename%3D{order.event_name}_ticket.pdf'
+                # Try to read file from multiple possible locations
+                file_found = False
+                file_content = None
                 
-                return redirect(file_url)
+                # Try 1: Read directly from file object (works for S3 and local)
+                try:
+                    file_content = file_obj.read()
+                    file_found = True
+                except:
+                    pass
+                
+                # Try 2: Check local filesystem paths
+                if not file_found:
+                    possible_paths = [
+                        os.path.join(settings.MEDIA_ROOT, file_name),
+                        os.path.join('/app/media', file_name),
+                        file_name,
+                    ]
+                    
+                    for path in possible_paths:
+                        if os.path.exists(path):
+                            try:
+                                with open(path, 'rb') as f:
+                                    file_content = f.read()
+                                file_found = True
+                                break
+                            except:
+                                pass
+                
+                if not file_found:
+                    return JsonResponse({'error': 'Ticket file not found'}, status=404)
+                
+                # Serve the file
+                response = HttpResponse(file_content, content_type='application/octet-stream')
+                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                return response
             
             except Exception as file_error:
-                return JsonResponse({'error': f'Could not download file: {str(file_error)}'}, status=500)
+                import traceback
+                return JsonResponse({'error': f'Error: {str(file_error)}'}, status=500)
         
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)
