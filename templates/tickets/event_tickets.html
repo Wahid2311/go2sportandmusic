@@ -884,8 +884,9 @@
                 <!-- Action Button -->
                 <div onclick="event.stopPropagation()">
                 {% if user.is_authenticated %}
-                  <form action="/tickets/${ticket.ticket_id}/buy/" method="post">
+                  <form action="/tickets/${ticket.ticket_id}/buy/" method="post" class="ticket-purchase-form">
                     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                    <input type="hidden" name="quantity" class="quantity-input" value="1">
                     <button type="submit" class="btn btn-primary w-100 btn-sm py-2 fw-bold" style="font-size: 0.9rem;">
                         Buy Now
                     </button>
@@ -1337,6 +1338,24 @@
         }
     </script>
     -->
+    <script>
+        // Handle quantity selection for ticket purchase
+        document.addEventListener('DOMContentLoaded', function() {
+            const quantitySelects = document.querySelectorAll('.quantity-select');
+            quantitySelects.forEach(select => {
+                select.addEventListener('change', function() {
+                    const ticketCard = this.closest('.ticket-card');
+                    if (ticketCard) {
+                        const form = ticketCard.querySelector('.ticket-purchase-form');
+                        const quantityInput = form ? form.querySelector('.quantity-input') : null;
+                        if (quantityInput) {
+                            quantityInput.value = this.value;
+                        }
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>
