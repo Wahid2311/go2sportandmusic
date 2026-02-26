@@ -1724,67 +1724,77 @@ class DownloadTicketView(LoginRequiredMixin, View):
             if order.buyer != request.user:
                 return JsonResponse({'error': 'Unauthorized'}, status=403)
             
-            # Check if ticket file exists
-            if not order.ticket_file:
-                return JsonResponse({'error': 'Ticket file not available'}, status=404)
-            
             try:
-                import os
-                from django.conf import settings
                 from reportlab.pdfgen import canvas
                 from io import BytesIO
+                import os
+                from django.conf import settings
                 
-                file_obj = order.ticket_file
-                file_name = str(file_obj.name)
-                
-                # Try to read file from multiple locations
-                possible_paths = [
-                    file_name,
-                    os.path.join(settings.MEDIA_ROOT, file_name),
-                    os.path.join('/app', file_name),
-                    os.path.join('/app/tickets', os.path.basename(file_name)),
-                ]
-                
+                # Try to serve the uploaded file first
                 file_content = None
-                for path in possible_paths:
-                    if os.path.exists(path):
+                if order.ticket_file:
+                    # Try multiple paths
+                    possible_paths = [
+                        str(order.ticket_file.name),
+                        os.path.join(settings.MEDIA_ROOT, str(order.ticket_file.name)),
+                        os.path.join('/app', str(order.ticket_file.name)),
+                        os.path.join('/app/tickets', os.path.basename(str(order.ticket_file.name))),
+                    ]
+                    
+                    for path in possible_paths:
+                        if os.path.exists(path):
+                            try:
+                                with open(path, 'rb') as f:
+                                    file_content = f.read()
+                                break
+                            except:
+                                pass
+                    
+                    # Try reading from file object
+                    if not file_content:
                         try:
-                            with open(path, 'rb') as f:
-                                file_content = f.read()
-                            break
+                            order.ticket_file.seek(0)
+                            file_content = order.ticket_file.read()
                         except:
                             pass
                 
-                # Try reading from file object if not found locally
-                if not file_content:
-                    try:
-                        file_obj.seek(0)
-                        file_content = file_obj.read()
-                    except:
-                        pass
-                
-                # Generate placeholder PDF if file still not found
+                # If no file content, generate a PDF with ticket information
                 if not file_content:
                     buffer = BytesIO()
-                    p = canvas.Canvas(buffer)
-                    p.drawString(100, 750, f"Event: {order.event_name}")
-                    p.drawString(100, 730, f"Ticket: {order.ticket_section}, Row {order.ticket_row}")
-                    p.drawString(100, 710, f"Purchased: {order.created_at.strftime('%Y-%m-%d')}")
+                    p = canvas.Canvas(buffer, pagesize=(595, 842))  # A4 size
+                    
+                    # Draw ticket information
+                    p.setFont("Helvetica-Bold", 24)
+                    p.drawString(50, 750, f"TICKET")
+                    
+                    p.setFont("Helvetica", 12)
+                    p.drawString(50, 700, f"Event: {order.event_name}")
+                    p.drawString(50, 680, f"Section: {order.ticket_section}")
+                    p.drawString(50, 660, f"Row: {order.ticket_row}")
+                    p.drawString(50, 640, f"Seat: {order.ticket_seat if hasattr(order, 'ticket_seat') else 'N/A'}")
+                    p.drawString(50, 620, f"Purchased: {order.created_at.strftime('%Y-%m-%d %H:%M')}")
+                    p.drawString(50, 600, f"Order ID: {order.id}")
+                    
+                    # Draw border
+                    p.rect(30, 580, 535, 200)
+                    
                     p.showPage()
                     p.save()
                     buffer.seek(0)
                     file_content = buffer.getvalue()
                 
                 response = HttpResponse(file_content, content_type='application/pdf')
-                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                response['Content-Disposition'] = f'attachment; filename="{order.event_name.replace(" ", "_")}_ticket.pdf"'
                 return response
             
             except Exception as file_error:
-                return JsonResponse({'error': f'Error: {str(file_error)}'}, status=500)
+                import traceback
+                return JsonResponse({'error': f'Error generating ticket: {str(file_error)}'}, status=500)
         
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)
         except Exception as e:
+            import traceback
             return JsonResponse({'error': str(e)}, status=500)
 
 class MyTicketsView(LoginRequiredMixin, ListView):
