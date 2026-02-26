@@ -119,12 +119,25 @@ REVOLUT_API_KEY = os.environ.get('REVOLUT_API_KEY', '')
 REVOLUT_PRODUCTION = True
 
 BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
-CSRF_TRUSTED_ORIGINS = [
-    'https://go2sportandmusic.com',
-    'https://www.go2sportandmusic.com',
-    'http://localhost:8000',
-    BASE_URL,
-]
+
+# Parse CSRF_TRUSTED_ORIGINS from environment variable or use defaults
+csrf_origins_env = os.environ.get('CSRF_TRUSTED_ORIGINS', '')
+if csrf_origins_env:
+    # Parse comma-separated values from environment variable
+    CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_origins_env.split(',') if origin.strip()]
+else:
+    # Use default values
+    CSRF_TRUSTED_ORIGINS = [
+        'https://go2sportandmusic.com',
+        'https://www.go2sportandmusic.com',
+        'http://localhost:8000',
+        BASE_URL,
+    ]
+
+# Ensure no duplicates
+CSRF_TRUSTED_ORIGINS = list(set(CSRF_TRUSTED_ORIGINS))
+# Remove empty strings
+CSRF_TRUSTED_ORIGINS = [origin for origin in CSRF_TRUSTED_ORIGINS if origin]
 
 AWS_ACCESS_KEY_ID =os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')
