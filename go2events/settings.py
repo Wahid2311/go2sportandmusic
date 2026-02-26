@@ -118,8 +118,13 @@ STRIPE_PUBLISHABLE_KEY = os.environ.get('STRIPE_PUBLISHABLE_KEY', '')
 REVOLUT_API_KEY = os.environ.get('REVOLUT_API_KEY', '')
 REVOLUT_PRODUCTION = True
 
-BASE_URL =os.environ.get('BASE_URL', 'http://localhost:8000')
-CSRF_TRUSTED_ORIGINS = [BASE_URL, 'https://web-production-f679c.up.railway.app']
+BASE_URL = os.environ.get('BASE_URL', 'http://localhost:8000')
+CSRF_TRUSTED_ORIGINS = [
+    'https://go2sportandmusic.com',
+    'https://www.go2sportandmusic.com',
+    'http://localhost:8000',
+    BASE_URL,
+]
 
 AWS_ACCESS_KEY_ID =os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')
