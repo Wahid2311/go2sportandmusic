@@ -1730,23 +1730,42 @@ class DownloadTicketView(LoginRequiredMixin, View):
             
             # Serve the file directly
             try:
+                import os
+                from django.conf import settings
+                
                 # Get the file object
                 file_obj = order.ticket_file
+                file_name = str(file_obj.name)
                 
-                # Try to open and serve the file
-                file_content = file_obj.read()
+                # Try multiple paths to find the file
+                possible_paths = [
+                    os.path.join(settings.MEDIA_ROOT, file_name),  # Standard media path
+                    os.path.join('/app', file_name),  # Container path
+                    file_name,  # Relative path
+                ]
                 
-                # Create response
+                file_path = None
+                for path in possible_paths:
+                    if os.path.exists(path):
+                        file_path = path
+                        break
+                
+                if not file_path:
+                    # File not found locally, try S3 URL
+                    try:
+                        file_url = file_obj.url
+                        return redirect(file_url)
+                    except:
+                        return JsonResponse({'error': 'Ticket file not found'}, status=404)
+                
+                # Read and serve the file
+                with open(file_path, 'rb') as f:
+                    file_content = f.read()
+                
                 response = HttpResponse(file_content, content_type='application/pdf')
                 response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
                 return response
-            except FileNotFoundError:
-                # File doesn't exist locally, try S3 URL
-                try:
-                    file_url = order.ticket_file.url
-                    return redirect(file_url)
-                except Exception as url_error:
-                    return JsonResponse({'error': 'Ticket file not found'}, status=404)
+            
             except Exception as file_error:
                 return JsonResponse({'error': f'Could not download file: {str(file_error)}'}, status=500)
         
