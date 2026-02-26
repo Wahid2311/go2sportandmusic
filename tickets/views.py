@@ -1739,9 +1739,10 @@ class DownloadTicketView(LoginRequiredMixin, View):
                 
                 # Try multiple paths to find the file
                 possible_paths = [
+                    file_name,  # Relative path (from MEDIA_ROOT)
                     os.path.join(settings.MEDIA_ROOT, file_name),  # Standard media path
                     os.path.join('/app', file_name),  # Container path
-                    file_name,  # Relative path
+                    os.path.join('/app/tickets', os.path.basename(file_name)),  # Container tickets path
                 ]
                 
                 file_path = None
@@ -1751,10 +1752,14 @@ class DownloadTicketView(LoginRequiredMixin, View):
                         break
                 
                 if not file_path:
-                    # File not found locally, try S3 URL
+                    # File not found locally, try to serve from Django storage
                     try:
-                        file_url = file_obj.url
-                        return redirect(file_url)
+                        # Try to read directly from the file object
+                        file_obj.seek(0)
+                        file_content = file_obj.read()
+                        response = HttpResponse(file_content, content_type='application/pdf')
+                        response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                        return response
                     except:
                         return JsonResponse({'error': 'Ticket file not found'}, status=404)
                 
