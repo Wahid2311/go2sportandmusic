@@ -1728,11 +1728,30 @@ class DownloadTicketView(LoginRequiredMixin, View):
             if not order.ticket_file:
                 return JsonResponse({'error': 'Ticket file not available'}, status=404)
             
-            # Get the file URL from S3
-            file_url = order.ticket_file.url
-            
-            # Redirect to S3 URL for download
-            return redirect(file_url)
+            # Generate presigned URL for S3 file
+            try:
+                from django.core.files.storage import default_storage
+                from botocore.exceptions import ClientError
+                
+                # Get the file path
+                file_path = order.ticket_file.name
+                
+                # Generate presigned URL with 1 hour expiration
+                presigned_url = default_storage.url(file_path, parameters={"ResponseContentDisposition": f"attachment; filename={order.event_name}_ticket.pdf"})
+                
+                # If the storage doesn't support presigned URLs, try direct URL
+                if not presigned_url or presigned_url.startswith('http'):
+                    return redirect(presigned_url)
+                
+                # Fallback: serve the file directly
+                response = FileResponse(order.ticket_file.open('rb'))
+                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                return response
+            except Exception as url_error:
+                # If presigned URL fails, try to serve directly
+                response = FileResponse(order.ticket_file.open('rb'))
+                response['Content-Disposition'] = f'attachment; filename="{order.event_name}_ticket.pdf"'
+                return response
         
         except Order.DoesNotExist:
             return JsonResponse({'error': 'Order not found'}, status=404)
