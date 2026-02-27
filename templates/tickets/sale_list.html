@@ -1,104 +1,99 @@
 {% extends base_template %}
 {% load static %}
-{% block title %} Sales {% endblock %}
+
+{% block title %}My Sales{% endblock %}
+
 {% block dashboard_content %}
 <div class="container py-5">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h2 mb-0">My Sales</h1>
-    </div>
+    <h1 class="h2 mb-4">My Sales</h1>
     
     {% if sales %}
-    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
-        <div class="table-responsive">
-            <table class="table table-hover align-middle mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th>Event</th>
-                        <th>Tickets</th>
-                        <th>Amount</th>
-                        <th>Sale Date</th>
-                        <th>Payout Status</th>
-                        <th class="text-end">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for sale in sales %}
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center">
-                                <div class="ms-3">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Event</th>
+                            <th>Tickets</th>
+                            <th>Amount</th>
+                            <th>Sale Date</th>
+                            <th>Payout Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr>
+                            <td>
+                                <div>
                                     <p class="fw-bold mb-0">{{ sale.order.event_name }}</p>
                                     <small class="text-muted">{{ sale.order.event_date|date:"M d, Y" }}</small>
                                 </div>
-                            </div>
-                        </td>
-                        <td>
-                            {{ sale.order.number_of_tickets }} ticket{{ sale.order.number_of_tickets|pluralize }}<br>
-                            <small class="text-muted">Sec {{ sale.order.ticket_section }}, Row {{ sale.order.ticket_row }}</small>
-                        </td>
-                        <td class="fw-bold">£{{ sale.amount }}</td>
-                        <td>{{ sale.created_at|date:"M d, Y" }}</td>
-                        <td>
-                            {% if sale.payout_date %}
-                            <span class="badge bg-success">Paid on {{ sale.payout_date|date:"M d, Y" }}</span>
-                            {% else %}
-                            <span class="badge bg-warning">Processing</span>
-                            {% endif %}
-                        </td>
-                        <td class="text-end">
-                            {% if not sale.order.ticket_file %}
-                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal{{ sale.id }}">
-                                <i class="bi bi-upload me-1"></i> Upload
-                            </button>
-                            {% else %}
-                            <a href="{% url 'events:download_ticket' sale.order.id %}" class="btn btn-sm btn-success">
-                                <i class="bi bi-download me-1"></i> Download
-                            </a>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    
-    <div class="text-center mt-4">
-        <a href="{% url 'tickets:create_listing' %}" class="btn btn-success">
-            <i class="bi bi-plus-circle me-2"></i> Create New Listing
-        </a>
-    </div>
-    {% endif %}
-
-    <!-- Upload Modals -->
-    {% for sale in sales %}
-    <div class="modal fade" id="uploadModal{{ sale.id }}" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Upload Ticket</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <form method="post" action="{% url 'events:upload_ticket' sale.order.id %}" enctype="multipart/form-data" class="upload-form">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="ticketFile{{ sale.id }}" class="form-label">Select Ticket File (PDF or Image)</label>
-                            <input type="file" class="form-control" id="ticketFile{{ sale.id }}" name="ticket_file" accept=".pdf,.jpg,.jpeg,.png" required>
-                            <small class="text-muted">Accepted formats: PDF, JPG, JPEG, PNG</small>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary upload-btn">Upload Ticket</button>
-                    </div>
-                </form>
+                            </td>
+                            <td>
+                                {{ sale.order.number_of_tickets }} ticket{{ sale.order.number_of_tickets|pluralize }}<br>
+                                <small class="text-muted">Sec {{ sale.order.ticket_section }}, Row {{ sale.order.ticket_row }}</small>
+                            </td>
+                            <td class="fw-bold">£{{ sale.amount }}</td>
+                            <td>{{ sale.created_at|date:"M d, Y" }}</td>
+                            <td>
+                                {% if sale.payout_date %}
+                                    <span class="badge bg-success">Paid on {{ sale.payout_date|date:"M d, Y" }}</span>
+                                {% else %}
+                                    <span class="badge bg-warning">Processing</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end">
+                                {% if not sale.order.ticket_file %}
+                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal{{ sale.id }}">
+                                        Upload
+                                    </button>
+                                {% else %}
+                                    <a href="{% url 'events:download_ticket' sale.order.id %}" class="btn btn-sm btn-success">
+                                        Download
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
-    </div>
-    {% endfor %}
+
+        <!-- Upload Modals -->
+        {% for sale in sales %}
+        <div class="modal fade" id="uploadModal{{ sale.id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Upload Ticket</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form method="post" action="{% url 'events:upload_ticket' sale.order.id %}" enctype="multipart/form-data" class="upload-form">
+                        {% csrf_token %}
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="ticketFile{{ sale.id }}" class="form-label">Select Ticket File (PDF or Image)</label>
+                                <input type="file" class="form-control" id="ticketFile{{ sale.id }}" name="ticket_file" accept=".pdf,.jpg,.jpeg,.png" required>
+                                <small class="text-muted">Accepted formats: PDF, JPG, JPEG, PNG</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                            <button type="submit" class="btn btn-primary upload-btn">Upload Ticket</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            <p>No sales yet. <a href="{% url 'tickets:create_listing' %}">Create a new listing</a></p>
+        </div>
+    {% endif %}
 </div>
-{% endblock %}
 
 <style>
 .toast-container {
@@ -170,15 +165,11 @@ function showToast(message, type = 'success') {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Handle modal form submissions
     const forms = document.querySelectorAll('form.upload-form');
-    console.log('Found ' + forms.length + ' upload forms');
     
-    forms.forEach((form, index) => {
-        console.log('Attaching submit handler to form ' + index);
+    forms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('Form submitted');
             
             const formData = new FormData(this);
             const action = this.getAttribute('action');
@@ -186,7 +177,6 @@ document.addEventListener('DOMContentLoaded', function() {
             const originalText = submitBtn.textContent;
             const modal = this.closest('.modal');
             
-            // Show loading state
             submitBtn.disabled = true;
             submitBtn.textContent = 'Uploading...';
             
@@ -199,23 +189,15 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Response:', data);
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
                 
                 if (data.success) {
-                    // Close the modal
                     if (modal) {
                         const bsModal = bootstrap.Modal.getInstance(modal);
-                        if (bsModal) {
-                            bsModal.hide();
-                        }
+                        if (bsModal) bsModal.hide();
                     }
-                    
-                    // Show success message
                     showToast('Ticket uploaded successfully!', 'success');
-                    
-                    // Reload the page after a short delay
                     setTimeout(() => location.reload(), 1500);
                 } else {
                     showToast('Error: ' + (data.error || 'Upload failed'), 'error');
@@ -231,3 +213,4 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+{% endblock %}
