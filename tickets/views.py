@@ -1732,56 +1732,49 @@ class DownloadTicketView(LoginRequiredMixin, View):
                 
                 # Try to serve the uploaded file first
                 file_content = None
+                file_name = None
+                
                 if order.ticket_file:
-                    # Try multiple paths
-                    possible_paths = [
-                        str(order.ticket_file.name),
-                        os.path.join(settings.MEDIA_ROOT, str(order.ticket_file.name)),
-                        os.path.join('/app', str(order.ticket_file.name)),
-                        os.path.join('/app/tickets', os.path.basename(str(order.ticket_file.name))),
-                    ]
-                    
-                    for path in possible_paths:
-                        if os.path.exists(path):
-                            try:
-                                with open(path, 'rb') as f:
-                                    file_content = f.read()
-                                break
-                            except:
-                                pass
-                    
-                    # Try reading from file object
-                    if not file_content:
-                        try:
-                            order.ticket_file.seek(0)
-                            file_content = order.ticket_file.read()
-                        except:
-                            pass
+                    try:
+                        # Get the file name
+                        file_name = os.path.basename(str(order.ticket_file.name))
+                        
+                        # Try to read from the file object directly
+                        order.ticket_file.seek(0)
+                        file_content = order.ticket_file.read()
+                        
+                        # If successful, return the file
+                        if file_content:
+                            response = HttpResponse(file_content, content_type='application/octet-stream')
+                            response['Content-Disposition'] = f'attachment; filename="{file_name}"'
+                            return response
+                    except Exception as e:
+                        logger.warning(f'Could not read uploaded file: {str(e)}')
+                        pass
                 
                 # If no file content, generate a PDF with ticket information
-                if not file_content:
-                    buffer = BytesIO()
-                    p = canvas.Canvas(buffer, pagesize=(595, 842))  # A4 size
-                    
-                    # Draw ticket information
-                    p.setFont("Helvetica-Bold", 24)
-                    p.drawString(50, 750, f"TICKET")
-                    
-                    p.setFont("Helvetica", 12)
-                    p.drawString(50, 700, f"Event: {order.event_name}")
-                    p.drawString(50, 680, f"Section: {order.ticket_section}")
-                    p.drawString(50, 660, f"Row: {order.ticket_row}")
-                    p.drawString(50, 640, f"Seat: {order.ticket_seat if hasattr(order, 'ticket_seat') else 'N/A'}")
-                    p.drawString(50, 620, f"Purchased: {order.created_at.strftime('%Y-%m-%d %H:%M')}")
-                    p.drawString(50, 600, f"Order ID: {order.id}")
-                    
-                    # Draw border
-                    p.rect(30, 580, 535, 200)
-                    
-                    p.showPage()
-                    p.save()
-                    buffer.seek(0)
-                    file_content = buffer.getvalue()
+                buffer = BytesIO()
+                p = canvas.Canvas(buffer, pagesize=(595, 842))  # A4 size
+                
+                # Draw ticket information
+                p.setFont("Helvetica-Bold", 24)
+                p.drawString(50, 750, f"TICKET")
+                
+                p.setFont("Helvetica", 12)
+                p.drawString(50, 700, f"Event: {order.event_name}")
+                p.drawString(50, 680, f"Section: {order.ticket_section}")
+                p.drawString(50, 660, f"Row: {order.ticket_row}")
+                p.drawString(50, 640, f"Seat: {order.ticket_seat if hasattr(order, 'ticket_seat') else 'N/A'}")
+                p.drawString(50, 620, f"Purchased: {order.created_at.strftime('%Y-%m-%d %H:%M')}")
+                p.drawString(50, 600, f"Order ID: {order.id}")
+                
+                # Draw border
+                p.rect(30, 580, 535, 200)
+                
+                p.showPage()
+                p.save()
+                buffer.seek(0)
+                file_content = buffer.getvalue()
                 
                 response = HttpResponse(file_content, content_type='application/pdf')
                 response['Content-Disposition'] = f'attachment; filename="{order.event_name.replace(" ", "_")}_ticket.pdf"'
@@ -1796,6 +1789,7 @@ class DownloadTicketView(LoginRequiredMixin, View):
         except Exception as e:
             import traceback
             return JsonResponse({'error': str(e)}, status=500)
+
 
 class MyTicketsView(LoginRequiredMixin, ListView):
     """View for buyers to see their purchased tickets"""

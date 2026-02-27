@@ -1,4 +1,5 @@
 {% extends base_template %}
+{% load static %}
 {% block title %} Sales {% endblock %}
 {% block dashboard_content %}
 {% load static %}
@@ -48,7 +49,7 @@
                         <td class="text-end">
                             {% if not sale.order.ticket_file %}
                             <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#uploadModal{{ sale.id }}">
-                                <i class="bi bi-cloud-upload me-1"></i> Upload
+                                <i class="bi bi-upload me-1"></i> Upload
                             </button>
                             {% else %}
                             <a href="{% url 'events:download_ticket' sale.order.id %}" class="btn btn-sm btn-success">
@@ -63,41 +64,8 @@
         </div>
     </div>
     
-    <nav class="mt-4">
-        <ul class="pagination justify-content-center">
-            {% if page_obj.has_previous %}
-            <li class="page-item">
-                <a class="page-link" href="?page=1">&laquo; First</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
-            </li>
-            {% endif %}
-            
-            <li class="page-item disabled">
-                <span class="page-link">
-                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
-                </span>
-            </li>
-            
-            {% if page_obj.has_next %}
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
-            </li>
-            {% endif %}
-        </ul>
-    </nav>
-    {% else %}
-    <div class="text-center py-5">
-        <div class="mb-4">
-            <img src="{% static 'images/empty-orders.png' %}" alt="No sales" class="img-fluid" style="max-height: 200px;">
-        </div>
-        <h3 class="h4 mb-3">You haven't made any sales yet</h3>
-        <p class="text-muted mb-4">List more tickets to start earning</p>
-        <a href="{% url 'events:all_events' %}" class="btn btn-primary btn-lg">
+    <div class="text-center mt-4">
+        <a href="{% url 'tickets:create_listing' %}" class="btn btn-success">
             <i class="bi bi-plus-circle me-2"></i> Create New Listing
         </a>
     </div>
@@ -112,7 +80,7 @@
                     <h5 class="modal-title">Upload Ticket</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <form method="post" action="{% url 'events:upload_ticket' sale.order.id %}" enctype="multipart/form-data">
+                <form method="post" action="{% url 'events:upload_ticket' sale.order.id %}" enctype="multipart/form-data" class="upload-form">
                     {% csrf_token %}
                     <div class="modal-body">
                         <div class="mb-3">
@@ -123,7 +91,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Upload Ticket</button>
+                        <button type="submit" class="btn btn-primary upload-btn">Upload Ticket</button>
                     </div>
                 </form>
             </div>
@@ -204,14 +172,20 @@ function showToast(message, type = 'success') {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Handle modal form submissions
-    const forms = document.querySelectorAll('form[action*="upload-ticket"]');
-    forms.forEach(form => {
+    const forms = document.querySelectorAll('form.upload-form');
+    console.log('Found ' + forms.length + ' upload forms');
+    
+    forms.forEach((form, index) => {
+        console.log('Attaching submit handler to form ' + index);
         form.addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('Form submitted');
+            
             const formData = new FormData(this);
             const action = this.getAttribute('action');
             const submitBtn = this.querySelector('button[type="submit"]');
             const originalText = submitBtn.textContent;
+            const modal = this.closest('.modal');
             
             // Show loading state
             submitBtn.disabled = true;
@@ -226,29 +200,33 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(response => response.json())
             .then(data => {
+                console.log('Response:', data);
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
                 
                 if (data.success) {
                     // Close the modal
-                    const modal = this.closest('.modal');
-                    const bsModal = bootstrap.Modal.getInstance(modal);
-                    if (bsModal) bsModal.hide();
+                    if (modal) {
+                        const bsModal = bootstrap.Modal.getInstance(modal);
+                        if (bsModal) {
+                            bsModal.hide();
+                        }
+                    }
                     
                     // Show success message
-                    showToast('✅ Ticket uploaded successfully!', 'success');
+                    showToast('Ticket uploaded successfully!', 'success');
                     
                     // Reload the page after a short delay
                     setTimeout(() => location.reload(), 1500);
                 } else {
-                    showToast('❌ Error: ' + (data.error || 'Upload failed'), 'error');
+                    showToast('Error: ' + (data.error || 'Upload failed'), 'error');
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
                 submitBtn.disabled = false;
                 submitBtn.textContent = originalText;
-                showToast('❌ An error occurred during upload', 'error');
+                showToast('An error occurred during upload', 'error');
             });
         });
     });
