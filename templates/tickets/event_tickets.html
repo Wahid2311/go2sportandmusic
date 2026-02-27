@@ -884,7 +884,7 @@
                 <!-- Action Button -->
                 <div onclick="event.stopPropagation()">
                 {% if user.is_authenticated %}
-                  <form action="/tickets/${ticket.ticket_id}/buy/" method="post" class="ticket-purchase-form">
+                  <form action="/tickets/${ticket.ticket_id}/buy/" method="post" class="ticket-purchase-form" onsubmit="syncQuantity(event)">
                     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
                     <input type="hidden" name="quantity" class="quantity-input" value="1">
                     <button type="submit" class="btn btn-primary w-100 btn-sm py-2 fw-bold" style="font-size: 0.9rem;">
@@ -1355,6 +1355,19 @@
                 });
             });
         });
+        
+        // Sync quantity before form submission
+        function syncQuantity(event) {
+            const form = event.target;
+            const ticketCard = form.closest('.ticket-card');
+            if (ticketCard) {
+                const quantitySelect = ticketCard.querySelector('.quantity-select');
+                const quantityInput = form.querySelector('.quantity-input');
+                if (quantitySelect && quantityInput) {
+                    quantityInput.value = quantitySelect.value;
+                }
+            }
+        }
     </script>
 </body>
 
