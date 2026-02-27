@@ -1015,25 +1015,8 @@ class SuperadminOrderListView(SuperAdminRequiredMixin, ListView):
     
     def get_queryset(self):
         queryset=Order.objects.filter(status='completed').order_by('-created_at')
-        orders_to_update = []
-        for order in queryset:
-            try:
-                ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
-                should_be_uploaded = (ticket.upload_choice == 'now')
-                if order.ticket_uploaded != should_be_uploaded:
-                    order.ticket_uploaded = should_be_uploaded
-                    orders_to_update.append(order)
-
-            except Ticket.DoesNotExist:
-                if order.ticket_uploaded:
-                    order.ticket_uploaded = False
-                    orders_to_update.append(order)
-            except ValueError:
-                if order.ticket_uploaded:
-                    order.ticket_uploaded = False
-                    orders_to_update.append(order)
-        if orders_to_update:
-            Order.objects.bulk_update(orders_to_update, ['ticket_uploaded'])
+        # Note: ticket_uploaded field is set directly when a file is uploaded
+        # No need to override it based on upload_choice
         return queryset
 
 class SuperadminSaleListView(SuperAdminRequiredMixin, ListView):
