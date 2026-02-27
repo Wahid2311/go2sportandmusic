@@ -189,3 +189,39 @@ LOGGING = {
         },
     },
 }
+
+
+# APScheduler Configuration for background tasks
+SCHEDULER_CONFIG = {
+    'apscheduler.schedulers.background': {
+        'type': 'background'
+    },
+    'apscheduler.schedulers.background.thread_pool_executor': {
+        'max_workers': '10'
+    },
+    'apscheduler.job_stores.default': {
+        'type': 'memory'
+    },
+    'apscheduler.executors.default': {
+        'class': 'apscheduler.executors.pool:ThreadPoolExecutor',
+        'max_workers': '10'
+    },
+    'apscheduler.executors.processpool': {
+        'type': 'processpool',
+        'max_workers': '5'
+    },
+    'apscheduler.job_defaults.coalesce': 'false',
+    'apscheduler.job_defaults.max_instances': '1',
+    'apscheduler.timezone': 'UTC',
+}
+
+# Scheduled Jobs
+SCHEDULED_JOBS = [
+    {
+        'id': 'update_payout_status',
+        'func': 'tickets.tasks.update_payout_status_task',
+        'trigger': 'cron',
+        'hour': '0',  # Run at midnight UTC
+        'minute': '0',
+    }
+]
