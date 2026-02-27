@@ -141,7 +141,7 @@
       try {
         const res = await fetch(`/get-section-prices/?section_id=${id}`);
         const data = await res.json();
-        priceRangeEl.textContent = `$${data.lower_price} – $${data.upper_price}`;
+        priceRangeEl.textContent = `£${data.lower_price} – £${data.upper_price}`;
       } catch (e) {
         priceRangeEl.textContent = 'Error';
       }

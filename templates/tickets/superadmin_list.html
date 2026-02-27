@@ -38,10 +38,10 @@
               <div class="col-md-3"><strong>Qty:</strong> {{ ticket.number_of_tickets }}</div>
               <div class="col-md-3"><strong>Section:</strong> {{ ticket.section.name }}</div>
               <div class="col-md-3"><strong>Row:</strong> {{ ticket.row }}</div>
-              <div class="col-md-3"><strong>Face Value:</strong> ${{ ticket.face_value }}</div>
+              <div class="col-md-3"><strong>Face Value:</strong> £{{ ticket.face_value }}</div>
             </div>
             <div class="row mt-2">
-              <div class="col-md-6"><strong>Sell Price:</strong> ${{ ticket.sell_price }}</div>
+              <div class="col-md-6"><strong>Sell Price:</strong> £{{ ticket.sell_price }}</div>
               <div class="col-md-6">
                 <strong>Status:</strong>
                 {% if ticket.sold %}
