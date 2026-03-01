@@ -444,9 +444,9 @@
       }
 
       .categories-grid {
-        grid-template-columns: repeat(5, 1fr);
-        gap: 0.4rem;
-        max-width: 100%;
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 0.4rem !important;
+        max-width: 100% !important;
       }
 
       .category-card {
@@ -472,6 +472,26 @@
 
       .section-title {
         font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .categories-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: 0.3rem !important;
+      }
+
+      .category-card {
+        padding: 0.35rem !important;
+      }
+
+      .category-icon {
+        font-size: 1rem !important;
+        margin-bottom: 0.15rem !important;
+      }
+
+      .category-name {
+        font-size: 0.6rem !important;
       }
     }
 
