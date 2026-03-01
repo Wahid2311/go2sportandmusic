@@ -582,6 +582,51 @@
       border-radius: 12px;
       min-height: 400px;
     }
+
+    .sections-filter-container {
+      position: relative;
+      bottom: auto;
+      width: 100%;
+      margin-top: 1rem;
+    }
+
+    @media (min-width: 992px) {
+      .col-lg-8 {
+        display: flex;
+        flex-direction: column;
+        height: 75vh;
+      }
+
+      .svg-stadium-container {
+        flex: 1;
+        max-height: 60vh;
+        overflow: hidden;
+      }
+
+      .sections-filter-container {
+        position: sticky;
+        bottom: 0;
+        margin-top: auto;
+        z-index: 10;
+      }
+    }
+
+    @media (max-width: 991px) {
+      .col-lg-8 {
+        height: auto;
+        margin-bottom: 2rem;
+      }
+
+      .svg-stadium-container {
+        min-height: 300px;
+        max-height: none;
+      }
+
+      .sections-filter-container {
+        margin-top: 1rem;
+        position: relative;
+      }
+    }
   </style>
 </head>
 
@@ -701,18 +746,18 @@
           </div>
         </div>
 
-        <div class="col-lg-8 order-lg-2 order-1 d-flex flex-column position-relative" style="height: 75vh;">
+        <div class="col-lg-8 order-lg-2 order-1 d-flex flex-column position-relative" style="height: auto;">
           <!-- Interactive SVG Stadium Map Container -->
-          <div class="svg-stadium-container mb-2 flex-grow-1" id="svg-stadium-container"
-            style="display: flex; justify-content: center; align-items: center; max-height: 60vh; width: 100%;"
+          <div class="svg-stadium-container mb-3 flex-grow-1" id="svg-stadium-container"
+            style="display: flex; justify-content: center; align-items: center; width: 100%; min-height: 300px;"
             data-stadium-name="{{ event.stadium_name }}" data-svg-base-path="{% static 'events/stadiums/svg/' %}"
             data-fallback-image="{{ event.stadium_image }}">
             <div class="skeleton stadium-skeleton"></div>
           </div>
 
-
-          <div class="d-flex flex-wrap justify-content-center gap-2 mt-auto py-2 z-1"
-            style="position: sticky; bottom: 0;">
+          <!-- Sections Filter - Below Map on Mobile, Sticky on Desktop -->
+          <div class="d-flex flex-wrap justify-content-center gap-2 py-3 sections-filter-container"
+            style="background: white; border-radius: 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.05);">
 
             {% for sec in sections %}
             <label for="sec_{{ forloop.counter }}" class="badge rounded-pill d-flex align-items-center px-3 py-2"
