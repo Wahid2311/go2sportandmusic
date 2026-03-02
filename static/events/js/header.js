@@ -144,7 +144,18 @@ document.addEventListener('DOMContentLoaded', function () {
 // Date Helper
 // =======================
 function parseEventDate(dateStr) {
-    return new Date(dateStr + " 00:00:00");
+    try {
+        // Handle formatted dates like "Dec 07, 2025"
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+        // Fallback: try adding time
+        return new Date(dateStr + " 00:00:00");
+    } catch (e) {
+        console.error('Date parse error:', dateStr, e);
+        return new Date(); // Return current date as fallback
+    }
 }
 
 
@@ -195,20 +206,25 @@ function initSearchAutocomplete(inputSelector, resultsContainer) {
                     const now = new Date();
 
                     const sortedEvents = data.sort((a, b) => {
-                        const dateA = parseEventDate(a.date);
-                        const dateB = parseEventDate(b.date);
+                        try {
+                            const dateA = parseEventDate(a.date);
+                            const dateB = parseEventDate(b.date);
 
-                        const isAFuture = dateA >= now;
-                        const isBFuture = dateB >= now;
+                            const isAFuture = dateA >= now;
+                            const isBFuture = dateB >= now;
 
-                        if (isAFuture && !isBFuture) return -1;
-                        if (!isAFuture && isBFuture) return 1;
+                            if (isAFuture && !isBFuture) return -1;
+                            if (!isAFuture && isBFuture) return 1;
 
-                        if (isAFuture && isBFuture) {
-                            return dateA - dateB;
+                            if (isAFuture && isBFuture) {
+                                return dateA - dateB;
+                            }
+
+                            return dateB - dateA;
+                        } catch (e) {
+                            console.error('Sort error:', e);
+                            return 0;
                         }
-
-                        return dateB - dateA;
                     });
 
                     resultsDiv.innerHTML = sortedEvents.map(event => `
