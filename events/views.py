@@ -602,31 +602,45 @@ class TicketListView(View):
 
 class SearchAutocompleteView(View):
     def get(self, request, *args, **kwargs):
-        if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        try:
+            if not request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                return JsonResponse([], safe=False)
+            
+            query = request.GET.get('query', '').strip()[:100]
+            
+            if not query or len(query) < 2:
+                return JsonResponse([], safe=False)
+            
+            events = Event.objects.filter(
+                Q(name__icontains=query) |
+                Q(stadium_name__icontains=query) |
+                Q(category__icontains=query)
+            ).annotate(
+                min_price=Min('sections__lower_price', default=0),
+                max_price=Max('sections__upper_price', default=0)
+            )[:10]
+            
+            data = []
+            for e in events:
+                try:
+                    min_p = e.min_price if e.min_price is not None else 0
+                    max_p = e.max_price if e.max_price is not None else 0
+                    data.append({
+                        'name': e.name,
+                        'category': e.get_category_display(),
+                        'date': e.date.strftime('%b %d, %Y'),
+                        'stadium': e.stadium_name,
+                        'min_price': str(min_p),
+                        'max_price': str(max_p),
+                        'url': reverse('events:event_tickets', args=[e.event_id])
+                    })
+                except Exception:
+                    continue
+            
+            return JsonResponse(data, safe=False)
+        except Exception as err:
+            print(f'Search autocomplete error: {str(err)}')
             return JsonResponse([], safe=False)
-        
-        query = request.GET.get('query', '')[:100]
-        print(query)
-        events = Event.objects.filter(
-            Q(name__icontains=query) |
-            Q(stadium_name__icontains=query) |
-            Q(category__icontains=query)
-        ).annotate(
-            min_price=Min('sections__lower_price'),
-            max_price=Max('sections__upper_price')
-        )[:10]
-        
-        data = [{
-            'name': e.name,
-            'category': e.get_category_display(),
-            'date': e.date.strftime('%b %d, %Y'),
-            'stadium': e.stadium_name,
-            'min_price': str(e.min_price),
-            'max_price': str(e.max_price),
-            'url': reverse('events:event_tickets', args=[e.event_id])
-        } for e in events]
-        
-        return JsonResponse(data, safe=False)
 
         
 class NormalResellerPriceView(View):
