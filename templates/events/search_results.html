@@ -549,12 +549,13 @@
             </div>
 
             <div class="cards-container">
+                {% if events %}
                 {% for event in events %}
                 <div class="user-card event-card">
                     <div class="user-card-header">
                         <span class="user-id">#{{ event.event_id }}</span>
-                        <span class="user-type-badge {{ event.category }}">
-                            {{ event.get_category_display }}
+                        <span class="user-type-badge {{ event.category_legacy }}">
+                            {{ event.category_legacy|default:"Sports" }}
                         </span>
                     </div>
 
@@ -599,6 +600,14 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% else %}
+                <div style="text-align: center; padding: 3rem 1rem; width: 100%;">
+                    <i class="bi bi-search" style="font-size: 3rem; color: var(--secondary-accent); opacity: 0.5;"></i>
+                    <h3 style="color: var(--primary-dark); margin-top: 1rem;">No events found</h3>
+                    <p style="color: var(--primary-accent);">Try searching with different keywords or browse all events</p>
+                    <a href="{% url 'events:home' %}" class="btn btn-primary" style="margin-top: 1rem;">Back to Home</a>
+                </div>
+                {% endif %}
             </div>
         </div>
 
