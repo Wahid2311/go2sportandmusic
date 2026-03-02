@@ -649,10 +649,11 @@
     <section class="search-section">
       <div class="search-container">
         <form class="search-form" action="{% url 'events:search_results' %}" method="get">
-          <div class="search-form-group">
+          <div class="search-form-group" style="position: relative;">
             <label for="search-input">Search Events</label>
             <input type="text" id="search-input" name="query" placeholder="Search events, stadiums, or categories..."
               data-behavior="search-autocomplete" />
+            <div id="search-results" class="autocomplete-results" style="position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; max-height: 300px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);"></div>
           </div>
           <div class="search-form-group">
             <label for="start-date">From Date</label>

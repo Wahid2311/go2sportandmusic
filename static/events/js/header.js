@@ -137,6 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+    initSearchAutocomplete('#search-input', '#search-results');
 });
 
 
