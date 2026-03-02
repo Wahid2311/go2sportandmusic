@@ -244,18 +244,20 @@
             width: 100%;
             margin: 0.3rem 0 0 0;
             padding: 0.3rem 0;
-            flex-wrap: wrap;
-            gap: 0.2rem !important;
+            flex-wrap: nowrap !important;
+            gap: 0.1rem !important;
             display: flex;
+            overflow-x: auto;
         }
 
         #categoryNavbar .nav-item {
-            flex: 0 1 auto;
+            flex: 0 0 auto;
+            min-width: fit-content;
         }
 
         #categoryNavbar .nav-link {
-            padding: 5px 8px !important;
-            font-size: 0.8rem;
+            padding: 4px 6px !important;
+            font-size: 0.7rem;
             white-space: nowrap;
             margin: 0 !important;
         }
@@ -302,13 +304,20 @@
         }
 
         #categoryNavbar {
-            gap: 0.15rem !important;
+            gap: 0.08rem !important;
             margin: 0.2rem 0 0 0;
+            overflow-x: auto;
+        }
+
+        #categoryNavbar .nav-item {
+            flex: 0 0 auto;
+            min-width: fit-content;
         }
 
         #categoryNavbar .nav-link {
-            padding: 4px 6px !important;
-            font-size: 0.7rem;
+            padding: 3px 5px !important;
+            font-size: 0.65rem;
+            white-space: nowrap;
         }
 
         .navbar-collapse {
