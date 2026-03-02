@@ -11,15 +11,30 @@ async function fetchNavCategories() {
         if (categoriesResponse.ok) {
             const categoriesData = await categoriesResponse.json();
             
-            // Map categories to NAV_CATEGORIES format
-            NAV_CATEGORIES = categoriesData.map(cat => ({
-                id: cat.id,
-                name: cat.name,
-                slug: cat.slug,
-                icon: cat.icon,
-                url: `/events/all/?category=${cat.slug}`,
-                countries: []
-            }));
+            // Check if categoriesData is an array
+            if (Array.isArray(categoriesData)) {
+                // Map categories to NAV_CATEGORIES format
+                NAV_CATEGORIES = categoriesData.map(cat => ({
+                    id: cat.id,
+                    name: cat.name,
+                    slug: cat.slug,
+                    icon: cat.icon,
+                    url: `/events/all/?category=${cat.slug}`,
+                    countries: []
+                }));
+            } else if (categoriesData.results && Array.isArray(categoriesData.results)) {
+                // Handle paginated response
+                NAV_CATEGORIES = categoriesData.results.map(cat => ({
+                    id: cat.id,
+                    name: cat.name,
+                    slug: cat.slug,
+                    icon: cat.icon,
+                    url: `/events/all/?category=${cat.slug}`,
+                    countries: []
+                }));
+            } else {
+                throw new Error('Invalid categories format');
+            }
         } else {
             // Fallback to default categories
             NAV_CATEGORIES = [
