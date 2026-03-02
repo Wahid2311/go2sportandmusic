@@ -495,26 +495,36 @@ class EventSearchView(ListView):
     context_object_name = 'events'
 
     def get_queryset(self):
-        query = self.request.GET.get('query')
-        start_date = self.request.GET.get('start_date')
-        end_date = self.request.GET.get('end_date')
-        
-        qs = Event.objects.all()
-        
-        if query:
-            qs = qs.filter(
-                Q(name__icontains=query) |
-                Q(stadium_name__icontains=query) |
-                Q(category__name__icontains=query)
-            )
-        
-        if start_date and end_date:
-            qs = qs.filter(date__range=[start_date, end_date])
-        
-        return qs.annotate(
-            min_price=Min('sections__lower_price'),
-            max_price=Max('sections__upper_price')
-        ).order_by('-date')
+        try:
+            query = self.request.GET.get('query', '').strip()
+            start_date = self.request.GET.get('start_date', '').strip()
+            end_date = self.request.GET.get('end_date', '').strip()
+            
+            qs = Event.objects.all()
+            
+            if query:
+                qs = qs.filter(
+                    Q(name__icontains=query) |
+                    Q(stadium_name__icontains=query) |
+                    Q(category__name__icontains=query)
+                )
+            
+            if start_date and end_date:
+                try:
+                    qs = qs.filter(date__range=[start_date, end_date])
+                except (ValueError, TypeError):
+                    pass
+            
+            # Add annotation safely with default values
+            qs = qs.annotate(
+                min_price=Min('sections__lower_price', default=0),
+                max_price=Max('sections__upper_price', default=0)
+            ).order_by('-date')
+            
+            return qs
+        except Exception as e:
+            print(f"Search error: {str(e)}")
+            return Event.objects.none()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
