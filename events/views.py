@@ -614,7 +614,9 @@ class SearchAutocompleteView(View):
             events = Event.objects.filter(
                 Q(name__icontains=query) |
                 Q(stadium_name__icontains=query) |
-                Q(category__icontains=query)
+                Q(category_legacy__icontains=query) |
+                Q(sports_type__icontains=query) |
+                Q(team__icontains=query)
             ).annotate(
                 min_price=Min('sections__lower_price', default=0),
                 max_price=Max('sections__upper_price', default=0)
@@ -627,7 +629,7 @@ class SearchAutocompleteView(View):
                     max_p = e.max_price if e.max_price is not None else 0
                     data.append({
                         'name': e.name,
-                        'category': e.get_category_display(),
+                        'category': e.category_legacy or e.sports_type or 'Sports',
                         'date': e.date.strftime('%b %d, %Y'),
                         'stadium': e.stadium_name,
                         'min_price': str(min_p),
