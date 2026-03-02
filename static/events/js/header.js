@@ -180,9 +180,24 @@ function parseEventDate(dateStr) {
 // =======================
 function initSearchAutocomplete(inputSelector, resultsContainer) {
     const searchInput = document.querySelector(inputSelector);
-    const resultsDiv = document.querySelector(resultsContainer);
+    let resultsDiv = document.querySelector(resultsContainer);
 
-    if (!searchInput || !resultsDiv) return;
+    if (!searchInput) return;
+    
+    // Create results container if it doesn't exist
+    if (!resultsDiv) {
+        resultsDiv = document.createElement('div');
+        resultsDiv.id = resultsContainer.replace('#', '');
+        resultsDiv.className = 'autocomplete-results';
+        resultsDiv.style.cssText = 'position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; max-height: 300px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+        
+        // Find the parent form-group and append the results div
+        const formGroup = searchInput.closest('.search-form-group');
+        if (formGroup) {
+            formGroup.style.position = 'relative';
+            formGroup.appendChild(resultsDiv);
+        }
+    }
 
     let timeoutId;
 
