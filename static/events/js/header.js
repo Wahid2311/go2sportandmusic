@@ -291,3 +291,27 @@ function initSearchAutocomplete(inputSelector, resultsContainer) {
         }
     });
 }
+
+
+// =======================
+// Initialize on page load
+// =======================
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch categories for navbar
+    fetchNavCategories();
+    
+    // Initialize search autocomplete for center search bar
+    initSearchAutocomplete('#search-input', '#search-results');
+    
+    // Initialize search autocomplete for header/modal search
+    initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+});
+
+// Also call on page load in case DOMContentLoaded already fired
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fetchNavCategories);
+} else {
+    fetchNavCategories();
+    initSearchAutocomplete('#search-input', '#search-results');
+    initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+}
