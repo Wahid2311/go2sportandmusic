@@ -129,8 +129,8 @@ if csrf_origins_env:
 else:
     # Use default values
     CSRF_TRUSTED_ORIGINS = [
-        'https://go2sportandmusic.com',
-        'https://www.go2sportandmusic.com',
+        'https://tickethouse.net',
+        'https://www.tickethouse.net',
         'http://localhost:8000',
         BASE_URL,
     ]
