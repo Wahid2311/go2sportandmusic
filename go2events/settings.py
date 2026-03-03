@@ -107,6 +107,7 @@ AUTH_USER_MODEL = 'accounts.User'
 LOGIN_URL = '/accounts/sign-in/'
 SESSION_COOKIE_AGE = 36000 
 SESSION_SAVE_EVERY_REQUEST = True
+SESSION_COOKIE_DOMAIN = os.environ.get('SESSION_COOKIE_DOMAIN', '.tickethouse.net')  # Allow subdomains
 
 SUPERADMIN_EMAIL = os.environ.get('SUPERADMIN_EMAIL')
 SUPERADMIN_PASSWORD = os.environ.get('SUPERADMIN_PASSWORD')

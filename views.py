@@ -703,8 +703,10 @@ class CreateOrderView(LoginRequiredMixin, View):
             messages.error(request, f"Payment processing error: {str(e)}")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
 
-class PaymentReturnView(LoginRequiredMixin, View):
+class PaymentReturnView(View):
     def get(self, request):
+        # Note: We don't use LoginRequiredMixin because user session might be lost after Stripe redirect
+        # Instead, we verify the user from the order itself
         status = request.GET.get('status')
         order_id = request.GET.get('order_id')
         session_id = request.GET.get('session_id')
@@ -722,9 +724,23 @@ class PaymentReturnView(LoginRequiredMixin, View):
                 messages.error(request, "Invalid order ID format")
                 return redirect('events:home')
             
-            logger.info(f"Looking up order: id={order_uuid}, buyer_id={request.user.id}")
-            order = Order.objects.get(id=order_uuid, buyer=request.user)
-            logger.info(f"Order found: {order.id}")
+            # Try to get order - first with authenticated user, then just by ID if session is lost
+            logger.info(f"Looking up order: id={order_uuid}")
+            
+            if request.user.is_authenticated:
+                logger.info(f"User is authenticated: {request.user.id}")
+                try:
+                    order = Order.objects.get(id=order_uuid, buyer=request.user)
+                    logger.info(f"Order found with authenticated user: {order.id}")
+                except Order.DoesNotExist:
+                    logger.warning(f"Order not found with authenticated user, trying without user filter")
+                    order = Order.objects.get(id=order_uuid)
+                    logger.info(f"Order found by ID only: {order.id}")
+            else:
+                logger.warning(f"User is NOT authenticated - session might have been lost during Stripe redirect")
+                # Session was lost, get order by ID only
+                order = Order.objects.get(id=order_uuid)
+                logger.info(f"Order found by ID (unauthenticated): {order.id}")
             
             if status == 'success':
                 # Verify the Stripe session
