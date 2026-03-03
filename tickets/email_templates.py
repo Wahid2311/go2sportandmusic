@@ -308,7 +308,7 @@ class ProfessionalEmailTemplates:
             <div style="max-width: 600px; margin: 20px auto; background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
                 {ProfessionalEmailTemplates.get_header_with_logo()}
                 
-                {ProfessionalEmailTemplates.get_hero_section('Payment Issue', 'We had trouble processing your payment. Let\\'s get this fixed!', '⚠️')}
+                 {ProfessionalEmailTemplates.get_hero_section('Payment Issue', "We had trouble processing your payment. Let's get this fixed!", '⚠️')}
                 
                 <div style="padding: 40px 30px;">
                     <p style="font-size: 16px; color: #1a1a1a; margin: 0 0 30px 0;">
