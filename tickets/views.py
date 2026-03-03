@@ -691,7 +691,8 @@ class CreateOrderView(LoginRequiredMixin, View):
                 currency="GBP",
                 customer_email=request.user.email,
                 description=f"Ticket for {ticket.event.name}",
-                order_id=order.id
+                order_id=order.id,
+                request=request  # Pass request to get correct domain for Stripe redirect
             )
             
             order.stripe_session_id = stripe_session['session_id']
