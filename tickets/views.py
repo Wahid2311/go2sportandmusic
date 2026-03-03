@@ -712,7 +712,15 @@ class PaymentReturnView(LoginRequiredMixin, View):
         session_id = request.GET.get('session_id')
         
         try:
-            order = Order.objects.get(id=order_id, buyer=request.user)
+            # Convert order_id string to UUID for proper database lookup
+            try:
+                order_uuid = uuid.UUID(order_id) if isinstance(order_id, str) else order_id
+            except (ValueError, TypeError):
+                logger.error(f"Invalid order_id format: {order_id}")
+                messages.error(request, "Invalid order ID format")
+                return redirect('events:home')
+            
+            order = Order.objects.get(id=order_uuid, buyer=request.user)
             
             if status == 'success':
                 # Verify the Stripe session

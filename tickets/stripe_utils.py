@@ -40,6 +40,7 @@ class StripeAPI:
         """
         try:
             # Build success and cancel URLs
+            # Note: Stripe will replace {CHECKOUT_SESSION_ID} with the actual session ID
             success_url = settings.BASE_URL + reverse('events:payment_return') + '?status=success&session_id={CHECKOUT_SESSION_ID}&order_id=' + str(order_id)
             cancel_url = settings.BASE_URL + reverse('events:payment_return') + '?status=cancelled&order_id=' + str(order_id)
             
