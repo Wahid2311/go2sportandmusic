@@ -2,5 +2,4 @@ release: bash -c "cd /app && echo 'Starting release process...' && python fix_br
 web: python manage.py collectstatic --noinput && gunicorn go2events.wsgi
 # Branding update: Domain changed from go2sportandmusic.com to tickethouse.net - Mar 03 2026
 
-# Cache bust: 2026-03-03T02:01:03.211055
-# Cache bust: 2026-03-03T02:01:09.729360
+# FINAL CACHE BUST: 2026-03-03T02:10:31.710507
