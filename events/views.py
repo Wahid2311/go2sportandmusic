@@ -214,23 +214,13 @@ class EventCreateView(SuperAdminMixin, CreateView):
             return self.form_invalid(form)
 
     def send_creation_email(self, event):
-        subject = f'Event Created: {event.name}'
-        message = f'''Event Details:
-- ID: {event.event_id}
-- Date: {event.date} {event.time}
-- Stadium: {event.stadium_name}
-- Sections: {event.sections.count()}
-
-View event: {self.request.build_absolute_uri(
-    reverse('events:superadmin_event_list')
-)}'''
+        # Send professional HTML email for event creation
+        event_html = EmailTemplates.event_created(event, self.request.user.email)
         try:
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [self.request.user.email],
-                fail_silently=False
+            EmailTemplates.send_html_email(
+                subject=f'Event Created: {event.name}',
+                html_content=event_html,
+                recipient_email=self.request.user.email
             )
         except Exception as e:
             messages.warning(self.request, f'Error sending confirmation email: {str(e)}')
