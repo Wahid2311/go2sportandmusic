@@ -3,3 +3,4 @@ web: python manage.py collectstatic --noinput && gunicorn go2events.wsgi
 # Branding update: Domain changed from go2sportandmusic.com to tickethouse.net - Mar 03 2026
 
 # FINAL CACHE BUST: 2026-03-03T02:10:31.710507
+# FINAL CACHE BUST: 2026-03-03T02:10:38.161247
