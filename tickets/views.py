@@ -4,7 +4,7 @@ from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail, EmailMessage
-from tickets.email_templates import EmailTemplates
+from tickets.email_templates import ProfessionalEmailTemplates as EmailTemplates
 from django.db import transaction
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponseBadRequest, Http404, HttpResponse, FileResponse
