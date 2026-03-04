@@ -111,14 +111,11 @@ class ProfessionalEmailTemplates:
             ("🪑", "Row", order.ticket_row),
             ("🎟️", "Seats", ', '.join(order.ticket_seats)),
             ("📊", "Quantity", str(order.number_of_tickets)),
-            ("🎫", "Ticket ID", f"Ticket# {order.ticket_reference}") if order.ticket_reference else None,
-            ("🔐", "Order ID", f"Order# {order.order_number}"),
+            ("🔐", "Order ID", str(order.id)[:8] + "..."),
         ]
         
-        for detail in details:
-            if detail is not None:
-                icon, label, value = detail
-                details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
+        for icon, label, value in details:
+            details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
         
         html_content = f"""
         <html>
@@ -183,17 +180,14 @@ class ProfessionalEmailTemplates:
         details_html = ""
         details = [
             ("🎫", "Event", order.event_name),
-            ("🎟️", "Ticket ID", f"Ticket# {ticket.ticket_number}"),
+            ("🎟️", "Ticket ID", str(ticket.ticket_id)),
             ("📍", "Section", order.ticket_section),
             ("📊", "Quantity Sold", str(order.number_of_tickets)),
             ("💰", "Amount", f"£{order.amount:.2f}"),
-            ("🔐", "Order ID", f"Order# {order.order_number}"),
         ]
         
-        for detail in details:
-            if detail is not None:
-                icon, label, value = detail
-                details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
+        for icon, label, value in details:
+            details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
         
         html_content = f"""
         <html>
@@ -244,17 +238,15 @@ class ProfessionalEmailTemplates:
         details_html = ""
         details = [
             ("🎫", "Event", ticket.event.name),
-            ("🎟️", "Ticket ID", f"Ticket# {ticket.ticket_number}"),
+            ("🎟️", "Ticket ID", str(ticket.ticket_id)),
             ("📍", "Section", ticket.section.name),
             ("🪑", "Seats", ', '.join(ticket.seats)),
             ("💷", "Price", f"£{ticket.sell_price:.2f}"),
             ("📊", "Quantity", str(ticket.number_of_tickets)),
         ]
         
-        for detail in details:
-            if detail is not None:
-                icon, label, value = detail
-                details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
+        for icon, label, value in details:
+            details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
         
         html_content = f"""
         <html>

@@ -1,0 +1,317 @@
+// =======================
+// Categories Data
+// =======================
+let NAV_CATEGORIES = [];
+
+// Fetch categories from API
+async function fetchNavCategories() {
+    try {
+        // First, fetch event categories from Django
+        const categoriesResponse = await fetch('/api/categories/list/');
+        if (categoriesResponse.ok) {
+            const categoriesData = await categoriesResponse.json();
+            
+            // Check if categoriesData is an array
+            if (Array.isArray(categoriesData)) {
+                // Map categories to NAV_CATEGORIES format
+                NAV_CATEGORIES = categoriesData.map(cat => ({
+                    id: cat.id,
+                    name: cat.name,
+                    slug: cat.slug,
+                    icon: cat.icon,
+                    url: `/events/all/?category=${cat.slug}`,
+                    countries: []
+                }));
+            } else if (categoriesData.results && Array.isArray(categoriesData.results)) {
+                // Handle paginated response
+                NAV_CATEGORIES = categoriesData.results.map(cat => ({
+                    id: cat.id,
+                    name: cat.name,
+                    slug: cat.slug,
+                    icon: cat.icon,
+                    url: `/events/all/?category=${cat.slug}`,
+                    countries: []
+                }));
+            } else {
+                throw new Error('Invalid categories format');
+            }
+        } else {
+            // Fallback to default categories
+            NAV_CATEGORIES = [
+                { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/all/?category=football", countries: [] },
+                { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/all/?category=formula-1", countries: [] },
+                { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/all/?category=motogp", countries: [] },
+                { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/all/?category=tennis", countries: [] },
+                { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/all/?category=other-events", countries: [] }
+            ];
+        }
+
+        renderNavbarCategories();
+    } catch (error) {
+        console.error('Error fetching categories:', error);
+        // Fallback to default categories
+        NAV_CATEGORIES = [
+            { id: 1, name: "Football", slug: "football", icon: "bi-soccer", url: "/events/all/?category=football", countries: [] },
+            { id: 2, name: "Formula 1", slug: "formula-1", icon: "bi-speedometer2", url: "/events/all/?category=formula-1", countries: [] },
+            { id: 3, name: "MotoGP", slug: "motogp", icon: "bi-speedometer2", url: "/events/all/?category=motogp", countries: [] },
+            { id: 4, name: "Tennis", slug: "tennis", icon: "bi-racquet", url: "/events/all/?category=tennis", countries: [] },
+            { id: 5, name: "Other events", slug: "other-events", icon: "bi-calendar-event", url: "/events/all/?category=other-events", countries: [] }
+        ];
+        renderNavbarCategories();
+    }
+}
+
+function getCountryFlag(countryName) {
+    const COUNTRIES = window.COUNTRIES || [];
+
+    const country = COUNTRIES.find(c =>
+        c.label.toLowerCase() === countryName.toLowerCase()
+    );
+
+    if (country) {
+        return `https://flagcdn.com/w40/${country.code.toLowerCase()}.png`;
+    }
+
+    const countryCodeMap = {
+        'United Kingdom': 'gb',
+        'UK': 'gb',
+        'United States': 'us',
+        'USA': 'us'
+    };
+
+    const code = countryCodeMap[countryName] || countryName.toLowerCase().slice(0, 2);
+    return `https://flagcdn.com/w40/${code}.png`;
+}
+
+
+// =======================
+// Navbar Rendering
+// =======================
+document.addEventListener('DOMContentLoaded', function () {
+    renderNavbarCategories();
+    fetchNavCategories();
+});
+
+function renderNavbarCategories() {
+    const navbar = document.getElementById("categoryNavbar");
+    if (!navbar) return;
+
+    navbar.innerHTML = "";
+
+    NAV_CATEGORIES.forEach(category => {
+        const li = document.createElement("li");
+        li.className = "nav-item";
+
+        const a = document.createElement("a");
+        a.className = "nav-link";
+        a.href = category.url || "#";
+        a.innerHTML = `
+            <span>${category.name}</span>
+        `;
+
+        li.appendChild(a);
+        navbar.appendChild(li);
+    });
+}
+
+
+// =======================
+// Search Overlay Logic  
+// =======================
+document.addEventListener('DOMContentLoaded', function () {
+    const searchTrigger = document.getElementById('searchTrigger');
+    const searchOverlay = document.getElementById('searchOverlay');
+    const closeSearch = document.getElementById('closeSearch');
+    const searchModalInput = document.getElementById('searchModalInput');
+
+    if (searchTrigger) {
+        searchTrigger.addEventListener('click', () => {
+            searchOverlay.classList.add('active');
+            setTimeout(() => searchModalInput?.focus(), 300);
+        });
+    }
+
+    if (closeSearch) {
+        closeSearch.addEventListener('click', () => {
+            searchOverlay.classList.remove('active');
+        });
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && searchOverlay.classList.contains('active')) {
+            searchOverlay.classList.remove('active');
+        }
+    });
+
+    if (searchOverlay) {
+        searchOverlay.addEventListener('click', (e) => {
+            if (e.target === searchOverlay) {
+                searchOverlay.classList.remove('active');
+            }
+        });
+    }
+
+    initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+    initSearchAutocomplete('#search-input', '#search-results');
+});
+
+
+// =======================
+// Date Helper
+// =======================
+function parseEventDate(dateStr) {
+    try {
+        // Handle formatted dates like "Dec 07, 2025"
+        const date = new Date(dateStr);
+        if (!isNaN(date.getTime())) {
+            return date;
+        }
+        // Fallback: try adding time
+        return new Date(dateStr + " 00:00:00");
+    } catch (e) {
+        console.error('Date parse error:', dateStr, e);
+        return new Date(); // Return current date as fallback
+    }
+}
+
+
+// =======================
+// Search Autocomplete
+// =======================
+function initSearchAutocomplete(inputSelector, resultsContainer) {
+    const searchInput = document.querySelector(inputSelector);
+    let resultsDiv = document.querySelector(resultsContainer);
+
+    if (!searchInput) return;
+    
+    // Create results container if it doesn't exist
+    if (!resultsDiv) {
+        resultsDiv = document.createElement('div');
+        resultsDiv.id = resultsContainer.replace('#', '');
+        resultsDiv.className = 'autocomplete-results';
+        resultsDiv.style.cssText = 'position: absolute; top: 100%; left: 0; right: 0; background: white; border-radius: 8px; max-height: 300px; overflow-y: auto; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1);';
+        
+        // Find the parent form-group and append the results div
+        const formGroup = searchInput.closest('.search-form-group');
+        if (formGroup) {
+            formGroup.style.position = 'relative';
+            formGroup.appendChild(resultsDiv);
+        }
+    }
+
+    let timeoutId;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(timeoutId);
+        const query = this.value.trim();
+
+        if (query.length < 2) {
+            resultsDiv.innerHTML = '';
+            return;
+        }
+
+        resultsDiv.innerHTML = `
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+            </div>
+        `;
+
+        timeoutId = setTimeout(() => {
+            fetch(`/events/search-autocomplete/?query=${encodeURIComponent(query)}`, {
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(res => {
+                    if (!res.ok) throw new Error('Network error');
+                    return res.json();
+                })
+                .then(data => {
+                    if (!data.length) {
+                        resultsDiv.innerHTML = `
+                            <div class="no-results">
+                                No events found matching "${query}"
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    const now = new Date();
+
+                    const sortedEvents = data.sort((a, b) => {
+                        try {
+                            const dateA = parseEventDate(a.date);
+                            const dateB = parseEventDate(b.date);
+
+                            const isAFuture = dateA >= now;
+                            const isBFuture = dateB >= now;
+
+                            if (isAFuture && !isBFuture) return -1;
+                            if (!isAFuture && isBFuture) return 1;
+
+                            if (isAFuture && isBFuture) {
+                                return dateA - dateB;
+                            }
+
+                            return dateB - dateA;
+                        } catch (e) {
+                            console.error('Sort error:', e);
+                            return 0;
+                        }
+                    });
+
+                    resultsDiv.innerHTML = sortedEvents.map(event => `
+                        <a href="${event.url}" class="autocomplete-item">
+                            <div class="ac-event-name">${event.name}</div>
+                            <div class="ac-event-details">
+                                <span>${event.category}</span>
+                                <span>${event.date}</span>
+                                <span>$${event.min_price} - $${event.max_price}</span>
+                            </div>
+                        </a>
+                    `).join('');
+                })
+                .catch(() => {
+                    resultsDiv.innerHTML = `
+                        <div class="no-results">
+                            Error loading search results
+                        </div>
+                    `;
+                });
+        }, 300);
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!searchInput.contains(e.target) && !resultsDiv.contains(e.target)) {
+            resultsDiv.innerHTML = '';
+        }
+    });
+
+    searchInput.addEventListener('change', function () {
+        if (!this.value.trim()) {
+            resultsDiv.innerHTML = '';
+        }
+    });
+}
+
+
+// =======================
+// Initialize on page load
+// =======================
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch categories for navbar
+    fetchNavCategories();
+    
+    // Initialize search autocomplete for center search bar
+    initSearchAutocomplete('#search-input', '#search-results');
+    
+    // Initialize search autocomplete for header/modal search
+    initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+});
+
+// Also call on page load in case DOMContentLoaded already fired
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fetchNavCategories);
+} else {
+    fetchNavCategories();
+    initSearchAutocomplete('#search-input', '#search-results');
+    initSearchAutocomplete('.search-modal-input', '#navbar-search-results');
+}

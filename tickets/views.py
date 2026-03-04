@@ -4,6 +4,7 @@ from datetime import date, timedelta
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail, EmailMessage
+from tickets.email_templates import ProfessionalEmailTemplates as EmailTemplates
 from django.db import transaction
 from django.db.models import Sum
 from django.http import JsonResponse, HttpResponseBadRequest, Http404, HttpResponse, FileResponse
@@ -691,7 +692,8 @@ class CreateOrderView(LoginRequiredMixin, View):
                 currency="GBP",
                 customer_email=request.user.email,
                 description=f"Ticket for {ticket.event.name}",
-                order_id=order.id
+                order_id=order.id,
+                request=request  # Pass request to get correct domain for Stripe redirect
             )
             
             order.stripe_session_id = stripe_session['session_id']
@@ -705,7 +707,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             messages.error(request, f"Payment processing error: {str(e)}")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
 
-class PaymentReturnView(LoginRequiredMixin, View):
+class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session loss after Stripe redirect
     def get(self, request):
         status = request.GET.get('status')
         order_id = request.GET.get('order_id')
@@ -720,7 +722,21 @@ class PaymentReturnView(LoginRequiredMixin, View):
                 messages.error(request, "Invalid order ID format")
                 return redirect('events:home')
             
-            order = Order.objects.get(id=order_uuid, buyer=request.user)
+            # Try to get order - first with authenticated user, then just by ID if session is lost
+            if request.user.is_authenticated:
+                logger.info(f"User is authenticated: {request.user.id}")
+                try:
+                    order = Order.objects.get(id=order_uuid, buyer=request.user)
+                    logger.info(f"Order found with authenticated user: {order.id}")
+                except Order.DoesNotExist:
+                    logger.warning(f"Order not found with authenticated user, trying without user filter")
+                    order = Order.objects.get(id=order_uuid)
+                    logger.info(f"Order found by ID only: {order.id}")
+            else:
+                logger.warning(f"User is NOT authenticated - session lost during Stripe redirect")
+                # Session was lost, get order by ID only
+                order = Order.objects.get(id=order_uuid)
+                logger.info(f"Order found by ID (unauthenticated): {order.id}")
             
             if status == 'success':
                 # Verify the Stripe session
@@ -809,27 +825,16 @@ class PaymentReturnView(LoginRequiredMixin, View):
     def send_notifications(self, order):
         ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
         
-        # Send email to seller
-        seller_subject = "Your Ticket Has Been Sold!"
-        seller_message = f"Your ticket for {order.event_name} has been purchased."
+        # Send professional HTML email to seller
+        seller_html = EmailTemplates.payment_successful_seller(order, ticket)
+        EmailTemplates.send_html_email(
+            subject="Your Ticket Has Been Sold!",
+            html_content=seller_html,
+            recipient_email=ticket.seller.email
+        )
         
-        if not order.ticket_uploaded:
-            seller_message += "\n\nPlease upload the ticket PDF as soon as possible."
-            send_mail(
-                seller_subject,
-                seller_message,
-                settings.DEFAULT_FROM_EMAIL,
-                [ticket.seller.email]
-            )
-        else:
-            seller_message += "\n\nPayment will be processed after ticket verification."
-            send_mail(
-                seller_subject,
-                seller_message,
-                settings.DEFAULT_FROM_EMAIL,
-                [ticket.seller.email]
-            )
-            
+        # Send admin notification if ticket is already uploaded
+        if order.ticket_uploaded:
             admin_subject = f"Payout Required for Order {order.id}"
             admin_message = f"Ticket {ticket.ticket_id} has been sold and requires payout to the seller."
             send_mail(
@@ -843,91 +848,38 @@ class PaymentReturnView(LoginRequiredMixin, View):
         self.send_buyer_notification(order, ticket)
     
     def send_buyer_notification(self, order, ticket):
-        """Send confirmation email to buyer with PDF attachment if available"""
+        """Send professional HTML confirmation email to buyer with PDF attachment if available"""
         buyer_email = order.buyer.email
-        buyer_subject = f"Your Tickets for {order.event_name}"
         
-        buyer_message = f"""Dear {order.buyer.first_name or 'Customer'},
-
-Thank you for your purchase!
-
-Your order details:
-- Event: {order.event_name}
-- Date: {order.event_date.strftime('%B %d, %Y')}
-- Time: {order.event_time.strftime('%I:%M %p')}
-- Section: {order.ticket_section}
-- Row: {order.ticket_row}
-- Seats: {', '.join(order.ticket_seats)}
-- Number of Tickets: {order.number_of_tickets}
-- Order ID: {order.id}
-
-"""
-        
-        # Check if ticket is part of a bundle
-        if ticket.is_bundled:
-            bundle_tickets = ticket.get_bundle_tickets()
-            buyer_message += "\nThis purchase includes multiple tickets in a bundle.\n"
-        else:
-            bundle_tickets = [ticket]
-        
-        # Check if PDFs are available and attach them
+        # Collect PDF attachments
         pdf_attachments = []
-        tickets_with_pdf = []
-        tickets_without_pdf = []
+        bundle_tickets = ticket.get_bundle_tickets() if ticket.is_bundled else [ticket]
         
         for t in bundle_tickets:
             if t.upload_file and t.upload_file.name:
                 try:
-                    # Open the PDF file from S3
                     pdf_file = t.upload_file
                     pdf_file.open('rb')
                     pdf_content = pdf_file.read()
                     pdf_file.close()
                     
-                    # Create attachment
                     filename = f"ticket_{t.ticket_id}_{order.event_name.replace(' ', '_')}.pdf"
                     pdf_attachments.append((filename, pdf_content, 'application/pdf'))
-                    tickets_with_pdf.append(t)
                 except Exception as e:
                     logger.error(f"Error reading PDF for ticket {t.ticket_id}: {str(e)}")
-                    tickets_without_pdf.append(t)
-            else:
-                tickets_without_pdf.append(t)
         
-        if tickets_with_pdf:
-            buyer_message += f"\nYour ticket PDF{'s' if len(tickets_with_pdf) > 1 else ''} {'are' if len(tickets_with_pdf) > 1 else 'is'} attached to this email.\n"
-        
-        if tickets_without_pdf:
-            buyer_message += f"\nNote: Some ticket PDF{'s' if len(tickets_without_pdf) > 1 else ''} will be sent to you once the seller uploads {'them' if len(tickets_without_pdf) > 1 else 'it'}.\n"
-        
-        buyer_message += "\nIf you have any questions, please contact our support team.\n\nThank you for choosing our service!"
+        # Generate professional HTML email
+        buyer_html = EmailTemplates.payment_successful_buyer(order, ticket)
         
         try:
-            if pdf_attachments:
-                # Use EmailMessage to send with attachments
-                email = EmailMessage(
-                    buyer_subject,
-                    buyer_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [buyer_email]
-                )
-                
-                # Attach all PDFs
-                for filename, content, content_type in pdf_attachments:
-                    email.attach(filename, content, content_type)
-                
-                email.send()
-            else:
-                # No PDFs available, send regular email
-                send_mail(
-                    buyer_subject,
-                    buyer_message,
-                    settings.DEFAULT_FROM_EMAIL,
-                    [buyer_email]
-                )
+            EmailTemplates.send_html_email(
+                subject=f"Your Tickets for {order.event_name}",
+                html_content=buyer_html,
+                recipient_email=buyer_email,
+                attachments=pdf_attachments if pdf_attachments else None
+            )
         except Exception as e:
             logger.error(f"Error sending buyer notification email: {str(e)}")
-            # Don't fail the order if email fails, but log it
 
 class OrderListView(LoginRequiredMixin, ListView):
     model = Order
@@ -1201,34 +1153,26 @@ class CreateListingAPIView(View):
             }, status=400)
 
     def send_notification_emails(self, ticket, request):
-        subject = f"Ticket Listing Created for {ticket.event.name}"
         marketplace_url = request.build_absolute_uri(
             reverse('events:event_tickets', args=[ticket.event.event_id])
         )
-        message = (
-            f"Your tickets have been listed.\n\n"
-            f"Event: {ticket.event.name}\n"
-            f"Ticket ID: {ticket.ticket_id}\n"
-            f"View them here: {marketplace_url}"
+        
+        # Send professional HTML email to seller
+        seller_html = EmailTemplates.ticket_listing_confirmation(ticket, request.user.email, marketplace_url)
+        EmailTemplates.send_html_email(
+            subject=f"Ticket Listing Created for {ticket.event.name}",
+            html_content=seller_html,
+            recipient_email=request.user.email
         )
 
-        try:
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                [request.user.email]
-            )
-        except Exception as e:
-            logger.error(f"Failed to send email to seller: {str(e)}")
-
+        # Send admin notification
         admin_subject = f"New Ticket Listed: {ticket.event.name}"
         admin_message = (
             f"Reseller {request.user.email} listed ticket {ticket.ticket_id}.\n"
             f"Event: {ticket.event.name}\n"
             f"Section: {ticket.section.name}\n"
             f"Seats: {', '.join(ticket.seats)}\n"
-            f"Price: ${ticket.sell_price}"
+            f"Price: £{ticket.sell_price}"
         )
 
         try:

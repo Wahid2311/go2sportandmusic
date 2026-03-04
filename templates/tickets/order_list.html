@@ -1,0 +1,153 @@
+{% extends base_template %}
+{% load static %}
+{% block title %} Orders {% endblock %}
+{% block dashboard_content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h2 mb-0">My Orders</h1>
+        <a href="{% url 'events:all_events' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-1"></i> Find More Tickets
+        </a>
+    </div>
+    
+    {% if orders %}
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Event</th>
+                        <th>Tickets</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th class="text-end">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in orders %}
+                    {% if item.order %}
+                    {% with order=item.order %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-0">{{ order.event_name }}</p>
+                                    <small class="text-muted">{{ order.event_date|date:"M d, Y" }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ order.number_of_tickets }} ticket{{ order.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ order.ticket_section }}, Row {{ order.ticket_row }}</small>
+                        </td>
+                        <td class="fw-bold">£{{ order.amount }}</td>
+                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'completed' %}bg-success
+                                {% elif order.status == 'pending' %}bg-warning
+                                {% else %}bg-danger
+                                {% endif %}">
+                                {{ order.status }}
+                            </span>
+                            {% if item.ticket_upload_choice == 'now' %}
+                            <div class="text small mt-1">Ticket uploaded</div>
+                            {% else %}
+                            <div class="text-warning small mt-1">{{ item.ticket_upload_choice }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            {% if order.ticket_uploaded %}
+                            <a href="{% url 'events:download_ticket' order.id %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-download me-1"></i> Download
+                            </a>
+                            {% else %}
+                            <span class="text-muted small">Awaiting ticket</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endwith %}
+                    {% else %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-0">{{ order.event_name }}</p>
+                                    <small class="text-muted">{{ order.event_date|date:"M d, Y" }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {{ order.number_of_tickets }} ticket{{ order.number_of_tickets|pluralize }}<br>
+                            <small class="text-muted">Sec {{ order.ticket_section }}, Row {{ order.ticket_row }}</small>
+                        </td>
+                        <td class="fw-bold">£{{ order.amount }}</td>
+                        <td>{{ order.created_at|date:"M d, Y" }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if order.status == 'completed' %}bg-success
+                                {% elif order.status == 'pending' %}bg-warning
+                                {% else %}bg-danger
+                                {% endif %}">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td class="text-end">
+                            {% if order.ticket_uploaded %}
+                            <a href="{% url 'events:download_ticket' order.id %}" class="btn btn-sm btn-success">
+                                <i class="bi bi-download me-1"></i> Download
+                            </a>
+                            {% else %}
+                            <span class="text-muted small">Awaiting ticket</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    <nav class="mt-4">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page=1">&laquo; First</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+            </li>
+            {% endif %}
+            
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                </span>
+            </li>
+            
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Last &raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% else %}
+    <div class="text-center py-5">
+        <div class="mb-4">
+            <img src="{% static 'images/empty-orders.png' %}" alt="No orders" class="img-fluid" style="max-height: 200px;">
+        </div>
+        <h3 class="h4 mb-3">You haven't placed any orders yet</h3>
+        <p class="text-muted mb-4">Find amazing tickets to your favorite events</p>
+        <a href="{% url 'events:all_events' %}" class="btn btn-primary btn-lg">
+            <i class="bi bi-ticket-perforated me-2"></i> Browse Events
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -58,7 +58,6 @@ class Ticket(models.Model):
     TICKET_TYPE_CHOICES = TICKET_TYPES
     id = models.AutoField(primary_key=True)
     ticket_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
-    ticket_number = models.CharField(max_length=20, unique=True, db_index=True, null=True, blank=True)  # e.g., "524891234"
     event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='tickets')
     seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets_created')
     buyer = models.EmailField(null=True, blank=True)
@@ -98,16 +97,6 @@ class Ticket(models.Model):
             models.Index(fields=['section']),
         ]
 
-    def save(self, *args, **kwargs):
-        """Auto-generate ticket_number if not set"""
-        if not self.ticket_number:
-            from .id_generator import CustomIDGenerator
-            while True:
-                self.ticket_number = CustomIDGenerator.generate_ticket_id()
-                if not Ticket.objects.filter(ticket_number=self.ticket_number).exists():
-                    break
-        super().save(*args, **kwargs)
-    
     def delete(self, *args, **kwargs):
         event = self.event
         section = self.section
@@ -240,7 +229,6 @@ class Ticket(models.Model):
 
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    order_number = models.CharField(max_length=20, unique=True, db_index=True, null=True, blank=True)  # e.g., "286884113"
     event_name = models.CharField(max_length=255)
     event_date = models.DateField()
     event_time = models.TimeField()
@@ -271,19 +259,8 @@ class Order(models.Model):
     paid_to_reseller = models.BooleanField(default=False)
     ticket_file = models.FileField(upload_to='tickets/', null=True, blank=True, help_text="PDF or image file of the ticket")
 
-    def save(self, *args, **kwargs):
-        """Auto-generate order_number if not set"""
-        if not self.order_number:
-            from .id_generator import CustomIDGenerator
-            # Ensure unique order number
-            while True:
-                self.order_number = CustomIDGenerator.generate_order_id()
-                if not Order.objects.filter(order_number=self.order_number).exists():
-                    break
-        super().save(*args, **kwargs)
-    
     def __str__(self):
-        return f"Order {self.order_number or self.id} for {self.event_name}"
+        return f"Order {self.id} for {self.ticket}"
 
 class Sale(models.Model):
     order = models.OneToOneField(Order, on_delete=models.PROTECT, related_name='sale')

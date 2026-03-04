@@ -1,0 +1,55 @@
+<style>
+  .btn-auth {
+        background: var(--secondary-accent);
+        color: white;
+        padding: 10px 15px;
+        border-radius: 10px;
+        font-weight: 400;
+        border: none;
+        transition: all 0.3s;
+        width: 20%;
+        position: relative;
+        overflow: hidden;
+        text-decoration: none;
+    }
+
+    .btn-auth:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
+    }
+
+    .btn-auth:active {
+        transform: translateY(0);
+    }
+</style>
+{% for ticket in tickets %}
+  <a href="{% url 'events:ticket_detail' event_id=ticket.event.event_id ticket_id=ticket.ticket_id %}" style="text-decoration: none;">
+  <div class="ticket-card" style="border-color: {{ ticket.section.color }}">
+    <div class="section-bar" style="background: {{ ticket.section.color }}"></div>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <div>
+        <small>{{ ticket.number_of_tickets }} {{ ticket.number_of_tickets|pluralize:"seat,seats" }}</small>
+      </div>
+      <a href="{% url 'events:ticket_detail' event_id=ticket.event.event_id ticket_id=ticket.ticket_id %}" class="col-sm-6 btn-auth">Buy Now</a>
+    </div>
+    <div class="ticket-details row g-2">
+      <div class="col-sm-6"><strong>Section:</strong> {{ ticket.section.name }}</div>
+      
+      <div class="col-sm-6"><strong>Row:</strong> {{ ticket.row }}</div>
+      <div class="col-sm-6"><strong>Seats:</strong> {{ ticket.seats|join:", " }}</div>
+      {% if user.user_type == 'Reseller' %}
+      <div class="col-sm-12"><strong>Price:</strong> £{{ ticket.sell_price_for_reseller }} Per Ticket</div>
+      {% else %}
+      <div class="col-sm-6"><strong>Price: </strong> £{{ ticket.sell_price_for_normal }} Per Ticket</div>
+      {% endif %}
+    </div>
+  </div>
+  
+  </a>
+  
+{% empty %}
+  <p class="text-center text-muted mt-4">
+    No tickets match your filters.
+  </p>
+{% endfor %}

@@ -24,7 +24,7 @@ class StripeAPI:
         """Initialize Stripe API with secret key"""
         initialize_stripe()
     
-    def create_checkout_session(self, amount, currency, customer_email, description, order_id):
+    def create_checkout_session(self, amount, currency, customer_email, description, order_id, request=None):
         """
         Create a Stripe checkout session for payment
         
@@ -34,15 +34,21 @@ class StripeAPI:
             customer_email: Customer email address
             description: Payment description
             order_id: Order ID for reference
+            request: Django request object (optional, for getting correct domain)
         
         Returns:
             Dictionary with session_id and checkout_url
         """
         try:
-            # Build success and cancel URLs
+            # Build success and cancel URLs using request's domain if available
+            if request:
+                base_url = request.build_absolute_uri('/').rstrip('/')
+            else:
+                base_url = settings.BASE_URL
+            
             # Note: Stripe will replace {CHECKOUT_SESSION_ID} with the actual session ID
-            success_url = settings.BASE_URL + reverse('events:payment_return') + '?status=success&session_id={CHECKOUT_SESSION_ID}&order_id=' + str(order_id)
-            cancel_url = settings.BASE_URL + reverse('events:payment_return') + '?status=cancelled&order_id=' + str(order_id)
+            success_url = base_url + reverse('events:payment_return') + '?status=success&session_id={CHECKOUT_SESSION_ID}&order_id=' + str(order_id)
+            cancel_url = base_url + reverse('events:payment_return') + '?status=cancelled&order_id=' + str(order_id)
             
             logger.info(f"Creating Stripe checkout session for order {order_id}, amount: {amount} {currency}")
             

@@ -1,0 +1,56 @@
+{% extends 'accounts/superadmin_dashboard.html' %}
+{% load static %}
+
+{% block title %} Superadmin- update user {% endblock %}
+
+{% block dashboard_content %}
+<link rel="stylesheet" href="{% static 'accounts/css/admin.css' %}">
+
+<div class="container admin-container">
+    <div class="admin-form-container">
+        <h1 class="admin-main-title">
+            <i class="bi bi-person-gear"></i> Edit User #{{ object.id }}
+        </h1>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="row g-4">
+                {% for field in form %}
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="form-label">{{ field.label }}</label>
+                        {% if field.field.widget.input_type == 'radio' %}
+                        <div class="radio-group">
+                            {% for choice in field %}
+                            <div class="form-check form-check-inline">
+                                {{ choice.tag }}
+                                <label class="form-check-label" for="{{ choice.id_for_label }}">
+                                    {{ choice.choice_label }}
+                                </label>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                        {{ field }}
+                        {% endif %}
+                        {% for error in field.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="admin-form-actions mt-5">
+                <button type="submit" class="btn btn-admin-save">
+                    <i class="bi bi-save"></i> Save Changes
+                </button>
+                <a href="{% url 'accounts:superadmin_accounts' %}" class="btn btn-admin-cancel">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

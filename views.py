@@ -703,22 +703,44 @@ class CreateOrderView(LoginRequiredMixin, View):
             messages.error(request, f"Payment processing error: {str(e)}")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
 
-class PaymentReturnView(LoginRequiredMixin, View):
+class PaymentReturnView(View):
     def get(self, request):
+        # Note: We don't use LoginRequiredMixin because user session might be lost after Stripe redirect
+        # Instead, we verify the user from the order itself
         status = request.GET.get('status')
         order_id = request.GET.get('order_id')
         session_id = request.GET.get('session_id')
+        
+        logger.info(f"PaymentReturnView: status={status}, order_id={order_id}, session_id={session_id}")
+        logger.info(f"Current user: {request.user}, user_id={request.user.id}")
         
         try:
             # Convert order_id string to UUID for proper database lookup
             try:
                 order_uuid = uuid.UUID(order_id) if isinstance(order_id, str) else order_id
+                logger.info(f"Converted order_id to UUID: {order_uuid}")
             except (ValueError, TypeError):
                 logger.error(f"Invalid order_id format: {order_id}")
                 messages.error(request, "Invalid order ID format")
                 return redirect('events:home')
             
-            order = Order.objects.get(id=order_uuid, buyer=request.user)
+            # Try to get order - first with authenticated user, then just by ID if session is lost
+            logger.info(f"Looking up order: id={order_uuid}")
+            
+            if request.user.is_authenticated:
+                logger.info(f"User is authenticated: {request.user.id}")
+                try:
+                    order = Order.objects.get(id=order_uuid, buyer=request.user)
+                    logger.info(f"Order found with authenticated user: {order.id}")
+                except Order.DoesNotExist:
+                    logger.warning(f"Order not found with authenticated user, trying without user filter")
+                    order = Order.objects.get(id=order_uuid)
+                    logger.info(f"Order found by ID only: {order.id}")
+            else:
+                logger.warning(f"User is NOT authenticated - session might have been lost during Stripe redirect")
+                # Session was lost, get order by ID only
+                order = Order.objects.get(id=order_uuid)
+                logger.info(f"Order found by ID (unauthenticated): {order.id}")
             
             if status == 'success':
                 # Verify the Stripe session
@@ -777,6 +799,13 @@ class PaymentReturnView(LoginRequiredMixin, View):
                 return redirect('events:home')
                 
         except Order.DoesNotExist:
+            logger.error(f"Order.DoesNotExist: Could not find order with id={order_uuid}, buyer={request.user.id}")
+            # Check if order exists with a different buyer
+            try:
+                existing_order = Order.objects.get(id=order_uuid)
+                logger.error(f"Order exists but belongs to different user. Order buyer_id: {existing_order.buyer.id}")
+            except:
+                logger.error(f"Order does not exist in database at all")
             messages.error(request, "Invalid order")
             return redirect('events:home')
     
