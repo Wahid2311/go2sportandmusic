@@ -10,10 +10,15 @@ function loadEvents() {
       </div>
     `;
 
-    fetch('/api/events/all/')
+    fetch('/api/events/all/', {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('id_token') || ''}`,
+        'Content-Type': 'application/json'
+      }
+    })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error('Network response was not ok: ' + response.status);
         }
         return response.json();
       })
