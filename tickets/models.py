@@ -85,6 +85,8 @@ class Ticket(models.Model):
     checked = models.BooleanField(default=False)
     ordered = models.BooleanField(default=False)
     sold = models.BooleanField(default=False)
+    
+    ticket_number = models.CharField(max_length=20, unique=True, null=True, blank=True, db_index=True, help_text="Custom ticket number for display (e.g., Ticket# 524891234)")
 
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -147,6 +149,11 @@ class Ticket(models.Model):
             self.sell_price_for_normal = self.sell_price + (((self.sell_price * normal_charge)/100) or 0)
             self.sell_price_for_reseller = self.sell_price + (((self.sell_price * reseller_charge)/100) or 0)
             is_new = self.pk is None
+            
+            # Generate ticket_number if not already set
+            if not self.ticket_number:
+                from tickets.id_generator import generate_ticket_number
+                self.ticket_number = generate_ticket_number()
             
             super().save(*args, **kwargs)
 
@@ -258,6 +265,14 @@ class Order(models.Model):
     ticket_uploaded = models.BooleanField(default=False)
     paid_to_reseller = models.BooleanField(default=False)
     ticket_file = models.FileField(upload_to='tickets/', null=True, blank=True, help_text="PDF or image file of the ticket")
+    order_number = models.CharField(max_length=20, unique=True, null=True, blank=True, db_index=True, help_text="Custom order number for display (e.g., Order# 286884113)")
+
+    def save(self, *args, **kwargs):
+        # Generate order_number if not already set
+        if not self.order_number:
+            from tickets.id_generator import generate_order_number
+            self.order_number = generate_order_number()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Order {self.id} for {self.ticket}"
