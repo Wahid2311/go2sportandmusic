@@ -10,20 +10,17 @@ function loadEvents() {
       </div>
     `;
 
-    fetch('/superadmin/events/')
+    fetch('/api/events/all/')
       .then(response => {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-        return response.text();
+        return response.json();
       })
-      .then(html => {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, 'text/html');
+      .then(data => {
+        const events = data.events || [];
         
-        const eventCards = doc.querySelectorAll('.user-card.event-card');
-        
-        if (eventCards.length === 0) {
+        if (events.length === 0) {
           eventsContainer.innerHTML = `
             <div class="col-12 text-center py-5">
               <i class="bi bi-calendar-x" style="font-size: 3rem; color: #ccc;"></i>
@@ -35,21 +32,18 @@ function loadEvents() {
 
         eventsContainer.innerHTML = '';
         
-        eventCards.forEach(card => {
-          const eventId = extractEventId(card);
-          const eventName = extractEventName(card);
-          const category = extractCategory(card);
-          const stadium = extractStadium(card);
-          const ticketsInfo = extractTicketsInfo(card);
-          const timeLeft = extractTimeLeft(card);
-          
+        events.forEach(event => {
           const eventCardHTML = createEventCardHTML({
-            eventId,
-            eventName,
-            category,
-            stadium,
-            ticketsInfo,
-            timeLeft
+            eventId: event.event_id,
+            eventName: event.name,
+            category: event.category || 'Other',
+            stadium: event.stadium_name || 'Unknown Venue',
+            ticketsInfo: {
+              sold: 0,
+              total: 0,
+              left: 0
+            },
+            timeLeft: event.date ? `${event.date} ${event.time}` : 'TBA'
           });
           
           eventsContainer.innerHTML += eventCardHTML;
@@ -64,51 +58,6 @@ function loadEvents() {
           </div>
         `;
       });
-  }
-
-  function extractEventId(card) {
-  return card.dataset.eventId || null;
-  }
-
-  function extractEventName(card) {
-    const nameElement = card.querySelector('.user-info-item span');
-    return nameElement ? nameElement.textContent.trim() : 'Unknown Event';
-  }
-
-  function extractCategory(card) {
-    const categoryBadge = card.querySelector('.user-type-badge');
-    return categoryBadge ? categoryBadge.textContent.trim() : 'Other';
-  }
-
-  function extractStadium(card) {
-    const stadiumElements = card.querySelectorAll('.user-info-item');
-    for (let element of stadiumElements) {
-      if (element.textContent.includes('bi-geo-alt') || element.innerHTML.includes('bi-geo-alt')) {
-        return element.textContent.replace('bi-geo-alt', '').trim();
-      }
-    }
-    return 'Unknown Venue';
-  }
-
-  function extractTicketsInfo(card) {
-    const ticketsElement = card.querySelector('.user-info-item .bi-ticket-detailed')?.parentNode;
-    if (ticketsElement) {
-      const text = ticketsElement.textContent.trim();
-      const match = text.match(/Tickets:\s*(\d+)\/(\d+)/);
-      if (match) {
-        return {
-          sold: parseInt(match[1]),
-          total: parseInt(match[2]),
-          left: parseInt(match[2]) - parseInt(match[1])
-        };
-      }
-    }
-    return { sold: 0, total: 0, left: 0 };
-  }
-
-  function extractTimeLeft(card) {
-    const timeElement = card.querySelector('.verification-badge');
-    return timeElement ? timeElement.textContent.trim() : '';
   }
 
   // Function to create event card HTML
