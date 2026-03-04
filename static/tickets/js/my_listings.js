@@ -12,7 +12,6 @@ function loadEvents() {
 
     fetch('/api/events/all/', {
       headers: {
-        'Authorization': `Token ${localStorage.getItem('user_id') || ''}`,
         'Content-Type': 'application/json'
       },
       credentials: 'include'

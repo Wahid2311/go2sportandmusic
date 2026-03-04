@@ -687,11 +687,10 @@ class PrivacyView(TemplateView):
 
 
 class AllEventsAPIView(View):
-    @method_decorator(api_login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
-
     def get(self, request):
+        # Check if user is authenticated via session
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'Authentication required'}, status=401)
         sort = request.GET.get('sort', 'upcoming')
         category = request.GET.get('category', '')
 
