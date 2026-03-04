@@ -16,6 +16,7 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="table-light">
                     <tr>
+                        <th>Order ID</th>
                         <th>Event</th>
                         <th>Tickets</th>
                         <th>Amount</th>
@@ -29,6 +30,9 @@
                     {% if item.order %}
                     {% with order=item.order %}
                     <tr>
+                        <td>
+                            <span class="badge bg-primary">Order# {{ order.order_number|default:order.id }}</span>
+                        </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="ms-3">
@@ -70,6 +74,9 @@
                     {% endwith %}
                     {% else %}
                     <tr>
+                        <td>
+                            <span class="badge bg-primary">Order# {{ order.order_number|default:order.id }}</span>
+                        </td>
                         <td>
                             <div class="d-flex align-items-center">
                                 <div class="ms-3">
