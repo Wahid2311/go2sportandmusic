@@ -688,9 +688,7 @@ class PrivacyView(TemplateView):
 
 class AllEventsAPIView(View):
     def get(self, request):
-        # Check if user is authenticated via session
-        if not request.user.is_authenticated:
-            return JsonResponse({'error': 'Authentication required'}, status=401)
+        # Public API - no authentication required
         sort = request.GET.get('sort', 'upcoming')
         category = request.GET.get('category', '')
 
