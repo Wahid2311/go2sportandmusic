@@ -12,9 +12,10 @@ function loadEvents() {
 
     fetch('/api/events/all/', {
       headers: {
-        'Authorization': `Bearer ${localStorage.getItem('id_token') || ''}`,
+        'Authorization': `Token ${localStorage.getItem('user_id') || ''}`,
         'Content-Type': 'application/json'
-      }
+      },
+      credentials: 'include'
     })
       .then(response => {
         if (!response.ok) {
