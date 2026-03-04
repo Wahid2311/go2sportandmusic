@@ -10,7 +10,7 @@ function loadEvents() {
       </div>
     `;
 
-    fetch('/api/events/all/', {
+    fetch('/api/events/all/?per_page=1000', {
       headers: {
         'Content-Type': 'application/json'
       },
