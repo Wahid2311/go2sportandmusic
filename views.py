@@ -17,8 +17,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView,DetailView
 
 from accounts.utils import api_login_required
-from .models import Ticket,Sale,Order
+from .models import Ticket,Sale,Order,TicketReservation
 from .forms import TicketForm
+from .reservation_utils import create_ticket_reservation, confirm_reservation
 from events.models import EventSection, Event
 from accounts.models import User
 from django.conf import settings
@@ -652,7 +653,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                     sell_together=False, # It's a split ticket now
                     upload_choice=ticket.upload_choice,
                     upload_by=ticket.upload_by,
-                    sold=True,  # Mark as sold to prevent incrementing total_tickets
+                    sold=False
                     # upload_file logic tricky if splitting file? inheriting for now
                 )
             
@@ -694,6 +695,16 @@ class CreateOrderView(LoginRequiredMixin, View):
             
             order.stripe_session_id = stripe_session['session_id']
             order.stripe_payment_intent_id = stripe_session['payment_intent_id']
+            order.save()
+            
+            # Create a ticket reservation for 10 minutes
+            if ticket.is_bundled:
+                bundle_tickets = list(ticket.get_bundle_tickets())
+                total_quantity = sum(t.number_of_tickets for t in bundle_tickets)
+            else:
+                total_quantity = ticket.number_of_tickets
+            
+            reservation = create_ticket_reservation(ticket, request.user, total_quantity)
             order.save()
             
             return redirect(stripe_session['checkout_url'])
@@ -761,6 +772,10 @@ class PaymentReturnView(View):
                         return redirect('events:home')
                 order.status = 'completed'
                 order.save()
+                
+                # Confirm the reservation if it exists
+                if hasattr(order, 'reservation') and order.reservation:
+                    confirm_reservation(order.reservation)
                 
                 ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
                 

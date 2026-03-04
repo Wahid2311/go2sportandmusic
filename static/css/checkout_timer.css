@@ -1,0 +1,146 @@
+/* Checkout Timer Styles */
+
+.reservation-timer-container {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.timer-header {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    opacity: 0.9;
+}
+
+#timer-display {
+    font-size: 48px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+    letter-spacing: 2px;
+    text-align: center;
+    margin: 15px 0;
+    line-height: 1;
+}
+
+.timer-subtext {
+    font-size: 13px;
+    text-align: center;
+    opacity: 0.85;
+    margin-top: 10px;
+}
+
+/* Timer states */
+#reservation-timer {
+    transition: all 0.3s ease;
+}
+
+#reservation-timer.timer-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    animation: pulse-warning 1s infinite;
+}
+
+#reservation-timer.timer-critical {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+    animation: pulse-critical 0.5s infinite;
+}
+
+@keyframes pulse-warning {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+    }
+    50% {
+        box-shadow: 0 4px 25px rgba(245, 87, 108, 0.6);
+    }
+}
+
+@keyframes pulse-critical {
+    0%, 100% {
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+    }
+    50% {
+        box-shadow: 0 4px 30px rgba(255, 107, 107, 0.8);
+    }
+}
+
+/* Expired message */
+.expired-message {
+    display: none;
+    background: #fee;
+    border: 2px solid #f5576c;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    color: #c92a2a;
+}
+
+.expired-message.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+.expired-message-icon {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+.expired-message-text {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.expired-message-subtext {
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .reservation-timer-container {
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    #timer-display {
+        font-size: 36px;
+    }
+    
+    .timer-header {
+        font-size: 12px;
+    }
+    
+    .timer-subtext {
+        font-size: 12px;
+    }
+}
+
+/* Disabled state */
+.checkout-form-disabled {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.checkout-form-disabled input,
+.checkout-form-disabled button,
+.checkout-form-disabled select,
+.checkout-form-disabled textarea {
+    cursor: not-allowed;
+    background-color: #f5f5f5;
+}

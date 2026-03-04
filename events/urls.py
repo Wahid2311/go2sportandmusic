@@ -2,6 +2,12 @@ from django.urls import path
 from . import views
 from . import debug_views
 from tickets import views as ticket_views
+from tickets.reservation_api import (
+    ReservationStatusView,
+    AvailableTicketsView,
+    ReleaseExpiredReservationsView,
+    CheckReservationExpiryView
+)
 
 app_name = 'events'
 
@@ -175,5 +181,19 @@ path('api/events/<str:event_id>/tickets/',
          views.EventSectionsAPIView.as_view(), 
          name='api_event_sections'),
     path('debug/stripe-key/', debug_views.debug_stripe_key, name='debug_stripe_key'),
+    
+    # Reservation API endpoints
+    path('api/reservations/<uuid:order_id>/status/',
+         ReservationStatusView.as_view(),
+         name='api_reservation_status'),
+    path('api/reservations/<uuid:order_id>/check-expiry/',
+         CheckReservationExpiryView.as_view(),
+         name='api_check_reservation_expiry'),
+    path('api/tickets/<uuid:ticket_id>/available/',
+         AvailableTicketsView.as_view(),
+         name='api_available_tickets'),
+    path('api/reservations/release-expired/',
+         ReleaseExpiredReservationsView.as_view(),
+         name='api_release_expired_reservations'),
 ]
 

@@ -286,3 +286,46 @@ class Sale(models.Model):
 
     def __str__(self):
         return f"Sale for Order {self.order.id}"
+
+
+class TicketReservation(models.Model):
+    """
+    Model to track ticket reservations during checkout.
+    Tickets are reserved for 10 minutes when customer initiates checkout.
+    If payment is not completed within 10 minutes, the reservation expires and tickets become available again.
+    """
+    id = models.AutoField(primary_key=True)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='reservations')
+    order = models.OneToOneField(Order, on_delete=models.CASCADE, related_name='reservation', null=True, blank=True)
+    buyer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations')
+    quantity_reserved = models.PositiveIntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    expires_at = models.DateTimeField()
+    is_expired = models.BooleanField(default=False, db_index=True)
+    
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['ticket', 'is_expired']),
+            models.Index(fields=['expires_at']),
+            models.Index(fields=['order']),
+        ]
+    
+    def save(self, *args, **kwargs):
+        if not self.expires_at:
+            self.expires_at = timezone.now() + timedelta(minutes=10)
+        super().save(*args, **kwargs)
+    
+    def is_valid(self):
+        """Check if reservation is still valid (not expired)"""
+        return not self.is_expired and timezone.now() < self.expires_at
+    
+    def get_time_remaining(self):
+        """Get remaining time in seconds"""
+        if self.is_expired:
+            return 0
+        remaining = self.expires_at - timezone.now()
+        return max(0, int(remaining.total_seconds()))
+    
+    def __str__(self):
+        return f"Reservation for {self.ticket.ticket_id} by {self.buyer.email}"
