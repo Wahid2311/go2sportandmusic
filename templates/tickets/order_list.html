@@ -1,5 +1,6 @@
 {% extends base_template %}
 {% load static %}
+{% load ticket_filters %}
 {% block title %} Orders {% endblock %}
 {% block dashboard_content %}
 <div class="container py-5">
@@ -31,7 +32,7 @@
                     {% with order=item.order %}
                     <tr>
                         <td>
-                            <span class="badge bg-primary">Order# {{ order.order_number|default:order.id }}</span>
+                            <span class="badge bg-primary">{{ order|order_display_id }}</span>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
@@ -75,7 +76,7 @@
                     {% else %}
                     <tr>
                         <td>
-                            <span class="badge bg-primary">Order# {{ order.order_number|default:order.id }}</span>
+                            <span class="badge bg-primary">{{ order|order_display_id }}</span>
                         </td>
                         <td>
                             <div class="d-flex align-items-center">
