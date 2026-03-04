@@ -152,8 +152,8 @@ class Ticket(models.Model):
             
             # Generate ticket_number if not already set
             if not self.ticket_number:
-                from tickets.id_generator import generate_ticket_number
-                self.ticket_number = generate_ticket_number()
+                from tickets.id_generator import CustomIDGenerator
+                self.ticket_number = CustomIDGenerator.generate_ticket_id()
             
             super().save(*args, **kwargs)
 
@@ -270,8 +270,8 @@ class Order(models.Model):
     def save(self, *args, **kwargs):
         # Generate order_number if not already set
         if not self.order_number:
-            from tickets.id_generator import generate_order_number
-            self.order_number = generate_order_number()
+            from tickets.id_generator import CustomIDGenerator
+            self.order_number = CustomIDGenerator.generate_order_id()
         super().save(*args, **kwargs)
 
     def __str__(self):

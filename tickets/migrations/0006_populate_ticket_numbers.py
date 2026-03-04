@@ -1,18 +1,18 @@
 from django.db import migrations
-from tickets.id_generator import generate_ticket_number, generate_order_number
+from tickets.id_generator import CustomIDGenerator
 
 def populate_ticket_numbers(apps, schema_editor):
     """Populate ticket_number for all existing tickets"""
     Ticket = apps.get_model('tickets', 'Ticket')
     for ticket in Ticket.objects.filter(ticket_number__isnull=True):
-        ticket.ticket_number = generate_ticket_number()
+        ticket.ticket_number = CustomIDGenerator.generate_ticket_id()
         ticket.save(update_fields=['ticket_number'])
 
 def populate_order_numbers(apps, schema_editor):
     """Populate order_number for all existing orders"""
     Order = apps.get_model('tickets', 'Order')
     for order in Order.objects.filter(order_number__isnull=True):
-        order.order_number = generate_order_number()
+        order.order_number = CustomIDGenerator.generate_order_id()
         order.save(update_fields=['order_number'])
 
 def reverse_populate(apps, schema_editor):
