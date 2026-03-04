@@ -1,0 +1,296 @@
+from django.db import models
+from django.contrib.auth import get_user_model
+from django.utils import timezone
+from django.core.exceptions import ValidationError
+from django.contrib.postgres.fields import ArrayField
+import uuid
+from django.conf import settings
+from storages.backends.s3boto3 import S3Boto3Storage
+import logging
+
+logger = logging.getLogger(__name__) 
+
+class PdfStorage(S3Boto3Storage):
+    location = 'tickets/pdfs'
+    file_overwrite = False
+    default_acl = 'private'
+
+User = get_user_model()
+
+TICKET_TYPES = [
+    ('e-ticket', 'E-Ticket'),
+    ('paper', 'Paper'),
+    ('mobile-transfer', 'Mobile Transfer'),
+]
+
+BENEFITS_CHOICES = [
+    ('vip_lounge', 'VIP Lounge'),
+]
+
+RESTRICTIONS_CHOICES = [
+    ("select_features_disclosures", "Select features & disclosures"),
+    ("restricted_view", "Restricted view (printed on ticket)"),
+    ("child_16_under", "Child ticket (ages 16 and under)*"),
+    ("child_18_under", "Child ticket (ages 18 and under)*"),
+    ("junior_21_under", "Junior ticket (ages 21 and under)"),
+    ("senior_61_older", "Senior ticket (61 and older)"),
+    ("away_supporters_only", "Away Supporters Only"),
+    ("home_supporters_only", "Home Supporters Only"),
+    ("early_access", "Early Access"),
+    ("vip_lounge_access", "Vip Lounge Access"),
+    ("parking_pass", "Parking Pass"),
+    ("full_suite_not_shared", "Full Suite (not shared)"),
+    ("full_suite_shared", "Full Suite (Shared)"),
+    ("unlimited_food_drinks", "Includes unlimited food and drinks"),
+    ("limited_complimentary_food_drinks", "Includes limited complimentary food and drinks"),
+    ("food_drink_voucher", "Food and drink voucher included"),
+    ("food_drink_available_purchase", "Food and drink Available for Purchase"),
+    ("pregame_food_beverage", "Includes pregame food and beverage"),
+    ("free_halftime_drinks", "Free Halftime drinks"),
+    ("complimentary_matchday_programme", "Complimentary matchday programme"),
+    ("padded_seats", "Padded Seats"),
+    ("standing_only", "Standing Only"),
+    ("next_to_players_entrance", "Next to players' entrance"),
+    ("validate", "Validate"),
+]
+
+class Ticket(models.Model):
+    TICKET_TYPE_CHOICES = TICKET_TYPES
+    id = models.AutoField(primary_key=True)
+    ticket_id = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    ticket_number = models.CharField(max_length=20, unique=True, db_index=True, null=True, blank=True)  # e.g., "524891234"
+    event = models.ForeignKey('events.Event', on_delete=models.CASCADE, related_name='tickets')
+    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tickets_created')
+    buyer = models.EmailField(null=True, blank=True)
+
+    upload_choice = models.CharField(max_length=20, choices=[('now', 'Upload Now'), ('later', 'Upload Later')])
+    upload_file = models.FileField(upload_to='',storage=PdfStorage(), null=True, blank=True)#
+    upload_by = models.DateField(null=True, blank=True)
+
+    number_of_tickets = models.PositiveIntegerField()
+    section = models.ForeignKey('events.EventSection', on_delete=models.CASCADE, related_name='tickets')
+    row = models.CharField(max_length=20)
+    seats = ArrayField(models.CharField(max_length=10), help_text="Comma separated seat numbers.", null=True, blank=True, default=list)
+    face_value = models.DecimalField(max_digits=8, decimal_places=2)
+    ticket_type = models.CharField(max_length=20, choices=TICKET_TYPES)
+    benefits_and_Restrictions = ArrayField(models.CharField(max_length=50, choices=RESTRICTIONS_CHOICES), default=list, blank=True)
+
+    
+    sell_price = models.DecimalField(max_digits=8, decimal_places=2)
+    sell_price_for_normal = models.DecimalField(max_digits=8, decimal_places=2, editable=False)
+    sell_price_for_reseller = models.DecimalField(max_digits=8, decimal_places=2, editable=False)
+
+    sell_together = models.BooleanField(default=False, help_text="If checked, all tickets in this bundle must be purchased together")
+    bundle_id = models.UUIDField(null=True, blank=True, db_index=True, help_text="Groups tickets that must be sold together")
+
+    checked = models.BooleanField(default=False)
+    ordered = models.BooleanField(default=False)
+    sold = models.BooleanField(default=False)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+        indexes = [
+            models.Index(fields=['ticket_id']),
+            models.Index(fields=['event']),
+            models.Index(fields=['seller']),
+            models.Index(fields=['section']),
+        ]
+
+    def save(self, *args, **kwargs):
+        """Auto-generate ticket_number if not set"""
+        if not self.ticket_number:
+            from .id_generator import CustomIDGenerator
+            while True:
+                self.ticket_number = CustomIDGenerator.generate_ticket_id()
+                if not Ticket.objects.filter(ticket_number=self.ticket_number).exists():
+                    break
+        super().save(*args, **kwargs)
+    
+    def delete(self, *args, **kwargs):
+        event = self.event
+        section = self.section
+        ticket_number = self.number_of_tickets
+        super().delete(*args, **kwargs)
+        
+        # Update section prices if there are remaining tickets
+        all_tickets = section.tickets.all()
+        if all_tickets.exists():
+            prices = [float(t.sell_price_for_normal) for t in all_tickets if t.sell_price_for_normal is not None]
+            if prices:
+                section.lower_price = min(prices)
+                section.upper_price = max(prices)
+            else:
+                section.lower_price = 0
+                section.upper_price = 0
+        else:
+            # No tickets left in section
+            section.lower_price = 0
+            section.upper_price = 0
+        section.save()
+        
+        # Update event total tickets count
+        if event.total_tickets >= ticket_number:
+            event.total_tickets -= ticket_number
+        else:
+            # Prevent negative count
+            event.total_tickets = 0
+        event.save()
+        
+
+    def clean(self):
+        if self.upload_choice == 'now' and not self.upload_file:
+            raise ValidationError("PDF file must be uploaded if 'Upload Now' is selected.")
+        if self.upload_choice == 'later' and not self.upload_by:
+            raise ValidationError("Upload by date is required if 'Upload Later' is selected.")
+        if self.upload_by and self.upload_by >= self.event.date:
+            raise ValidationError("Upload date must be before the event date.")
+        # Only validate seats if they are provided
+        if self.seats and len(self.seats) != self.number_of_tickets:
+            raise ValidationError("Number of seats must match the number of tickets.")
+
+    def save(self, *args, **kwargs):
+        try:
+            normal_charge = self.event.normal_service_charge or 0
+            reseller_charge = self.event.reseller_service_charge or 0
+            
+            self.sell_price_for_normal = self.sell_price + (((self.sell_price * normal_charge)/100) or 0)
+            self.sell_price_for_reseller = self.sell_price + (((self.sell_price * reseller_charge)/100) or 0)
+            is_new = self.pk is None
+            
+            super().save(*args, **kwargs)
+
+            section = self.section
+            event = self.event
+            all_tickets = section.tickets.all()
+            
+            
+            if all_tickets.exists():
+                prices = [float(t.sell_price_for_normal) for t in all_tickets if t.sell_price_for_normal is not None]
+                if prices:
+                    section.lower_price = min(prices)
+                    section.upper_price = max(prices)
+                    section.save()
+            if is_new:
+                logger.info(f"For event {event.name}, For section {section.name} , For quantity {self.number_of_tickets}")
+                logger.info(f"This ticket is new")
+                logger.info(f"current total tickets {event.total_tickets}")
+                if not self.sold:
+                    event.total_tickets += self.number_of_tickets
+                    logger.info(f"after adding,current total tickets {event.total_tickets}")
+                else:
+                    logger.info(f"Ticket created as sold, not incrementing total_tickets")
+                event.save()
+            else:
+                logger.info(f"This ticket is updating")
+        except Exception as e:
+            logger.error(f"Error saving ticket: {str(e)}")
+            raise
+            
+
+    def update_section_aggregates(self, section):
+        all_section_tickets = Ticket.objects.filter(section=section)
+        all_prices = [ticket.sell_price for ticket in all_section_tickets]
+
+        section.total_tickets = sum(ticket.number_of_tickets for ticket in all_section_tickets)
+        section.lower_price = min(all_prices) if all_prices else 0
+        section.upper_price = max(all_prices) if all_prices else 0
+        section.save()
+
+    def update_event_section_aggregates(self):
+        section = self.section
+        event = self.event
+        all_section_tickets = section.tickets.all()
+        
+        if all_section_tickets.exists():
+            all_prices = [float(ticket.sell_price) for ticket in all_section_tickets]
+            section.lower_price = min(all_prices)
+            section.upper_price = max(all_prices)
+            section.total_tickets = sum(ticket.number_of_tickets for ticket in all_section_tickets)
+        else:
+            section.lower_price = 0
+            section.upper_price = 0
+            section.total_tickets = 0
+        
+        section.save()
+        event.total_tickets = sum(t.number_of_tickets for t in event.tickets.all())
+        event.save()
+
+    @property
+    def is_bundled(self):
+        """Check if this ticket is part of a bundle"""
+        return self.sell_together and self.bundle_id is not None
+
+    def get_bundle_tickets(self):
+        """Get all tickets in the same bundle"""
+        if self.is_bundled:
+            return Ticket.objects.filter(bundle_id=self.bundle_id)
+        return Ticket.objects.filter(id=self.id)
+
+    @property
+    def get_total_price(self):
+        if self.seller.user_type=='Reseller':
+            return self.number_of_tickets*self.sell_price_for_reseller
+        return self.number_of_tickets*self.sell_price_for_normal
+
+    def __str__(self):
+        return f"{self.ticket_id} for {self.event.name}"
+
+
+class Order(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    order_number = models.CharField(max_length=20, unique=True, db_index=True, null=True, blank=True)  # e.g., "286884113"
+    event_name = models.CharField(max_length=255)
+    event_date = models.DateField()
+    event_time = models.TimeField()
+    number_of_tickets = models.PositiveIntegerField()
+    ticket_reference = models.UUIDField(null=True, blank=True, editable=False)
+    ticket_section = models.CharField(max_length=255)
+    ticket_row = models.CharField(max_length=20)
+    ticket_seats = ArrayField(models.CharField(max_length=10), help_text="Comma separated seat numbers.")
+    ticket_face_value = models.DecimalField(max_digits=8, decimal_places=2)
+    ticket_upload_type = models.CharField(max_length=20, choices=TICKET_TYPES)
+    ticket_benefits_and_Restrictions = ArrayField(models.CharField(max_length=50,default=list, blank=True))
+    ticket_sell_price = models.DecimalField(max_digits=8, decimal_places=2)
+    buyer = models.ForeignKey(User, on_delete=models.PROTECT, related_name='orders')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    # Stripe payment fields
+    stripe_payment_intent_id = models.CharField(max_length=255, blank=True, null=True)
+    stripe_session_id = models.CharField(max_length=255, blank=True, null=True)
+    # Legacy Revolut fields (kept for backward compatibility)
+    revolut_order_id = models.CharField(max_length=100, blank=True, null=True)
+    revolut_checkout_url = models.URLField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, choices=[
+        ('pending', 'Pending'),
+        ('completed', 'Completed'),
+        ('failed', 'Failed')
+    ], default='pending')
+    ticket_uploaded = models.BooleanField(default=False)
+    paid_to_reseller = models.BooleanField(default=False)
+    ticket_file = models.FileField(upload_to='tickets/', null=True, blank=True, help_text="PDF or image file of the ticket")
+
+    def save(self, *args, **kwargs):
+        """Auto-generate order_number if not set"""
+        if not self.order_number:
+            from .id_generator import CustomIDGenerator
+            # Ensure unique order number
+            while True:
+                self.order_number = CustomIDGenerator.generate_order_id()
+                if not Order.objects.filter(order_number=self.order_number).exists():
+                    break
+        super().save(*args, **kwargs)
+    
+    def __str__(self):
+        return f"Order {self.order_number or self.id} for {self.event_name}"
+
+class Sale(models.Model):
+    order = models.OneToOneField(Order, on_delete=models.PROTECT, related_name='sale')
+    seller = models.ForeignKey(User, on_delete=models.PROTECT, related_name='sales')
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    payout_date = models.DateField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Sale for Order {self.order.id}"
