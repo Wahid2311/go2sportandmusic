@@ -572,7 +572,17 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
 class CreateOrderView(LoginRequiredMixin, View):
     def get_checkout_confirmation_html(self, order, stripe_url):
         """Generate HTML for checkout confirmation page with timer"""
-        html = f"""
+        html = f"""TEST PAGE - If you see this, the timer method is working!
+<h1>Order Confirmed!</h1>
+<p>Order ID: {order.id}</p>
+<p>Event: {order.event_name}</p>
+<p>Stripe URL: {stripe_url}</p>
+<a href="{stripe_url}">Click here to proceed to payment</a>
+"""
+        return html
+        
+        # FULL HTML VERSION BELOW (commented out for testing)
+        html_full = f"""
 <!DOCTYPE html>
 <html lang="en">
 <head>
