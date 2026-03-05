@@ -253,11 +253,6 @@
         // Update timer immediately and then every second
         updateTimer();
         const timerInterval = setInterval(updateTimer, 1000);
-        
-        // Auto-redirect to Stripe after 2 seconds
-        setTimeout(() => {
-            proceedToPayment();
-        }, 2000);
     </script>
 </body>
 </html>
