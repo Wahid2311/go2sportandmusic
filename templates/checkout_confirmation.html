@@ -348,13 +348,10 @@
             </div>
 
             <div class="buttons">
-                <form id="payment-form" method="POST" action="{{ stripe_checkout_url }}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary" id="pay-button">
-                        <span class="loading-spinner"></span>
-                        Proceed to Payment
-                    </button>
-                </form>
+                <button class="btn btn-primary" id="pay-button" onclick="proceedToPayment()">
+                    <span class="loading-spinner"></span>
+                    Proceed to Payment
+                </button>
                 <a href="javascript:history.back()" class="btn btn-secondary">Cancel & Return</a>
             </div>
         </div>
@@ -405,14 +402,16 @@
         updateTimer(); // Initial call
         const timerInterval = setInterval(updateTimer, 1000);
 
-        // Handle form submission
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
+        // Handle payment button click
+        function proceedToPayment() {
             const payButton = document.getElementById('pay-button');
             if (payButton.disabled) {
-                e.preventDefault();
                 alert('Your reservation has expired. Please go back and try again.');
+                return;
             }
-        });
+            // Redirect to Stripe checkout
+            window.location.href = '{{ stripe_checkout_url }}';
+        }
     </script>
 </body>
 </html>
