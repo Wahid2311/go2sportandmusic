@@ -1154,9 +1154,14 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
         
         # Ensure ticket_number is populated
         if not ticket.ticket_number:
-            from tickets.id_generator import CustomIDGenerator
-            ticket.ticket_number = CustomIDGenerator.generate_ticket_id()
-            ticket.save()
+            try:
+                from tickets.id_generator import CustomIDGenerator
+                ticket.ticket_number = CustomIDGenerator.generate_ticket_id()
+                ticket.save()
+            except Exception as e:
+                # If there's an error generating the ticket_number, just continue
+                # The email template will fall back to displaying ticket.ticket_id
+                pass
         
         # Send professional HTML email to seller
         seller_html = EmailTemplates.payment_successful_seller(order, ticket)
