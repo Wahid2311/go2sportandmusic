@@ -782,7 +782,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             # This allows for 10-minute reservation window
             
             price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
-            total_price = ticket.number_of_tickets * price
+            total_price = requested_quantity * price
             ticket_uploaded = False
             if ticket.upload_choice == 'now':
                 ticket_uploaded = True
@@ -792,7 +792,7 @@ class CreateOrderView(LoginRequiredMixin, View):
                 event_name=ticket.event.name,
                 event_date=ticket.event.date,
                 event_time=ticket.event.time,
-                number_of_tickets=ticket.number_of_tickets,
+                number_of_tickets=requested_quantity,
                 ticket_section=ticket.section.name,
                 ticket_row=ticket.row,
                 ticket_seats=ticket.seats,
@@ -821,8 +821,15 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.stripe_payment_intent_id = stripe_session['payment_intent_id']
             order.save()
             
-            # Redirect to checkout confirmation page with timer
-            return redirect('events:checkout_confirmation', order_id=order.id)
+            # Render checkout timer modal
+            from django.shortcuts import render
+            context = {
+                'event_name': ticket.event.name,
+                'number_of_tickets': requested_quantity,
+                'amount': total_price,
+                'stripe_checkout_url': f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
+            }
+            return render(request, 'checkout_timer_modal.html', context)
             
         except Exception as e:
             logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
