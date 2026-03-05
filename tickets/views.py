@@ -1152,6 +1152,12 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
     def send_notifications(self, order):
         ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
         
+        # Ensure ticket_number is populated
+        if not ticket.ticket_number:
+            from tickets.id_generator import CustomIDGenerator
+            ticket.ticket_number = CustomIDGenerator.generate_ticket_id()
+            ticket.save()
+        
         # Send professional HTML email to seller
         seller_html = EmailTemplates.payment_successful_seller(order, ticket)
         EmailTemplates.send_html_email(
