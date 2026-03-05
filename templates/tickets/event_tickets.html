@@ -832,6 +832,7 @@
                <span>
                   <span class="badge bg-secondary me-1" style="font-size: 0.7rem; padding: 0.35em 0.5em;">${ticket.row ? 'Row ' + ticket.row : 'Row N/A'}</span>
                   ${ticket.number_of_tickets} tickets
+                  ${ticket.upload_file ? '<span class="badge bg-success ms-1" style="font-size: 0.7rem; padding: 0.35em 0.5em;"><i class="bi bi-download"></i> Instant Download</span>' : ''}
                </span>
                <span class="text-capitalize">${ticket.ticket_type.replace('-', ' ')}</span>
             </div>
