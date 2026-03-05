@@ -7,7 +7,7 @@ from django.core.mail import send_mail, EmailMessage
 from tickets.email_templates import ProfessionalEmailTemplates as EmailTemplates
 from django.db import transaction
 from django.db.models import Sum
-from django.http import JsonResponse, HttpResponseBadRequest, Http404, HttpResponse, FileResponse
+from django.http import JsonResponse, HttpResponseRedirect, Http404, HttpResponse, FileResponse
 from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -570,6 +570,149 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
         return context
 
 class CreateOrderView(LoginRequiredMixin, View):
+    def get_checkout_confirmation_html(self, order, stripe_url):
+        """Generate HTML for checkout confirmation page with timer"""
+        html = f"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Confirmation - TicketHouse</title>
+    <style>
+        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
+        body {{ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }}
+        .container {{ background: white; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); max-width: 600px; width: 100%; overflow: hidden; animation: slideIn 0.5s ease-out; }}
+        @keyframes slideIn {{ from {{ opacity: 0; transform: translateY(30px); }} to {{ opacity: 1; transform: translateY(0); }} }}
+        .header {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 40px 30px; text-align: center; }}
+        .header h1 {{ font-size: 28px; margin-bottom: 10px; font-weight: 600; }}
+        .content {{ padding: 40px 30px; }}
+        .timer-section {{ text-align: center; margin-bottom: 40px; }}
+        .timer-label {{ font-size: 14px; color: #666; margin-bottom: 15px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }}
+        .timer-display {{ display: flex; justify-content: center; gap: 15px; margin-bottom: 20px; }}
+        .time-unit {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; width: 80px; height: 80px; border-radius: 15px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); animation: pulse 1s ease-in-out infinite; }}
+        @keyframes pulse {{ 0%, 100% {{ transform: scale(1); }} 50% {{ transform: scale(1.05); }} }}
+        .time-value {{ font-size: 32px; font-weight: 700; line-height: 1; }}
+        .time-label {{ font-size: 11px; margin-top: 5px; text-transform: uppercase; opacity: 0.9; }}
+        .separator {{ font-size: 24px; color: #667eea; font-weight: 300; align-self: center; margin: 0 5px; }}
+        .timer-message {{ font-size: 14px; color: #e74c3c; font-weight: 500; margin-top: 15px; }}
+        .order-details {{ background: #f8f9fa; border-radius: 15px; padding: 25px; margin-bottom: 30px; }}
+        .detail-row {{ display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #e0e0e0; }}
+        .detail-row:last-child {{ border-bottom: none; }}
+        .detail-label {{ color: #666; font-size: 14px; font-weight: 500; }}
+        .detail-value {{ color: #333; font-size: 14px; font-weight: 600; }}
+        .detail-value.price {{ color: #667eea; font-size: 16px; font-weight: 700; }}
+        .buttons {{ display: flex; gap: 15px; flex-direction: column; }}
+        .btn {{ padding: 15px 30px; border: none; border-radius: 10px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; display: inline-block; text-align: center; }}
+        .btn-primary {{ background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3); }}
+        .btn-primary:hover {{ transform: translateY(-2px); box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4); }}
+        .btn-primary:disabled {{ opacity: 0.5; cursor: not-allowed; transform: none; }}
+        .btn-secondary {{ background: #f0f0f0; color: #333; border: 2px solid #e0e0e0; }}
+        .btn-secondary:hover {{ background: #e8e8e8; }}
+        .warning-box {{ background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 13px; color: #856404; }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✓ Order Confirmed</h1>
+            <p>Proceed to payment to secure your tickets</p>
+        </div>
+        <div class="content">
+            <div class="warning-box">
+                <strong>⏱️ Time Limit:</strong>
+                You have 10 minutes to complete your payment. After this time, your reservation will expire and tickets will be released back to inventory.
+            </div>
+            <div class="timer-section">
+                <div class="timer-label">Time Remaining</div>
+                <div class="timer-display">
+                    <div class="time-unit">
+                        <div class="time-value" id="minutes">10</div>
+                        <div class="time-label">Min</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="time-unit">
+                        <div class="time-value" id="seconds">00</div>
+                        <div class="time-label">Sec</div>
+                    </div>
+                </div>
+                <div class="timer-message" id="timer-message"></div>
+            </div>
+            <div class="order-details">
+                <div class="detail-row">
+                    <span class="detail-label">Event</span>
+                    <span class="detail-value">{order.event_name}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Quantity</span>
+                    <span class="detail-value">{order.number_of_tickets} Ticket(s)</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Price</span>
+                    <span class="detail-value price">£{order.amount:.2f}</span>
+                </div>
+            </div>
+            <div class="buttons">
+                <button class="btn btn-primary" id="pay-button" onclick="proceedToPayment()">
+                    Proceed to Payment
+                </button>
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancel & Return</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        const RESERVATION_TIME = 10 * 60;
+        let timeRemaining = RESERVATION_TIME;
+        const stripeUrl = '{stripe_url}';
+        
+        function updateTimer() {{
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            
+            const messageEl = document.getElementById('timer-message');
+            if (timeRemaining <= 60) {{
+                messageEl.textContent = '⚠️ Hurry! Less than 1 minute remaining';
+                messageEl.style.color = '#e74c3c';
+            }} else if (timeRemaining <= 300) {{
+                messageEl.textContent = '⏰ 5 minutes or less remaining';
+                messageEl.style.color = '#f39c12';
+            }} else {{
+                messageEl.textContent = '';
+            }}
+            
+            if (timeRemaining <= 0) {{
+                clearInterval(timerInterval);
+                handleTimerExpired();
+            }}
+            timeRemaining--;
+        }}
+        
+        function handleTimerExpired() {{
+            document.getElementById('pay-button').disabled = true;
+            document.getElementById('pay-button').textContent = 'Reservation Expired';
+            document.getElementById('timer-message').textContent = '❌ Your reservation has expired. Please go back and try again.';
+            document.getElementById('timer-message').style.color = '#e74c3c';
+        }}
+        
+        function proceedToPayment() {{
+            const payButton = document.getElementById('pay-button');
+            if (payButton.disabled) {{
+                alert('Your reservation has expired. Please go back and try again.');
+                return;
+            }}
+            window.location.href = stripeUrl;
+        }}
+        
+        updateTimer();
+        const timerInterval = setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
+"""
+        return html
+    
     def post(self, request, ticket_id):
         ticket = get_object_or_404(Ticket, ticket_id=ticket_id, sold=False)
         
@@ -669,12 +812,9 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.stripe_payment_intent_id = stripe_session['payment_intent_id']
             order.save()
             
-            # Render checkout confirmation page with timer instead of directly to Stripe
-            context = {
-                'order': order,
-                'stripe_checkout_url': f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
-            }
-            return render(request, 'checkout_confirmation.html', context)
+            # Return checkout confirmation page with timer
+            stripe_url = f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
+            return HttpResponse(self.get_checkout_confirmation_html(order, stripe_url))
             
         except Exception as e:
             logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
