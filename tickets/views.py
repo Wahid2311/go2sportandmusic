@@ -1104,7 +1104,7 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
                     # Individual ticket
                     ticket.sold = True
                     ticket.buyer = request.user.email
-                    ticket.event.sold_tickets += ticket.number_of_tickets
+                    ticket.event.sold_tickets += order.number_of_tickets
                     ticket.save()
                     ticket.event.save()
                 

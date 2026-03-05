@@ -1,5 +1,6 @@
 
 {% extends 'accounts/superadmin_dashboard.html' %}
+{% load ticket_filters %}
 {% block title %} Superadmin Sales {% endblock %}
 {% block dashboard_content %}
 
@@ -39,9 +40,7 @@
                 <tbody>
                     {% for sale in sales %}
                     <tr>
-                        <td class="fw-bold text-primary">#{{ sale.id|slice:":8" }}</td>
-                        <td class="fw-bold">#{{ sale.order.id|slice:":8" }}</td>
-                        <td>
+                        <td class="fw-bold text-primary">#{{ sale.id|slice:":8" }}</td>                        <td class="fw-bold">{{ sale.order|order_display_id }}</td>                        <td>
                             <div class="d-flex align-items-center">
                                 <img src="{{ sale.order.ticket.event.image_url }}" alt="{{ sale.order.ticket.event.name }}" class="rounded-2 me-2" width="40" height="30" style="object-fit: cover;">
                                 <span>{{ sale.order.ticket.event.name|truncatechars:20 }}</span>
