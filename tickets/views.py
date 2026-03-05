@@ -700,7 +700,8 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.stripe_payment_intent_id = stripe_session['payment_intent_id']
             order.save()
             
-            return redirect(stripe_session['checkout_url'])
+            # Redirect to checkout confirmation page with timer instead of directly to Stripe
+            return redirect('events:checkout_confirmation', order_id=order.id)
             
         except Exception as e:
             order.delete()
