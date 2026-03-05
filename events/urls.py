@@ -195,5 +195,11 @@ path('api/events/<str:event_id>/tickets/',
     path('api/reservations/release-expired/',
          ReleaseExpiredReservationsView.as_view(),
          name='api_release_expired_reservations'),
+path(
+    'checkout/<uuid:order_id>/confirmation/',
+    ticket_views.CheckoutConfirmationView.as_view(),
+    name='checkout_confirmation'
+),
+
 ]
 

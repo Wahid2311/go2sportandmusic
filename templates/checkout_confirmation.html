@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout Confirmation - TicketHouse</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .timer-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .timer-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 15px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .timer-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .time-unit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .time-value {
+            font-size: 32px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .time-label {
+            font-size: 11px;
+            margin-top: 5px;
+            text-transform: uppercase;
+            opacity: 0.9;
+            letter-spacing: 0.5px;
+        }
+
+        .separator {
+            font-size: 24px;
+            color: #667eea;
+            font-weight: 300;
+            align-self: center;
+            margin: 0 5px;
+        }
+
+        .timer-message {
+            font-size: 14px;
+            color: #e74c3c;
+            font-weight: 500;
+            margin-top: 15px;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #333;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .detail-value.price {
+            color: #667eea;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 15px;
+            flex-direction: column;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e8e8e8;
+            border-color: #d0d0d0;
+        }
+
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            font-size: 13px;
+            color: #856404;
+        }
+
+        .warning-box strong {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .loading-spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-primary.loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-primary.loading .loading-spinner {
+            display: inline-block;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .header {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .content {
+                padding: 25px 20px;
+            }
+
+            .time-unit {
+                width: 60px;
+                height: 60px;
+            }
+
+            .time-value {
+                font-size: 24px;
+            }
+
+            .timer-display {
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>✓ Order Confirmed</h1>
+            <p>Proceed to payment to secure your tickets</p>
+        </div>
+
+        <div class="content">
+            <div class="warning-box">
+                <strong>⏱️ Time Limit:</strong>
+                You have 10 minutes to complete your payment. After this time, your reservation will expire and tickets will be released back to inventory.
+            </div>
+
+            <div class="timer-section">
+                <div class="timer-label">Time Remaining</div>
+                <div class="timer-display">
+                    <div class="time-unit">
+                        <div class="time-value" id="minutes">10</div>
+                        <div class="time-label">Min</div>
+                    </div>
+                    <div class="separator">:</div>
+                    <div class="time-unit">
+                        <div class="time-value" id="seconds">00</div>
+                        <div class="time-label">Sec</div>
+                    </div>
+                </div>
+                <div class="timer-message" id="timer-message"></div>
+            </div>
+
+            <div class="order-details">
+                <div class="detail-row">
+                    <span class="detail-label">Event</span>
+                    <span class="detail-value">{{ order.event_name }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date & Time</span>
+                    <span class="detail-value">{{ order.event_date|date:"M d, Y" }} at {{ order.event_time|time:"H:i" }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Section</span>
+                    <span class="detail-value">{{ order.ticket_section }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Quantity</span>
+                    <span class="detail-value">{{ order.number_of_tickets }} Ticket{{ order.number_of_tickets|pluralize }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Total Price</span>
+                    <span class="detail-value price">£{{ order.amount|floatformat:2 }}</span>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <form id="payment-form" method="POST" action="{{ stripe_checkout_url }}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" id="pay-button">
+                        <span class="loading-spinner"></span>
+                        Proceed to Payment
+                    </button>
+                </form>
+                <a href="javascript:history.back()" class="btn btn-secondary">Cancel & Return</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 10-minute countdown timer
+        const RESERVATION_TIME = 10 * 60; // 10 minutes in seconds
+        let timeRemaining = RESERVATION_TIME;
+
+        function updateTimer() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            // Update message
+            const messageEl = document.getElementById('timer-message');
+            if (timeRemaining <= 60) {
+                messageEl.textContent = '⚠️ Hurry! Less than 1 minute remaining';
+                messageEl.style.color = '#e74c3c';
+            } else if (timeRemaining <= 300) {
+                messageEl.textContent = '⏰ 5 minutes or less remaining';
+                messageEl.style.color = '#f39c12';
+            } else {
+                messageEl.textContent = '';
+            }
+
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                handleTimerExpired();
+            }
+
+            timeRemaining--;
+        }
+
+        function handleTimerExpired() {
+            document.getElementById('pay-button').disabled = true;
+            document.getElementById('pay-button').textContent = 'Reservation Expired';
+            document.getElementById('timer-message').textContent = '❌ Your reservation has expired. Please go back and try again.';
+            document.getElementById('timer-message').style.color = '#e74c3c';
+            document.getElementById('minutes').textContent = '00';
+            document.getElementById('seconds').textContent = '00';
+        }
+
+        // Start timer
+        updateTimer(); // Initial call
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        // Handle form submission
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            const payButton = document.getElementById('pay-button');
+            if (payButton.disabled) {
+                e.preventDefault();
+                alert('Your reservation has expired. Please go back and try again.');
+            }
+        });
+    </script>
+</body>
+</html>

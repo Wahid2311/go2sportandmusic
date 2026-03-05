@@ -624,38 +624,12 @@ class CreateOrderView(LoginRequiredMixin, View):
             # Individual ticket purchase (existing logic)
             requested_quantity = int(request.POST.get('quantity', ticket.number_of_tickets))
             
-            # Handle partial purchase if sell_together is False
+            # DO NOT reduce ticket quantity here!
+            # Tickets will only be reduced after payment confirmation in PaymentReturnView
+            # This prevents tickets from being permanently deducted when customers abandon checkout
+            new_seats = ticket.seats
             if not ticket.sell_together and requested_quantity < ticket.number_of_tickets:
-                # Create a new ticket for the sold portion
                 new_seats = ticket.seats[:requested_quantity]
-                remaining_seats = ticket.seats[requested_quantity:]
-                
-                # Update original ticket (remaining portion)
-                ticket.number_of_tickets -= requested_quantity
-                ticket.seats = remaining_seats
-                ticket.save()
-                
-                                # Create new ticket instance for the order
-                # Mark as sold=True to prevent double-counting in total_tickets
-                # It will remain sold after payment confirmation
-                ticket = Ticket.objects.create(
-                    event=ticket.event,
-                    seller=ticket.seller,
-                    buyer=request.user.email, # Will be confirmed on payment
-                    number_of_tickets=requested_quantity,
-                    section=ticket.section,
-                    row=ticket.row,
-                    seats=new_seats,
-                    face_value=ticket.face_value,
-                    ticket_type=ticket.ticket_type,
-                    benefits_and_Restrictions=ticket.benefits_and_Restrictions,
-                    sell_price=ticket.sell_price,
-                    sell_together=False, # It's a split ticket now
-                    upload_choice=ticket.upload_choice,
-                    upload_by=ticket.upload_by,
-                    sold=False
-                    # upload_file logic tricky if splitting file? inheriting for now
-                )
             
             price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
             total_price = ticket.number_of_tickets * price
@@ -707,7 +681,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             reservation = create_ticket_reservation(ticket, request.user, total_quantity)
             order.save()
             
-            return redirect(stripe_session['checkout_url'])
+            return redirect('events:checkout_confirmation', order_id=order.id)
             
         except Exception as e:
             order.delete()
@@ -795,7 +769,24 @@ class PaymentReturnView(View):
                     ticket.event.sold_tickets += total_tickets_count
                     ticket.event.save()
                 else:
-                    # Individual ticket
+                    # Individual ticket - reduce the original ticket's quantity ONLY after payment
+                    # Find the original ticket listing (not the split one)
+                    try:
+                        original_ticket = Ticket.objects.filter(
+                            event=ticket.event,
+                            section=ticket.section,
+                            row=ticket.row,
+                            sold=False
+                        ).exclude(id=ticket.id).first()
+                        
+                        if original_ticket and original_ticket.number_of_tickets > 0:
+                            # Reduce the original ticket quantity
+                            original_ticket.number_of_tickets -= ticket.number_of_tickets
+                            original_ticket.save()
+                    except Exception as e:
+                        logger.error(f"Error reducing original ticket quantity: {str(e)}")
+                    
+                    # Mark the purchased ticket as sold
                     ticket.sold = True
                     ticket.buyer = request.user.email
                     ticket.event.sold_tickets += ticket.number_of_tickets
@@ -1693,3 +1684,38 @@ class EventTicketListAPIView(View):
                 }
             }
         })
+
+
+class CheckoutConfirmationView(View):
+    """Display checkout confirmation with 10-minute countdown timer"""
+    
+    def get(self, request, order_id):
+        try:
+            order = Order.objects.get(id=order_id)
+            
+            # Verify the user owns this order or is authenticated
+            if order.buyer != request.user and not request.user.is_staff:
+                messages.error(request, "Unauthorized access")
+                return redirect('events:home')
+            
+            # Get the Stripe session to get checkout URL
+            stripe_api = StripeAPI()
+            session = stripe_api.create_checkout_session(
+                order=order,
+                request=request
+            )
+            
+            context = {
+                'order': order,
+                'stripe_checkout_url': session['checkout_url']
+            }
+            
+            return render(request, 'checkout_confirmation.html', context)
+        
+        except Order.DoesNotExist:
+            messages.error(request, "Order not found")
+            return redirect('events:home')
+        except Exception as e:
+            logger.error(f"Error in CheckoutConfirmationView: {str(e)}")
+            messages.error(request, "An error occurred")
+            return redirect('events:home')
