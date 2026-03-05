@@ -624,40 +624,9 @@ class CreateOrderView(LoginRequiredMixin, View):
             # Individual ticket purchase (existing logic)
             requested_quantity = int(request.POST.get('quantity', ticket.number_of_tickets))
             
-            # Handle partial purchase if sell_together is False
-            if not ticket.sell_together and requested_quantity < ticket.number_of_tickets:
-                # Create a new ticket for the sold portion
-                new_seats = ticket.seats[:requested_quantity]
-                remaining_seats = ticket.seats[requested_quantity:]
-                
-                # Update original ticket (remaining portion)
-                ticket.number_of_tickets -= requested_quantity
-                ticket.seats = remaining_seats
-                ticket.save()
-                
-                                # Create new ticket instance for the order
-                # Mark as sold=True to prevent double-counting in total_tickets
-                # It will remain sold after payment confirmation
-                order_ticket = Ticket.objects.create(
-                    event=ticket.event,
-                    seller=ticket.seller,
-                    buyer=request.user.email, # Will be confirmed on payment
-                    number_of_tickets=requested_quantity,
-                    section=ticket.section,
-                    row=ticket.row,
-                    seats=new_seats,
-                    face_value=ticket.face_value,
-                    ticket_type=ticket.ticket_type,
-                    benefits_and_Restrictions=ticket.benefits_and_Restrictions,
-                    sell_price=ticket.sell_price,
-                    sell_together=False, # It's a split ticket now
-                    upload_choice=ticket.upload_choice,
-                    upload_by=ticket.upload_by,
-                    sold=True,  # Mark as sold to prevent incrementing total_tickets
-                    # upload_file logic tricky if splitting file? inheriting for now
-                )
-                # Use the order_ticket for the order, but keep original ticket reference
-                ticket = order_ticket
+            # DO NOT modify the original ticket quantity or create new tickets
+            # Only create an Order record - tickets will be reduced AFTER payment confirmation
+            # This allows for 10-minute reservation window
             
             price = ticket.sell_price_for_reseller if is_reseller else ticket.sell_price_for_normal
             total_price = ticket.number_of_tickets * price
