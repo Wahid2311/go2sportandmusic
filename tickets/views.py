@@ -1081,9 +1081,15 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
                         messages.error(request, "Payment verification error.")
                         return redirect('events:home')
                 order.status = 'completed'
-                order.save()
                 
                 ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+                
+                # Attach ticket file to order if available
+                if ticket.upload_file and ticket.upload_file.name:
+                    order.ticket_file = ticket.upload_file
+                    order.ticket_uploaded = True
+                
+                order.save()
                 
                 # Check if ticket is part of a bundle
                 if ticket.is_bundled:
