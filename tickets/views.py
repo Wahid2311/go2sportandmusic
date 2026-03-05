@@ -1024,29 +1024,32 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
         session_id = request.GET.get('session_id')
         
         try:
-            # Convert order_id string to UUID for proper database lookup
+            order_uuid = None
             try:
                 order_uuid = uuid.UUID(order_id) if isinstance(order_id, str) else order_id
             except (ValueError, TypeError):
-                logger.error(f"Invalid order_id format: {order_id}")
-                messages.error(request, "Invalid order ID format")
-                return redirect('events:home')
+                logger.warning(f"Could not parse order_id as UUID: {order_id}")
             
-            # Try to get order - first with authenticated user, then just by ID if session is lost
-            if request.user.is_authenticated:
-                logger.info(f"User is authenticated: {request.user.id}")
-                try:
-                    order = Order.objects.get(id=order_uuid, buyer=request.user)
-                    logger.info(f"Order found with authenticated user: {order.id}")
-                except Order.DoesNotExist:
-                    logger.warning(f"Order not found with authenticated user, trying without user filter")
-                    order = Order.objects.get(id=order_uuid)
-                    logger.info(f"Order found by ID only: {order.id}")
-            else:
-                logger.warning(f"User is NOT authenticated - session lost during Stripe redirect")
-                # Session was lost, get order by ID only
-                order = Order.objects.get(id=order_uuid)
-                logger.info(f"Order found by ID (unauthenticated): {order.id}")
+            order = None
+            if order_uuid:
+                if request.user.is_authenticated:
+                    try:
+                        order = Order.objects.get(id=order_uuid, buyer=request.user)
+                    except Order.DoesNotExist:
+                        try:
+                            order = Order.objects.get(id=order_uuid)
+                        except Order.DoesNotExist:
+                            pass
+                else:
+                    try:
+                        order = Order.objects.get(id=order_uuid)
+                    except Order.DoesNotExist:
+                        pass
+            
+            if not order:
+                logger.error(f"Could not find order with order_id: {order_id}")
+                messages.error(request, "Invalid order ID")
+                return redirect('events:home')
             
             if status == 'success':
                 # Verify the Stripe session
