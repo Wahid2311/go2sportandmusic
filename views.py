@@ -27,6 +27,27 @@ import logging
 import stripe
 import requests
 from .stripe_utils import StripeAPI
+from .id_generator import CustomIDGenerator
+
+# Helper function to get formatted ticket ID
+def get_formatted_ticket_id(ticket):
+    """Get formatted ticket ID, generating it if needed"""
+    if ticket.ticket_number:
+        return ticket.ticket_number
+    # Generate ticket_number if it's NULL
+    ticket.ticket_number = CustomIDGenerator.generate_ticket_id()
+    ticket.save(update_fields=['ticket_number'])
+    return ticket.ticket_number
+
+# Helper function to get formatted order ID
+def get_formatted_order_id(order):
+    """Get formatted order ID, generating it if needed"""
+    if order.order_number:
+        return order.order_number
+    # Generate order_number if it's NULL
+    order.order_number = CustomIDGenerator.generate_order_id()
+    order.save(update_fields=['order_number'])
+    return order.order_number
 
 logger = logging.getLogger(__name__)
 
@@ -160,14 +181,14 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
             message = (
                 f"Your tickets have been listed.\n\n"
                 f"Event: {self.event.name}\n"
-                f"Ticket ID: {ticket.ticket_number or ticket.ticket_id}\n"
+                f"Ticket ID: {get_formatted_ticket_id(ticket)}\n"
                 f"View them here: {marketplace_url}"
             )
             try:
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.request.user.email])
                 send_mail(
                     f"New Ticket Listed: {self.event.name}",
-                    f"Reseller {self.request.user.email} listed ticket {ticket.ticket_number or ticket.ticket_id}.",
+                    f"Reseller {self.request.user.email} listed ticket {get_formatted_ticket_id(ticket)}.",
                     settings.DEFAULT_FROM_EMAIL,
                     [settings.SUPERADMIN_EMAIL]
                 )
@@ -861,8 +882,8 @@ class PaymentReturnView(View):
                 [ticket.seller.email]
             )
             
-            admin_subject = f"Payout Required for Order {order.order_number or order.id}"
-            admin_message = f"Ticket {ticket.ticket_number or ticket.ticket_id} has been sold and requires payout to the seller."
+            admin_subject = f"Payout Required for Order {get_formatted_order_id(order)}"
+            admin_message = f"Ticket {get_formatted_ticket_id(ticket)} has been sold and requires payout to the seller."
             send_mail(
                 admin_subject,
                 admin_message,
@@ -890,7 +911,7 @@ Your order details:
 - Row: {order.ticket_row}
 - Seats: {', '.join(order.ticket_seats)}
 - Number of Tickets: {order.number_of_tickets}
-- Order ID: {order.order_number or order.id}
+- Order ID: {get_formatted_order_id(order)}
 
 """
         
@@ -1108,7 +1129,7 @@ class MarkAsPaidView(SuperAdminRequiredMixin, View):
             
             send_mail(
                 "Payment Processed",
-                f"Your payment for ticket {ticket.ticket_number or ticket.ticket_id} has been processed.",
+                f"Your payment for ticket {get_formatted_ticket_id(ticket)} has been processed.",
                 settings.DEFAULT_FROM_EMAIL,
                 [ticket.seller.email]
             )
@@ -1254,7 +1275,7 @@ class CreateListingAPIView(View):
         message = (
             f"Your tickets have been listed.\n\n"
             f"Event: {ticket.event.name}\n"
-            f"Ticket ID: {ticket.ticket_number or ticket.ticket_id}\n"
+            f"Ticket ID: {get_formatted_ticket_id(ticket)}\n"
             f"View them here: {marketplace_url}"
         )
 
