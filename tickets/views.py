@@ -1023,12 +1023,20 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
         order_id = request.GET.get('order_id')
         session_id = request.GET.get('session_id')
         
+        logger.info(f"PaymentReturnView: status={status}, order_id={order_id}, session_id={session_id}")
+        
         try:
+            # Strip whitespace from order_id
+            if order_id:
+                order_id = order_id.strip()
+            
             order_uuid = None
             try:
-                order_uuid = uuid.UUID(order_id) if isinstance(order_id, str) else order_id
-            except (ValueError, TypeError):
-                logger.warning(f"Could not parse order_id as UUID: {order_id}")
+                if order_id:
+                    order_uuid = uuid.UUID(order_id)
+                    logger.info(f"Parsed order_id as UUID: {order_uuid}")
+            except (ValueError, TypeError) as e:
+                logger.error(f"Failed to parse order_id '{order_id}' as UUID: {e}")
             
             order = None
             if order_uuid:
@@ -1047,23 +1055,26 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
                         pass
             
             if not order:
-                logger.error(f"Could not find order with order_id: {order_id}")
+                logger.error(f"Order not found. order_id={order_id}, order_uuid={order_uuid}, total_orders={Order.objects.count()}")
                 messages.error(request, "Invalid order ID")
                 return redirect('events:home')
             
             if status == 'success':
+                logger.info(f"Processing successful payment for order {order.id}")
                 # Verify the Stripe session
                 if session_id:
                     try:
                         stripe_api = StripeAPI()
                         session = stripe_api.retrieve_session(session_id)
+                        logger.info(f"Stripe session {session.id} payment_status: {session.payment_status}")
                         if session.payment_status != 'paid':
+                            logger.error(f"Payment not marked as paid for session {session.id}")
                             order.status = 'failed'
                             order.save()
                             messages.error(request, "Payment verification failed.")
                             return redirect('events:home')
                     except Exception as e:
-                        logger.error(f"Error verifying Stripe session: {str(e)}")
+                        logger.error(f"Error verifying Stripe session {session_id}: {str(e)}", exc_info=True)
                         order.status = 'failed'
                         order.save()
                         messages.error(request, "Payment verification error.")
