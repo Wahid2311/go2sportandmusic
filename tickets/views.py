@@ -677,6 +677,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             return render(request, 'checkout_confirmation.html', context)
             
         except Exception as e:
+            logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
             order.delete()
             messages.error(request, f"Payment processing error: {str(e)}")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
