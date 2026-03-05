@@ -1730,16 +1730,14 @@ class CheckoutConfirmationView(View):
                 messages.error(request, "Unauthorized access")
                 return redirect('events:home')
             
-            # Get the Stripe session to get checkout URL
-            stripe_api = StripeAPI()
-            session = stripe_api.create_checkout_session(
-                order=order,
-                request=request
-            )
+            # Use the Stripe session URL that was already created in CreateOrderView
+            if not order.stripe_session_id:
+                messages.error(request, "Stripe session not found")
+                return redirect('events:home')
             
             context = {
                 'order': order,
-                'stripe_checkout_url': session['checkout_url']
+                'stripe_checkout_url': f'https://checkout.stripe.com/c/pay/{order.stripe_session_id}'
             }
             
             return render(request, 'checkout_confirmation.html', context)
