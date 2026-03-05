@@ -786,8 +786,10 @@ class PaymentReturnView(View):
                     except Exception as e:
                         logger.error(f"Error reducing original ticket quantity: {str(e)}")
                     
-                    # Mark the purchased ticket as sold
-                    ticket.sold = True
+                    # Reduce the ticket quantity and mark as sold only if all are sold
+                    ticket.number_of_tickets -= order.number_of_tickets
+                    if ticket.number_of_tickets <= 0:
+                        ticket.sold = True
                     ticket.buyer = request.user.email
                     ticket.event.sold_tickets += order.number_of_tickets
                     ticket.save()

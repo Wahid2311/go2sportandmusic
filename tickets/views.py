@@ -1101,8 +1101,10 @@ class PaymentReturnView(View):  # Removed LoginRequiredMixin to handle session l
                     ticket.event.sold_tickets += total_tickets_count
                     ticket.event.save()
                 else:
-                    # Individual ticket
-                    ticket.sold = True
+                    # Individual ticket - reduce quantity and mark as sold only if all are sold
+                    ticket.number_of_tickets -= order.number_of_tickets
+                    if ticket.number_of_tickets <= 0:
+                        ticket.sold = True
                     ticket.buyer = request.user.email
                     ticket.event.sold_tickets += order.number_of_tickets
                     ticket.save()
