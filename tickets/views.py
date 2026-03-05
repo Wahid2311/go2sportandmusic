@@ -821,14 +821,191 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.stripe_payment_intent_id = stripe_session['payment_intent_id']
             order.save()
             
-            # Render checkout timer modal
-            context = {
-                'event_name': ticket.event.name,
-                'number_of_tickets': requested_quantity,
-                'amount': total_price,
-                'stripe_checkout_url': f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
-            }
-            return render(request, 'checkout_timer_modal.html', context)
+            # Return checkout timer modal as HTML response
+            stripe_url = f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
+            html_content = f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - {ticket.event.name}</title>
+    <style>
+        * {{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }}
+        body {{
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }}
+        .container {{
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+        }}
+        .timer-display {{
+            font-size: 72px;
+            font-weight: bold;
+            color: #667eea;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 5px;
+        }}
+        .timer-label {{
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 20px;
+        }}
+        .event-info {{
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }}
+        .info-row {{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }}
+        .info-row:last-child {{
+            border-bottom: none;
+        }}
+        .info-label {{
+            font-weight: 600;
+            color: #333;
+        }}
+        .info-value {{
+            color: #667eea;
+            font-weight: bold;
+        }}
+        .button-group {{
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }}
+        .btn {{
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }}
+        .btn-primary {{
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }}
+        .btn-primary:hover {{
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }}
+        .btn-secondary {{
+            background: #e0e0e0;
+            color: #333;
+        }}
+        .btn-secondary:hover {{
+            background: #d0d0d0;
+        }}
+        .warning {{
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+            color: #856404;
+            font-size: 14px;
+        }}
+        h1 {{
+            color: #333;
+            margin-bottom: 10px;
+        }}
+        .subtitle {{
+            color: #666;
+            margin-bottom: 30px;
+        }}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Checkout</h1>
+        <p class="subtitle">Complete your purchase</p>
+        
+        <div class="timer-label">Time Remaining</div>
+        <div class="timer-display" id="timer">10:00</div>
+        
+        <div class="event-info">
+            <div class="info-row">
+                <span class="info-label">Event:</span>
+                <span class="info-value">{ticket.event.name}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Tickets:</span>
+                <span class="info-value">{requested_quantity}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Amount:</span>
+                <span class="info-value">£{total_price:.2f}</span>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <button class="btn btn-primary" onclick="proceedToPayment()">Proceed to Payment</button>
+            <button class="btn btn-secondary" onclick="goBack()">Cancel</button>
+        </div>
+        
+        <div class="warning">
+            ⏰ Your reservation will expire in 10 minutes. If you don't complete payment, your tickets will be released back to the pool.
+        </div>
+    </div>
+    
+    <script>
+        const RESERVATION_TIME = 10 * 60;
+        let timeRemaining = RESERVATION_TIME;
+        const stripeUrl = '{stripe_url}';
+        
+        function updateTimer() {{
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timer').textContent = 
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+            
+            if (timeRemaining <= 0) {{
+                document.getElementById('timer').textContent = '00:00';
+                document.querySelector('.btn-primary').disabled = true;
+                document.querySelector('.btn-primary').textContent = 'Time Expired';
+                return;
+            }}
+            
+            timeRemaining--;
+        }}
+        
+        function proceedToPayment() {{
+            window.location.href = stripeUrl;
+        }}
+        
+        function goBack() {{
+            window.history.back();
+        }}
+        
+        updateTimer();
+        setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>'''
+            return HttpResponse(html_content, content_type='text/html')
             
         except Exception as e:
             logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
