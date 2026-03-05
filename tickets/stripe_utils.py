@@ -52,9 +52,9 @@ class StripeAPI:
             base_return_url = base_url + reverse('events:payment_return')
             
             # Build success URL with proper parameter encoding
+            # Note: We don't need session_id in the URL since we can look it up from order_id
             success_params = {
                 'status': 'success',
-                'session_id': '{CHECKOUT_SESSION_ID}',
                 'order_id': str(order_id)
             }
             success_url = base_return_url + '?' + urlencode(success_params)
