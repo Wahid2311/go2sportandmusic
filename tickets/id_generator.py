@@ -16,18 +16,20 @@ class CustomIDGenerator:
     @staticmethod
     def generate_order_id():
         """
-        Generate a short order ID like: Order# 286884113
-        Format: 9 random digits
+        Generate a formatted order ID like: ORD-286884113
+        Format: ORD-{9 random digits}
         """
-        return ''.join(random.choices(string.digits, k=9))
+        random_part = ''.join(random.choices(string.digits, k=9))
+        return f"ORD-{random_part}"
     
     @staticmethod
     def generate_ticket_id():
         """
-        Generate a short ticket ID like: Ticket# 524891234
-        Format: 9 random digits
+        Generate a formatted ticket ID like: TKT-524891234
+        Format: TKT-{9 random digits}
         """
-        return ''.join(random.choices(string.digits, k=9))
+        random_part = ''.join(random.choices(string.digits, k=9))
+        return f"TKT-{random_part}"
     
     @staticmethod
     def generate_reference_id(prefix="REF"):

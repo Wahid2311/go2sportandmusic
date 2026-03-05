@@ -10,7 +10,7 @@ class TicketAdmin(admin.ModelAdmin):
         'ticket_type', 'sell_price', 'status_badge', 'created_at'
     )
     list_filter = ('ticket_type', 'checked', 'ordered', 'sold', 'created_at', 'event', 'seller')
-    search_fields = ('ticket_id', 'event__name', 'seller__email', 'section__name', 'buyer')
+    search_fields = ('ticket_id', 'ticket_number', 'event__name', 'seller__email', 'section__name', 'buyer')
     ordering = ('-created_at',)
     readonly_fields = ('ticket_id', 'created_at', 'sell_price_for_normal', 'sell_price_for_reseller')
     date_hierarchy = 'created_at'
@@ -42,7 +42,7 @@ class TicketAdmin(admin.ModelAdmin):
     )
     
     def ticket_id_short(self, obj):
-        return str(obj.ticket_id)[:8] + '...'
+        return str(obj.ticket_number) if obj.ticket_number else str(obj.ticket_id)[:8] + '...'
     ticket_id_short.short_description = 'Ticket ID'
     
     def seller_email(self, obj):
@@ -76,7 +76,7 @@ class OrderAdmin(admin.ModelAdmin):
         'amount', 'status_badge', 'ticket_uploaded', 'paid_to_reseller', 'created_at'
     )
     list_filter = ('status', 'ticket_uploaded', 'paid_to_reseller', 'event_date', 'created_at')
-    search_fields = ('id', 'event_name', 'buyer__email', 'ticket_reference', 'revolut_order_id')
+    search_fields = ('id', 'order_number', 'event_name', 'buyer__email', 'ticket_reference', 'revolut_order_id')
     ordering = ('-created_at',)
     readonly_fields = ('id', 'created_at', 'revolut_order_id')
     date_hierarchy = 'created_at'
@@ -105,7 +105,7 @@ class OrderAdmin(admin.ModelAdmin):
     )
     
     def order_id_short(self, obj):
-        return str(obj.id)[:8] + '...'
+        return str(obj.order_number) if obj.order_number else str(obj.id)[:8] + '...'
     order_id_short.short_description = 'Order ID'
     
     def buyer_email(self, obj):
@@ -159,7 +159,7 @@ class SaleAdmin(admin.ModelAdmin):
     sale_id_short.short_description = 'Sale ID'
     
     def order_short(self, obj):
-        return str(obj.order.id)[:8] + '...'
+        return str(obj.order.order_number) if obj.order.order_number else str(obj.order.id)[:8] + '...'
     order_short.short_description = 'Order'
     
     def seller_email(self, obj):
