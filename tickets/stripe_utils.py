@@ -3,6 +3,7 @@ import stripe
 import logging
 from django.conf import settings
 from django.urls import reverse
+from urllib.parse import urlencode
 
 logger = logging.getLogger(__name__)
 
@@ -46,9 +47,24 @@ class StripeAPI:
             else:
                 base_url = settings.BASE_URL
             
+            # Build URLs with proper URL encoding
             # Note: Stripe will replace {CHECKOUT_SESSION_ID} with the actual session ID
-            success_url = base_url + reverse('events:payment_return') + '?status=success&session_id={CHECKOUT_SESSION_ID}&order_id=' + str(order_id)
-            cancel_url = base_url + reverse('events:payment_return') + '?status=cancelled&order_id=' + str(order_id)
+            base_return_url = base_url + reverse('events:payment_return')
+            
+            # Build success URL with proper parameter encoding
+            success_params = {
+                'status': 'success',
+                'session_id': '{CHECKOUT_SESSION_ID}',
+                'order_id': str(order_id)
+            }
+            success_url = base_return_url + '?' + urlencode(success_params)
+            
+            # Build cancel URL
+            cancel_params = {
+                'status': 'cancelled',
+                'order_id': str(order_id)
+            }
+            cancel_url = base_return_url + '?' + urlencode(cancel_params)
             
             logger.info(f"Creating Stripe checkout session for order {order_id}, amount: {amount} {currency}")
             
