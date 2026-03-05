@@ -111,7 +111,7 @@ class ProfessionalEmailTemplates:
             ("🪑", "Row", order.ticket_row),
             ("🎟️", "Seats", ', '.join(order.ticket_seats)),
             ("📊", "Quantity", str(order.number_of_tickets)),
-            ("🔐", "Order ID", str(order.order_number) if order.order_number else str(order.id)[:8]),
+            ("🔐", "Order ID", f"Order# {order.order_number or order.id}"),
         ]
         
         for icon, label, value in details:
@@ -180,7 +180,7 @@ class ProfessionalEmailTemplates:
         details_html = ""
         details = [
             ("🎫", "Event", order.event_name),
-            ("🎟️", "Ticket ID", str(ticket.ticket_number) if ticket.ticket_number else str(ticket.ticket_id)),
+            ("🎟️", "Ticket ID", f"Ticket# {ticket.ticket_number or ticket.ticket_id}"),
             ("📍", "Section", order.ticket_section),
             ("📊", "Quantity Sold", str(order.number_of_tickets)),
             ("💰", "Amount", f"£{order.amount:.2f}"),
@@ -238,7 +238,7 @@ class ProfessionalEmailTemplates:
         details_html = ""
         details = [
             ("🎫", "Event", ticket.event.name),
-            ("🎟️", "Ticket ID", str(ticket.ticket_number) if ticket.ticket_number else str(ticket.ticket_id)),
+            ("🎟️", "Ticket ID", f"Ticket# {ticket.ticket_number or ticket.ticket_id}"),
             ("📍", "Section", ticket.section.name),
             ("🪑", "Seats", ', '.join(ticket.seats) if ticket.seats else "N/A"),
             ("💷", "Price", f"£{ticket.sell_price:.2f}"),
@@ -319,7 +319,7 @@ class ProfessionalEmailTemplates:
                     <h3 style="color: #1a1a1a; font-size: 18px; margin: 30px 0 20px 0; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">🔍 Order Details</h3>
                     {ProfessionalEmailTemplates.get_detail_box('Event', order.event_name, '🎫')}
                     {ProfessionalEmailTemplates.get_detail_box('Amount', f'£{order.amount:.2f}', '💷')}
-                    {ProfessionalEmailTemplates.get_detail_box('Order ID', str(order.order_number) if order.order_number else str(order.id)[:8], '🔐')}
+                    {ProfessionalEmailTemplates.get_detail_box('Order ID', f'Order# {order.order_number or order.id}', '🔐')}
                     
                     <div style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-left: 4px solid #f44336; padding: 20px; margin: 30px 0; border-radius: 4px;">
                         <p style="color: #c62828; font-weight: 900; margin: 0 0 10px 0; font-size: 14px; text-transform: uppercase; letter-spacing: 1px;">🛠️ Common Solutions</p>

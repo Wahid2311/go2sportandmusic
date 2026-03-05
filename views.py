@@ -911,7 +911,7 @@ Your order details:
 - Row: {order.ticket_row}
 - Seats: {', '.join(order.ticket_seats)}
 - Number of Tickets: {order.number_of_tickets}
-- Order ID: {get_formatted_order_id(order)}
+- Order ID: Order# {get_formatted_order_id(order)}
 
 """
         
