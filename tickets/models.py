@@ -14,6 +14,11 @@ class PdfStorage(S3Boto3Storage):
     location = 'tickets/pdfs'
     file_overwrite = False
     default_acl = 'private'
+    
+    def get_available_name(self, name, max_length=None):
+        if name is None:
+            return None
+        return super().get_available_name(name, max_length)
 
 User = get_user_model()
 
@@ -143,6 +148,9 @@ class Ticket(models.Model):
 
     def save(self, *args, **kwargs):
         try:
+            # Validate before saving
+            self.clean()
+            
             normal_charge = self.event.normal_service_charge or 0
             reseller_charge = self.event.reseller_service_charge or 0
             
