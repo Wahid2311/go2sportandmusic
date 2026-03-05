@@ -160,14 +160,14 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
             message = (
                 f"Your tickets have been listed.\n\n"
                 f"Event: {self.event.name}\n"
-                f"Ticket ID: {ticket.ticket_id}\n"
+                f"Ticket ID: {ticket.ticket_number or ticket.ticket_id}\n"
                 f"View them here: {marketplace_url}"
             )
             try:
                 send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [self.request.user.email])
                 send_mail(
                     f"New Ticket Listed: {self.event.name}",
-                    f"Reseller {self.request.user.email} listed ticket {ticket.ticket_id}.",
+                    f"Reseller {self.request.user.email} listed ticket {ticket.ticket_number or ticket.ticket_id}.",
                     settings.DEFAULT_FROM_EMAIL,
                     [settings.SUPERADMIN_EMAIL]
                 )
@@ -862,7 +862,7 @@ class PaymentReturnView(View):
             )
             
             admin_subject = f"Payout Required for Order {order.order_number or order.id}"
-            admin_message = f"Ticket {ticket.ticket_id} has been sold and requires payout to the seller."
+            admin_message = f"Ticket {ticket.ticket_number or ticket.ticket_id} has been sold and requires payout to the seller."
             send_mail(
                 admin_subject,
                 admin_message,
@@ -1108,7 +1108,7 @@ class MarkAsPaidView(SuperAdminRequiredMixin, View):
             
             send_mail(
                 "Payment Processed",
-                f"Your payment for ticket {ticket.ticket_id} has been processed.",
+                f"Your payment for ticket {ticket.ticket_number or ticket.ticket_id} has been processed.",
                 settings.DEFAULT_FROM_EMAIL,
                 [ticket.seller.email]
             )
@@ -1254,7 +1254,7 @@ class CreateListingAPIView(View):
         message = (
             f"Your tickets have been listed.\n\n"
             f"Event: {ticket.event.name}\n"
-            f"Ticket ID: {ticket.ticket_id}\n"
+            f"Ticket ID: {ticket.ticket_number or ticket.ticket_id}\n"
             f"View them here: {marketplace_url}"
         )
 
@@ -1270,7 +1270,7 @@ class CreateListingAPIView(View):
 
         admin_subject = f"New Ticket Listed: {ticket.event.name}"
         admin_message = (
-            f"Reseller {request.user.email} listed ticket {ticket.ticket_id}.\n"
+            f"Reseller {request.user.email} listed ticket {ticket.ticket_number or ticket.ticket_id}.\n"
             f"Event: {ticket.event.name}\n"
             f"Section: {ticket.section.name}\n"
             f"Seats: {', '.join(ticket.seats)}\n"
