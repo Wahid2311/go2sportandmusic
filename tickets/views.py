@@ -814,7 +814,9 @@ class CreateOrderView(LoginRequiredMixin, View):
             
             # Return checkout confirmation page with timer
             stripe_url = f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
-            return HttpResponse(self.get_checkout_confirmation_html(order, stripe_url))
+            html_content = self.get_checkout_confirmation_html(order, stripe_url)
+            response = HttpResponse(html_content, content_type='text/html; charset=utf-8')
+            return response
             
         except Exception as e:
             logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
