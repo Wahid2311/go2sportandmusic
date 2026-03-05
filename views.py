@@ -751,7 +751,18 @@ class PaymentReturnView(View):
                 if hasattr(order, 'reservation') and order.reservation:
                     confirm_reservation(order.reservation)
                 
-                ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+                # Get the ticket - with proper error handling
+                if not order.ticket_reference:
+                    logger.error(f"Order {order.id} has no ticket_reference")
+                    messages.error(request, "Invalid order: missing ticket reference")
+                    return redirect('events:home')
+                
+                try:
+                    ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+                except Ticket.DoesNotExist:
+                    logger.error(f"Ticket not found for ticket_id={order.ticket_reference}")
+                    messages.error(request, "Invalid order: ticket not found")
+                    return redirect('events:home')
                 
                 # Check if ticket is part of a bundle
                 if ticket.is_bundled:
@@ -818,7 +829,16 @@ class PaymentReturnView(View):
             return redirect('events:home')
     
     def send_notifications(self, order):
-        ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+        # Get the ticket with error handling
+        if not order.ticket_reference:
+            logger.error(f"Cannot send notifications: Order {order.id} has no ticket_reference")
+            return
+        
+        try:
+            ticket = Ticket.objects.get(ticket_id=order.ticket_reference)
+        except Ticket.DoesNotExist:
+            logger.error(f"Cannot send notifications: Ticket not found for ticket_id={order.ticket_reference}")
+            return
         
         # Send email to seller
         seller_subject = "Your Ticket Has Been Sold!"
@@ -841,7 +861,7 @@ class PaymentReturnView(View):
                 [ticket.seller.email]
             )
             
-            admin_subject = f"Payout Required for Order {order.id}"
+            admin_subject = f"Payout Required for Order {order.order_number or order.id}"
             admin_message = f"Ticket {ticket.ticket_id} has been sold and requires payout to the seller."
             send_mail(
                 admin_subject,
@@ -870,7 +890,7 @@ Your order details:
 - Row: {order.ticket_row}
 - Seats: {', '.join(order.ticket_seats)}
 - Number of Tickets: {order.number_of_tickets}
-- Order ID: {order.id}
+- Order ID: {order.order_number or order.id}
 
 """
         
