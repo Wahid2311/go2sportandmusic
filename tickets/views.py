@@ -1009,6 +1009,10 @@ class CreateOrderView(LoginRequiredMixin, View):
             
         except Exception as e:
             logger.error(f"CreateOrderView exception: {str(e)}", exc_info=True)
+            logger.error(f"Exception type: {type(e).__name__}")
+            logger.error(f"Exception details: {repr(e)}")
+            import traceback
+            logger.error(f"Traceback: {traceback.format_exc()}")
             order.delete()
             messages.error(request, f"Payment processing error: {str(e)}")
             return redirect('events:ticket_detail', event_id=ticket.event.event_id, ticket_id=ticket.ticket_id)
