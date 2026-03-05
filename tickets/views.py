@@ -822,7 +822,7 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.save()
             
             # Return checkout timer modal as HTML response
-            stripe_url = f'https://checkout.stripe.com/c/pay/{stripe_session["session_id"]}'
+            stripe_url = stripe_session['checkout_url']  # Use the complete URL from Stripe API
             html_content = f'''<!DOCTYPE html>
 <html>
 <head>
