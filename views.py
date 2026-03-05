@@ -1686,36 +1686,3 @@ class EventTicketListAPIView(View):
         })
 
 
-class CheckoutConfirmationView(View):
-    """Display checkout confirmation with 10-minute countdown timer"""
-    
-    def get(self, request, order_id):
-        try:
-            order = Order.objects.get(id=order_id)
-            
-            # Verify the user owns this order or is authenticated
-            if order.buyer != request.user and not request.user.is_staff:
-                messages.error(request, "Unauthorized access")
-                return redirect('events:home')
-            
-            # Get the Stripe session to get checkout URL
-            stripe_api = StripeAPI()
-            session = stripe_api.create_checkout_session(
-                order=order,
-                request=request
-            )
-            
-            context = {
-                'order': order,
-                'stripe_checkout_url': session['checkout_url']
-            }
-            
-            return render(request, 'checkout_confirmation.html', context)
-        
-        except Order.DoesNotExist:
-            messages.error(request, "Order not found")
-            return redirect('events:home')
-        except Exception as e:
-            logger.error(f"Error in CheckoutConfirmationView: {str(e)}")
-            messages.error(request, "An error occurred")
-            return redirect('events:home')
