@@ -822,7 +822,6 @@ class CreateOrderView(LoginRequiredMixin, View):
             order.save()
             
             # Render checkout timer modal
-            from django.shortcuts import render
             context = {
                 'event_name': ticket.event.name,
                 'number_of_tickets': requested_quantity,
