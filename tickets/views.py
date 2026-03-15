@@ -437,72 +437,76 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
 def receive_bot_data(request):
     if request.method == 'POST':
         expected_key = os.environ.get('BOT_API_KEY')
-        
-        # Security check
         if not expected_key or request.headers.get('X-Bot-API-Key') != expected_key:
             return JsonResponse({"error": "Unauthorized"}, status=401)
 
         try:
             data = json.loads(request.body)
             
-            # 1. Get the Bot User (Make sure this email exists in your DB as a Reseller!)
-            bot_user = User.objects.filter(email='mesabbir4512@gmail.com').first()
+            # --- STEP 1: USER ---
+            try:
+                bot_user = User.objects.filter(email='mesabbir4512@gmail.com').first()
+                superadmin = User.objects.filter(is_superadmin=True).first()
+            except Exception as e:
+                return JsonResponse({"error": f"Step 1 (User) Failed: {str(e)}"}, status=400)
+            
             if not bot_user:
-                return JsonResponse({"error": "Please create the user bot@go2sportandmusic.com in admin"}, status=400)
+                return JsonResponse({"error": "bot@go2sportandmusic.com not found"}, status=400)
+
+            # --- STEP 2: EVENT ---
+            try:
+                event, _ = Event.objects.get_or_create(
+                    name=str(data.get('name'))[:255], 
+                    date=data.get('date'),
+                    defaults={
+                        'category_legacy': str(data.get('category', 'Sports'))[:100], 
+                        'time': '00:00:00',
+                        'stadium_name': 'TBD',
+                        'superadmin': superadmin
+                    }
+                )
+            except Exception as e:
+                return JsonResponse({"error": f"Step 2 (Event) Failed: {str(e)}"}, status=400)
             
-            superadmin = User.objects.filter(is_superadmin=True).first()
+            # --- STEP 3: SECTION ---
+            try:
+                section_name = str(data.get('category', 'General Admission'))[:100]
+                section, _ = EventSection.objects.get_or_create(
+                    event=event,
+                    name=section_name,
+                    defaults={'color': '#3CB44B'}
+                )
+            except Exception as e:
+                return JsonResponse({"error": f"Step 3 (Section) Failed: {str(e)}"}, status=400)
             
-            # 2. Find or create the Event safely
-            event, _ = Event.objects.get_or_create(
-                name=str(data.get('name'))[:255], 
-                date=data.get('date'),
-                defaults={
-                    'category_legacy': str(data.get('category', 'Sports'))[:100], 
-                    'time': '00:00:00',
-                    'stadium_name': 'TBD',
-                    'superadmin': superadmin
-                }
-            )
-            
-            # 3. Create a Section safely
-            section_name = str(data.get('category', 'General Admission'))[:100]
-            section, _ = EventSection.objects.get_or_create(
-                event=event,
-                name=section_name,
-                defaults={'color': '#3CB44B'}
-            )
-            
-            # 4. Calculate safe upload date
-            event_date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
-            upload_by_date = event_date - timedelta(days=3)
-            
-            # 5. Build the ticket in memory (DO NOT save yet)
-            ticket = Ticket(
-                event=event,
-                section=section,
-                seller=bot_user,
-                number_of_tickets=int(data.get('quantity', 1)),
-                sell_price=float(data.get('price', 0.0)),
-                face_value=float(data.get('price', 0.0)),
-                row="TBD",               # EXACTLY 3 chars (Max is 20)
-                ticket_type='e-ticket',  # EXACTLY 8 chars (Max is 20)
-                upload_choice='later',   # EXACTLY 5 chars (Max is 20)
-                upload_by=upload_by_date,
-            )
-            
-            # 6. THE MAGIC LINE: Force Django to check all max_lengths
-            ticket.full_clean() 
-            
-            # 7. If clean passes, save it
-            ticket.save()
+            # --- STEP 4: TICKET ---
+            try:
+                event_date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
+                upload_by_date = event_date - timedelta(days=3)
+                
+                ticket = Ticket(
+                    event=event,
+                    section=section,
+                    seller=bot_user,
+                    number_of_tickets=int(data.get('quantity', 1)),
+                    sell_price=float(data.get('price', 0.0)),
+                    face_value=float(data.get('price', 0.0)),
+                    row="TBD",               
+                    ticket_type='e-ticket',  
+                    upload_choice='later',   
+                    upload_by=upload_by_date,
+                )
+                ticket.full_clean() # Double check python constraints
+                ticket.save()       # Save to DB
+            except ValidationError as ve:
+                return JsonResponse({"error": f"Step 4 (Ticket Validation) Failed: {ve.message_dict}"}, status=400)
+            except Exception as e:
+                return JsonResponse({"error": f"Step 4 (Ticket DB Save) Failed: {str(e)}"}, status=400)
             
             return JsonResponse({"status": "success"})
             
-        except ValidationError as ve:
-            # If a field is too long, this will print EXACTLY which field it is!
-            return JsonResponse({"error": f"Validation Failed: {ve.message_dict}"}, status=400)
         except Exception as e:
-            return JsonResponse({"error": f"System Error: {str(e)}"}, status=400)
+            return JsonResponse({"error": f"Critical Parse Error: {str(e)}"}, status=400)
             
     return JsonResponse({"error": "Method not allowed"}, status=405)
     
