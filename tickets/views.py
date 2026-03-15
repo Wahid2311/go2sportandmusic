@@ -433,17 +433,6 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
         return Ticket.objects.select_related('event', 'seller').order_by('-created_at')
 
 # Disable CSRF so your bot can POST data without a browser token
-@csrf_exempt 
-import os
-import json
-from datetime import datetime, timedelta
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.core.exceptions import ValidationError
-from events.models import Event, EventSection
-from tickets.models import Ticket
-from accounts.models import User
-
 @csrf_exempt
 def receive_bot_data(request):
     if request.method == 'POST':
@@ -495,7 +484,10 @@ def receive_bot_data(request):
             
             # --- STEP 3: SECTION ---
             try:
-                section_name = str(data.get('category', 'General Admission'))[:100]
+                # FIX: Truncate to 20 chars max because the live DB still enforces the old limit!
+                # "Central Front Rows Brodies" will safely become "Central Front Rows B"
+                section_name = str(data.get('category', 'General Admission'))[:20].strip()
+                
                 section, _ = EventSection.objects.get_or_create(
                     event=event,
                     name=section_name,
