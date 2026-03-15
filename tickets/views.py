@@ -434,38 +434,49 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
 @csrf_exempt 
 def receive_bot_data(request):
     if request.method == 'POST':
-        # Safely get the expected key from Railway's environment variables
         expected_key = os.environ.get('BOT_API_KEY')
-        # Get the key the bot sent in the request headers
-        incoming_key = request.headers.get('X-Bot-API-Key')
-        # Check if they match (and make sure expected_key actually exists)
-        if not expected_key or incoming_key != expected_key:
+        
+        # Security check
+        if not expected_key or request.headers.get('X-Bot-API-Key') != expected_key:
             return JsonResponse({"error": "Unauthorized"}, status=401)
 
         try:
             data = json.loads(request.body)
             
-            # 2. Extract data (Adjust these fields based on what your bot sends)
-            event_name = data.get('event_name')
-            ticket_price = data.get('price')
-            section = data.get('section')
-            
-            # 3. Save to Django Database using your existing models
-            event, created = Event.objects.get_or_create(title=event_name)
-            
-            Ticket.objects.create(
-                event=event,
-                price=ticket_price,
-                section=section,
-                # add other required fields from tickets/models.py
+            # 1. Find or create the Event
+            event, created = Event.objects.get_or_create(
+                name=data.get('name'),
+                date=data.get('date'),
+                defaults={
+                    'category_legacy': data.get('category', 'Sports'), 
+                    'time': '00:00:00',
+                    'stadium_name': 'TBD'
+                }
             )
             
-            return JsonResponse({"status": "success", "message": "Ticket added!"})
+            # 2. Find or create a default Ticket Section
+            section, _ = EventSection.objects.get_or_create(
+                event=event,
+                name='General Admission',
+                defaults={'color': '#3CB44B'}
+            )
+            
+            # 3. Create the actual Ticket Listing
+            Ticket.objects.create(
+                event=event,
+                section=section,
+                number_of_tickets=data.get('quantity'),
+                sell_price=data.get('price'),
+                ticket_type='eTicket',
+                upload_choice='later', # Means PDF will be uploaded later
+            )
+            
+            return JsonResponse({"status": "success"})
             
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
             
-    return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+    return JsonResponse({"error": "Method not allowed"}, status=405)
     
 class SuperadminTicketUpdateView(SuperAdminRequiredMixin, UpdateView):
     model = Ticket
