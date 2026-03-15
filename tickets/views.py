@@ -29,6 +29,7 @@ import stripe
 import requests
 from .stripe_utils import StripeAPI
 from tickets.models import Ticket
+from accounts.models import User # <-- Add this import
 
 logger = logging.getLogger(__name__)
 
@@ -443,36 +444,45 @@ def receive_bot_data(request):
         try:
             data = json.loads(request.body)
             
-            # 1. Find or create the Event
+            # 1. Get the Bot User account (Replace with the actual email you created!)
+            bot_user = User.objects.get(email='mesabbir4512@gmail.com')
+            
+            # 2. Find or create the Event
             event, created = Event.objects.get_or_create(
                 name=data.get('name'),
                 date=data.get('date'),
                 defaults={
-                    'category_legacy': data.get('category', 'Sports'), 
+                    'category_legacy': data.get('category', 'Sports')[:100], # Prevent overflow
                     'time': '00:00:00',
-                    'stadium_name': 'TBD'
+                    'stadium_name': 'TBD',
+                    'superadmin': User.objects.filter(is_superadmin=True).first() # Requires a superadmin creator
                 }
             )
             
-            # 2. Find or create a default Ticket Section
+            # 3. Find or create a default Ticket Section
             section, _ = EventSection.objects.get_or_create(
                 event=event,
                 name='General Admission',
                 defaults={'color': '#3CB44B'}
             )
             
-            # 3. Create the actual Ticket Listing
+            # 4. Create the actual Ticket Listing
             Ticket.objects.create(
                 event=event,
                 section=section,
+                seller=bot_user, # <--- Assign the seller
                 number_of_tickets=data.get('quantity'),
                 sell_price=data.get('price'),
-                ticket_type='eTicket',
-                upload_choice='later', # Means PDF will be uploaded later
+                face_value=data.get('price'), # Require field
+                row="TBD", # <--- FIX for the 20 char limit!
+                ticket_type='e-ticket', # <--- Must match exactly one of TICKET_TYPES choices
+                upload_choice='later', 
             )
             
             return JsonResponse({"status": "success"})
             
+        except User.DoesNotExist:
+            return JsonResponse({"error": "Bot user account not found on website."}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
             
