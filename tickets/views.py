@@ -434,6 +434,17 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
 
 # Disable CSRF so your bot can POST data without a browser token
 @csrf_exempt 
+import os
+import json
+from datetime import datetime, timedelta
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core.exceptions import ValidationError
+from events.models import Event, EventSection
+from tickets.models import Ticket
+from accounts.models import User
+
+@csrf_exempt
 def receive_bot_data(request):
     if request.method == 'POST':
         expected_key = os.environ.get('BOT_API_KEY')
@@ -443,7 +454,7 @@ def receive_bot_data(request):
         try:
             data = json.loads(request.body)
             
-            # --- FIX: Parse the date into a real Python date object IMMEDIATELY ---
+            # --- Parse Date ---
             try:
                 event_date_str = data.get('date')
                 event_date = datetime.strptime(event_date_str, '%Y-%m-%d').date()
@@ -458,20 +469,23 @@ def receive_bot_data(request):
                 return JsonResponse({"error": f"Step 1 (User) Failed: {str(e)}"}, status=400)
             
             if not bot_user:
-                return JsonResponse({"error": "bot@go2sportandmusic.com not found"}, status=400)
+                return JsonResponse({"error": "mesabbir4512@gmail.com not found"}, status=400)
 
             # --- STEP 2: EVENT ---
             try:
-                event, _ = Event.objects.get_or_create(
+                event, created = Event.objects.get_or_create(
                     name=str(data.get('name'))[:255], 
-                    date=event_date, # FIX: Pass the real date object here!
+                    date=event_date,
                     defaults={
                         'category_legacy': 'Sports', 
                         'time': '00:00:00',
                         'stadium_name': 'TBD',
                         'superadmin': superadmin,
-                        'normal_service_charge': 0.00,
-                        'reseller_service_charge': 0.00,
+                        
+                        # FIX 1: Set your standard platform markups here!
+                        # The Ticket.save() method will use these to calculate Buyer Prices
+                        'normal_service_charge': 20.00,   # 20% markup for normal buyers
+                        'reseller_service_charge': 12.00, # 12% markup for resellers
                         'stadium_image': '',
                         'event_logo': ''
                     }
@@ -493,21 +507,39 @@ def receive_bot_data(request):
             # --- STEP 4: TICKET ---
             try:
                 upload_by_date = event_date - timedelta(days=3)
+                bot_ticket_id = data.get('ticket_id')
+                bot_price = float(data.get('price', 0.0))
                 
-                ticket = Ticket(
-                    event=event,
-                    section=section,
-                    seller=bot_user,
-                    number_of_tickets=int(data.get('quantity', 1)),
-                    sell_price=float(data.get('price', 0.0)),
-                    face_value=float(data.get('price', 0.0)),
-                    row="TBD",               
-                    ticket_type='e-ticket',  
-                    upload_choice='later',   
-                    upload_by=upload_by_date,
-                )
-                ticket.full_clean() 
-                ticket.save()       
+                # FIX 3: Prevent duplicate tickets if the bot sends the same data twice
+                existing_ticket = Ticket.objects.filter(ticket_id=bot_ticket_id).first()
+                
+                if existing_ticket:
+                    # UPDATE existing listing
+                    existing_ticket.number_of_tickets = int(data.get('quantity', existing_ticket.number_of_tickets))
+                    existing_ticket.sell_price = bot_price
+                    # Note: You don't need to manually update Buyer Prices here.
+                    # Django will automatically recalculate them when existing_ticket.save() is called!
+                    existing_ticket.save()
+                else:
+                    # CREATE new listing
+                    ticket = Ticket(
+                        ticket_id=bot_ticket_id, 
+                        event=event,
+                        section=section,
+                        seller=bot_user,
+                        number_of_tickets=int(data.get('quantity', 1)),
+                        
+                        # FIX 2: Split Sell Price and Face Value
+                        sell_price=bot_price,  # Scraped price goes to Sell Price
+                        face_value=0.00,       # Default Face Value to 0 since bot doesn't know it
+                        
+                        row="TBD",               
+                        ticket_type='e-ticket',  
+                        upload_choice='later',   
+                        upload_by=upload_by_date,
+                    )
+                    ticket.full_clean() 
+                    ticket.save()       
             except ValidationError as ve:
                 return JsonResponse({"error": f"Step 4 (Ticket Validation) Failed: {ve.message_dict}"}, status=400)
             except Exception as e:
