@@ -27,6 +27,7 @@ import logging
 import stripe
 import requests
 from .stripe_utils import StripeAPI
+from tickets.models import Ticket
 
 logger = logging.getLogger(__name__)
 
@@ -428,7 +429,43 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
     def get_queryset(self):
         return Ticket.objects.select_related('event', 'seller').order_by('-created_at')
 
+# Disable CSRF so your bot can POST data without a browser token
+@csrf_exempt 
+def receive_bot_data(request):
+    if request.method == 'POST':
+        # Safely get the expected key from Railway's environment variables
+        expected_key = os.environ.get('BOT_API_KEY')
+        # Get the key the bot sent in the request headers
+        incoming_key = request.headers.get('X-Bot-API-Key')
+        # Check if they match (and make sure expected_key actually exists)
+        if not expected_key or incoming_key != expected_key:
+            return JsonResponse({"error": "Unauthorized"}, status=401)
 
+        try:
+            data = json.loads(request.body)
+            
+            # 2. Extract data (Adjust these fields based on what your bot sends)
+            event_name = data.get('event_name')
+            ticket_price = data.get('price')
+            section = data.get('section')
+            
+            # 3. Save to Django Database using your existing models
+            event, created = Event.objects.get_or_create(title=event_name)
+            
+            Ticket.objects.create(
+                event=event,
+                price=ticket_price,
+                section=section,
+                # add other required fields from tickets/models.py
+            )
+            
+            return JsonResponse({"status": "success", "message": "Ticket added!"})
+            
+        except Exception as e:
+            return JsonResponse({"error": str(e)}, status=400)
+            
+    return JsonResponse({"error": "Only POST requests allowed"}, status=405)
+    
 class SuperadminTicketUpdateView(SuperAdminRequiredMixin, UpdateView):
     model = Ticket
     form_class = TicketForm
