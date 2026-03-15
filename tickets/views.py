@@ -1,7 +1,7 @@
 import json
 import os
 import uuid
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.core.mail import send_mail, EmailMessage
@@ -30,6 +30,7 @@ import requests
 from .stripe_utils import StripeAPI
 from tickets.models import Ticket
 from accounts.models import User # <-- Add this import
+from django.core.exceptions import ValidationError
 
 logger = logging.getLogger(__name__)
 
