@@ -1,6 +1,7 @@
 import json
 import os
 import uuid
+from decimal import Decimal
 from datetime import date, timedelta, datetime
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
@@ -470,27 +471,27 @@ def receive_bot_data(request):
                         'time': '00:00:00',
                         'stadium_name': 'TBD',
                         'superadmin': superadmin,
-                        'normal_service_charge': 20.00,
-                        'reseller_service_charge': 12.00,
+                        
+                        # FIX: Use Decimal strings for currency!
+                        'normal_service_charge': Decimal('20.00'),   
+                        'reseller_service_charge': Decimal('12.00'), 
                         'stadium_image': '',
                         'event_logo': ''
                     }
                 )
                 
-                # --- NEW FIX: Force update old test events! ---
+                # Force update old events to have the correct service charges
                 if event.normal_service_charge == 0 or event.reseller_service_charge == 0:
-                    event.normal_service_charge = 25.00
-                    event.reseller_service_charge = 10.00
+                    event.normal_service_charge = Decimal('20.00')
+                    event.reseller_service_charge = Decimal('12.00')
                     event.save()
-                # ----------------------------------------------
-                
+                    
             except Exception as e:
                 return JsonResponse({"error": f"Step 2 (Event) Failed: {str(e)}"}, status=400)
             
             # --- STEP 3: SECTION ---
             try:
-                # FIX: Truncate to 20 chars max because the live DB still enforces the old limit!
-                # "Central Front Rows Brodies" will safely become "Central Front Rows B"
+                # Truncated to 20 chars safely
                 section_name = str(data.get('category', 'General Admission'))[:20].strip()
                 
                 section, _ = EventSection.objects.get_or_create(
@@ -505,20 +506,17 @@ def receive_bot_data(request):
             try:
                 upload_by_date = event_date - timedelta(days=3)
                 bot_ticket_id = data.get('ticket_id')
-                bot_price = float(data.get('price', 0.0))
                 
-                # FIX 3: Prevent duplicate tickets if the bot sends the same data twice
+                # FIX: Safely convert the bot's price into a Decimal object!
+                bot_price = Decimal(str(data.get('price', '0.00')))
+                
                 existing_ticket = Ticket.objects.filter(ticket_id=bot_ticket_id).first()
                 
                 if existing_ticket:
-                    # UPDATE existing listing
                     existing_ticket.number_of_tickets = int(data.get('quantity', existing_ticket.number_of_tickets))
                     existing_ticket.sell_price = bot_price
-                    # Note: You don't need to manually update Buyer Prices here.
-                    # Django will automatically recalculate them when existing_ticket.save() is called!
                     existing_ticket.save()
                 else:
-                    # CREATE new listing
                     ticket = Ticket(
                         ticket_id=bot_ticket_id, 
                         event=event,
@@ -526,9 +524,8 @@ def receive_bot_data(request):
                         seller=bot_user,
                         number_of_tickets=int(data.get('quantity', 1)),
                         
-                        # FIX 2: Split Sell Price and Face Value
-                        sell_price=bot_price,  # Scraped price goes to Sell Price
-                        face_value=0.00,       # Default Face Value to 0 since bot doesn't know it
+                        sell_price=bot_price,
+                        face_value=Decimal('0.00'), # Default face value as Decimal
                         
                         row="TBD",               
                         ticket_type='e-ticket',  
