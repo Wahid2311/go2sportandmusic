@@ -470,15 +470,20 @@ def receive_bot_data(request):
                         'time': '00:00:00',
                         'stadium_name': 'TBD',
                         'superadmin': superadmin,
-                        
-                        # FIX 1: Set your standard platform markups here!
-                        # The Ticket.save() method will use these to calculate Buyer Prices
-                        'normal_service_charge': 20.00,   # 20% markup for normal buyers
-                        'reseller_service_charge': 12.00, # 12% markup for resellers
+                        'normal_service_charge': 20.00,
+                        'reseller_service_charge': 12.00,
                         'stadium_image': '',
                         'event_logo': ''
                     }
                 )
+                
+                # --- NEW FIX: Force update old test events! ---
+                if event.normal_service_charge == 0 or event.reseller_service_charge == 0:
+                    event.normal_service_charge = 25.00
+                    event.reseller_service_charge = 10.00
+                    event.save()
+                # ----------------------------------------------
+                
             except Exception as e:
                 return JsonResponse({"error": f"Step 2 (Event) Failed: {str(e)}"}, status=400)
             
