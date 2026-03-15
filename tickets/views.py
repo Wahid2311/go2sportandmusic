@@ -444,45 +444,54 @@ def receive_bot_data(request):
         try:
             data = json.loads(request.body)
             
-            # 1. Get the Bot User account (Replace with the actual email you created!)
+            # 1. Get the Bot User account
             bot_user = User.objects.get(email='mesabbir4512@gmail.com')
             
             # 2. Find or create the Event
             event, created = Event.objects.get_or_create(
-                name=data.get('name'),
+                name=data.get('name')[:255], 
                 date=data.get('date'),
                 defaults={
-                    'category_legacy': data.get('category', 'Sports')[:100], # Prevent overflow
+                    'category_legacy': data.get('category', 'Sports')[:100], 
                     'time': '00:00:00',
                     'stadium_name': 'TBD',
-                    'superadmin': User.objects.filter(is_superadmin=True).first() # Requires a superadmin creator
+                    'superadmin': User.objects.filter(is_superadmin=True).first()
                 }
             )
             
-            # 3. Find or create a default Ticket Section
+            # 3. Create a Section using the bot's category (e.g. "Standard Long Side Ticket")
+            section_name = data.get('category', 'General Admission')[:100]
             section, _ = EventSection.objects.get_or_create(
                 event=event,
-                name='General Admission',
+                name=section_name,
                 defaults={'color': '#3CB44B'}
             )
             
-            # 4. Create the actual Ticket Listing
+            # 4. Calculate an upload_by date (e.g., 3 days before the event happens)
+            event_date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
+            upload_by_date = event_date - timedelta(days=3)
+            
+            # 5. Create the actual Ticket Listing Safely
             Ticket.objects.create(
                 event=event,
                 section=section,
-                seller=bot_user, # <--- Assign the seller
+                seller=bot_user,
                 number_of_tickets=data.get('quantity'),
                 sell_price=data.get('price'),
-                face_value=data.get('price'), # Require field
-                row="TBD", # <--- FIX for the 20 char limit!
-                ticket_type='e-ticket', # <--- Must match exactly one of TICKET_TYPES choices
-                upload_choice='later', 
+                face_value=data.get('price'),
+                row="TBD",               # STRICTLY <= 20 chars
+                ticket_type='e-ticket',  # STRICTLY <= 20 chars (Must match TICKET_TYPES exactly)
+                upload_choice='later',   # STRICTLY <= 20 chars
+                upload_by=upload_by_date,# REQUIRED by your model when 'later' is chosen
+                
+                # Note: We purposely DO NOT manually set ticket_number here. 
+                # Your tickets/id_generator.py will automatically generate a short TKT-XXXXXX ID!
             )
             
             return JsonResponse({"status": "success"})
             
         except User.DoesNotExist:
-            return JsonResponse({"error": "Bot user account not found on website."}, status=400)
+            return JsonResponse({"error": "Bot user account not found. Please create bot@go2sportandmusic.com"}, status=400)
         except Exception as e:
             return JsonResponse({"error": str(e)}, status=400)
             
