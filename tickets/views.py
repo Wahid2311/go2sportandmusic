@@ -437,78 +437,95 @@ class SuperadminTicketListView(SuperAdminRequiredMixin, ListView):
 def receive_bot_data(request):
     if request.method == 'POST':
         expected_key = os.environ.get('BOT_API_KEY')
+
         if not expected_key or request.headers.get('X-Bot-API-Key') != expected_key:
             return JsonResponse({"error": "Unauthorized"}, status=401)
 
         try:
             data = json.loads(request.body)
-            
-            # --- STEP 1: USER ---
-            try:
-                bot_user = User.objects.filter(email='mesabbir4512@gmail.com').first()
-                superadmin = User.objects.filter(is_superadmin=True).first()
-            except Exception as e:
-                return JsonResponse({"error": f"Step 1 (User) Failed: {str(e)}"}, status=400)
-            
-            if not bot_user:
-                return JsonResponse({"error": "bot@go2sportandmusic.com not found"}, status=400)
 
-            # --- STEP 2: EVENT ---
-            try:
-                event, _ = Event.objects.get_or_create(
-                    name=str(data.get('name'))[:255], 
-                    date=data.get('date'),
-                    defaults={
-                        # FIX: Hardcode to 'Sports' so it never exceeds 20 characters in the DB!
-                        'category_legacy': 'Sports', 
-                        'time': '00:00:00',
-                        'stadium_name': 'TBD',
-                        'superadmin': superadmin
-                    }
+            bot_user = User.objects.filter(email='mesabbir4512@gmail.com').first()
+            if not bot_user:
+                return JsonResponse(
+                    {"error": "Please create the bot user in admin"},
+                    status=400
                 )
-            except Exception as e:
-                return JsonResponse({"error": f"Step 2 (Event) Failed: {str(e)}"}, status=400)
-            
-            # --- STEP 3: SECTION ---
-            try:
-                section_name = str(data.get('category', 'General Admission'))[:100]
-                section, _ = EventSection.objects.get_or_create(
-                    event=event,
-                    name=section_name,
-                    defaults={'color': '#3CB44B'}
-                )
-            except Exception as e:
-                return JsonResponse({"error": f"Step 3 (Section) Failed: {str(e)}"}, status=400)
-            
-            # --- STEP 4: TICKET ---
-            try:
-                event_date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
-                upload_by_date = event_date - timedelta(days=3)
-                
-                ticket = Ticket(
-                    event=event,
-                    section=section,
-                    seller=bot_user,
-                    number_of_tickets=int(data.get('quantity', 1)),
-                    sell_price=float(data.get('price', 0.0)),
-                    face_value=float(data.get('price', 0.0)),
-                    row="TBD",               
-                    ticket_type='e-ticket',  
-                    upload_choice='later',   
-                    upload_by=upload_by_date,
-                )
-                ticket.full_clean() # Double check python constraints
-                ticket.save()       # Save to DB
-            except ValidationError as ve:
-                return JsonResponse({"error": f"Step 4 (Ticket Validation) Failed: {ve.message_dict}"}, status=400)
-            except Exception as e:
-                return JsonResponse({"error": f"Step 4 (Ticket DB Save) Failed: {str(e)}"}, status=400)
-            
+
+            superadmin = User.objects.filter(is_superadmin=True).first()
+            if not superadmin:
+                return JsonResponse({"error": "No superadmin found"}, status=400)
+
+            raw_category = str(data.get('category') or 'General Admission').strip()
+            event_name = str(data.get('name') or '').strip()[:255]
+            event_date_str = str(data.get('date') or '').strip()
+
+            if not event_name:
+                return JsonResponse({"error": "Missing event name"}, status=400)
+            if not event_date_str:
+                return JsonResponse({"error": "Missing event date"}, status=400)
+
+            event_date = datetime.strptime(event_date_str, '%Y-%m-%d').date()
+            upload_by_date = event_date - timedelta(days=3)
+
+            event_defaults = {
+                'time': '00:00:00',
+                'stadium_name': 'TBD',
+                'superadmin': superadmin,
+            }
+
+            event_field_names = {f.name for f in Event._meta.fields}
+
+            if 'category' in event_field_names:
+                event_defaults['category'] = 'sports'
+
+            if 'category_legacy' in event_field_names:
+                event_defaults['category_legacy'] = raw_category[:100]
+
+            if 'stadium_image' in event_field_names:
+                event_defaults['stadium_image'] = 'https://via.placeholder.com/1200x630'
+            if 'event_logo' in event_field_names:
+                event_defaults['event_logo'] = 'https://via.placeholder.com/300x300'
+            if 'normal_service_charge' in event_field_names:
+                event_defaults['normal_service_charge'] = 20
+            if 'reseller_service_charge' in event_field_names:
+                event_defaults['reseller_service_charge'] = 12
+
+            event, _ = Event.objects.get_or_create(
+                name=event_name,
+                date=event_date,
+                defaults=event_defaults
+            )
+
+            section_name = raw_category[:100]
+            section, _ = EventSection.objects.get_or_create(
+                event=event,
+                name=section_name,
+                defaults={'color': '#3CB44B'}
+            )
+
+            ticket = Ticket(
+                event=event,
+                section=section,
+                seller=bot_user,
+                number_of_tickets=int(data.get('quantity', 1)),
+                sell_price=float(data.get('price', 0.0)),
+                face_value=float(data.get('price', 0.0)),
+                row='TBD',
+                ticket_type='e-ticket',
+                upload_choice='later',
+                upload_by=upload_by_date,
+            )
+
+            ticket.full_clean()
+            ticket.save()
+
             return JsonResponse({"status": "success"})
-            
+
+        except ValidationError as ve:
+            return JsonResponse({"error": f"Validation Failed: {ve.message_dict}"}, status=400)
         except Exception as e:
-            return JsonResponse({"error": f"Critical Parse Error: {str(e)}"}, status=400)
-            
+            return JsonResponse({"error": f"System Error: {str(e)}"}, status=400)
+
     return JsonResponse({"error": "Method not allowed"}, status=405)
     
 class SuperadminTicketUpdateView(SuperAdminRequiredMixin, UpdateView):
