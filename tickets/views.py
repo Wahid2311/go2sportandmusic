@@ -472,7 +472,6 @@ def receive_bot_data(request):
                         'stadium_name': 'TBD',
                         'superadmin': superadmin,
                         
-                        # FIX: Use Decimal strings for currency!
                         'normal_service_charge': Decimal('20.00'),   
                         'reseller_service_charge': Decimal('12.00'), 
                         'stadium_image': '',
@@ -480,11 +479,12 @@ def receive_bot_data(request):
                     }
                 )
                 
-                # Force update old events to have the correct service charges
-                if event.normal_service_charge == 0 or event.reseller_service_charge == 0:
+                # --- FIXED: Check if it's NOT 20/12, then force update! ---
+                if event.normal_service_charge != Decimal('20.00') or event.reseller_service_charge != Decimal('12.00'):
                     event.normal_service_charge = Decimal('20.00')
                     event.reseller_service_charge = Decimal('12.00')
                     event.save()
+                # ---------------------------------------------------------
                     
             except Exception as e:
                 return JsonResponse({"error": f"Step 2 (Event) Failed: {str(e)}"}, status=400)
