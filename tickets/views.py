@@ -443,6 +443,13 @@ def receive_bot_data(request):
         try:
             data = json.loads(request.body)
             
+            # --- FIX: Parse the date into a real Python date object IMMEDIATELY ---
+            try:
+                event_date_str = data.get('date')
+                event_date = datetime.strptime(event_date_str, '%Y-%m-%d').date()
+            except Exception as e:
+                return JsonResponse({"error": f"Invalid Date Format: {str(e)}"}, status=400)
+            
             # --- STEP 1: USER ---
             try:
                 bot_user = User.objects.filter(email='mesabbir4512@gmail.com').first()
@@ -457,13 +464,12 @@ def receive_bot_data(request):
             try:
                 event, _ = Event.objects.get_or_create(
                     name=str(data.get('name'))[:255], 
-                    date=data.get('date'),
+                    date=event_date, # FIX: Pass the real date object here!
                     defaults={
                         'category_legacy': 'Sports', 
                         'time': '00:00:00',
                         'stadium_name': 'TBD',
                         'superadmin': superadmin,
-                        # FIX: Provide required default values for the database!
                         'normal_service_charge': 0.00,
                         'reseller_service_charge': 0.00,
                         'stadium_image': '',
@@ -486,7 +492,6 @@ def receive_bot_data(request):
             
             # --- STEP 4: TICKET ---
             try:
-                event_date = datetime.strptime(data.get('date'), '%Y-%m-%d').date()
                 upload_by_date = event_date - timedelta(days=3)
                 
                 ticket = Ticket(
@@ -501,8 +506,8 @@ def receive_bot_data(request):
                     upload_choice='later',   
                     upload_by=upload_by_date,
                 )
-                ticket.full_clean() # Double check python constraints
-                ticket.save()       # Save to DB
+                ticket.full_clean() 
+                ticket.save()       
             except ValidationError as ve:
                 return JsonResponse({"error": f"Step 4 (Ticket Validation) Failed: {ve.message_dict}"}, status=400)
             except Exception as e:
