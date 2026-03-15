@@ -459,7 +459,8 @@ def receive_bot_data(request):
                     name=str(data.get('name'))[:255], 
                     date=data.get('date'),
                     defaults={
-                        'category_legacy': str(data.get('category', 'Sports'))[:100], 
+                        # FIX: Hardcode to 'Sports' so it never exceeds 20 characters in the DB!
+                        'category_legacy': 'Sports', 
                         'time': '00:00:00',
                         'stadium_name': 'TBD',
                         'superadmin': superadmin
