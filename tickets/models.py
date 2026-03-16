@@ -244,7 +244,16 @@ class Ticket(models.Model):
     def __str__(self):
         return f"{self.ticket_id} for {self.event.name}"
 
+# Add this below your existing Ticket model
+class TicketPDF(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='individual_pdfs', on_delete=models.CASCADE)
+    file = models.FileField(upload_to='tickets/pdfs', storage=PdfStorage())
+    is_sold = models.BooleanField(default=False)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return f"PDF for Ticket ID {self.ticket.ticket_id} - {'SOLD' if self.is_sold else 'AVAILABLE'}"
+        
 class Order(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     event_name = models.CharField(max_length=255)
@@ -340,14 +349,3 @@ class TicketReservation(models.Model):
     
     def __str__(self):
         return f"Reservation for {self.ticket.ticket_id} by {self.buyer.email}"
-
-class TicketDocument(models.Model):
-    # This links the file to the specific ticket listing
-    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='documents')
-    
-    # This uses your existing S3 storage setup!
-    file = models.FileField(upload_to='tickets/pdfs', storage=PdfStorage())
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Document for Ticket {self.ticket.ticket_id}"
