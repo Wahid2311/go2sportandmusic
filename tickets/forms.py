@@ -24,6 +24,7 @@ class TicketForm(forms.ModelForm):
             'class': 'form-control ticket-input conditional-field',
             'data-conditional': 'upload-choice-now',
             'accept': 'application/pdf'
+            'multiple': 'multiple'  # <--- REQUIRED
         })
     )
     upload_by = forms.DateField(
