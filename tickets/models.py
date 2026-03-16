@@ -340,3 +340,14 @@ class TicketReservation(models.Model):
     
     def __str__(self):
         return f"Reservation for {self.ticket.ticket_id} by {self.buyer.email}"
+
+class TicketDocument(models.Model):
+    # This links the file to the specific ticket listing
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE, related_name='documents')
+    
+    # This uses your existing S3 storage setup!
+    file = models.FileField(upload_to='tickets/pdfs', storage=PdfStorage())
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Document for Ticket {self.ticket.ticket_id}"
