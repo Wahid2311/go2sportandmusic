@@ -156,7 +156,15 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
                     del self.request.session[session_key]
                 ticket.bundle_id = None
             
+            ticket.upload_file = None
             ticket.save()
+
+            from tickets.models import TicketDocument
+            files = self.request.FILES.getlist('upload_file')
+
+            for pdf in files:
+                TicketDocument.objects.create(ticket=ticket, file=pdf)
+        
 
             subject = f"Ticket Listing Created for {self.event.name}"
             marketplace_url = self.request.build_absolute_uri(
