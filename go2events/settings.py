@@ -141,10 +141,14 @@ CSRF_TRUSTED_ORIGINS = list(set(CSRF_TRUSTED_ORIGINS))
 # Remove empty strings
 CSRF_TRUSTED_ORIGINS = [origin for origin in CSRF_TRUSTED_ORIGINS if origin]
 
-AWS_ACCESS_KEY_ID =os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY =os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME =os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
 AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+
+# ---> ADD THIS NEW LINE RIGHT HERE <---
+AWS_S3_ENDPOINT_URL = os.environ.get('AWS_S3_ENDPOINT_URL')
+
 AWS_S3_FILE_OVERWRITE = False 
 AWS_DEFAULT_ACL = 'private' 
 USE_S3 = True
@@ -152,10 +156,17 @@ AWS_S3_ADDRESSING_STYLE = 'virtual'
 AWS_S3_SIGNATURE_VERSION = 's3v4'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# UPDATE MEDIA_URL TO USE THE CUSTOM ENDPOINT TOO
 if AWS_STORAGE_BUCKET_NAME and AWS_STORAGE_BUCKET_NAME != 'none':
-    MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
+    # This ensures your frontend URLs point to the Railway volume, not Amazon!
+    if AWS_S3_ENDPOINT_URL:
+        MEDIA_URL = f'{AWS_S3_ENDPOINT_URL}/{AWS_STORAGE_BUCKET_NAME}/'
+    else:
+        MEDIA_URL = f'https://{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com/'
 else:
     MEDIA_URL = '/media/'
+    
 MEDIA_ROOT = '/app/media'
 
 LOGGING = {
