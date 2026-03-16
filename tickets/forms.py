@@ -18,14 +18,6 @@ class TicketForm(forms.ModelForm):
             'data-behavior': 'upload-choice'
         })
     )
-    upload_file = forms.FileField(
-        required=False,
-        widget=forms.ClearableFileInput(attrs={
-            'class': 'form-control ticket-input conditional-field',
-            'data-conditional': 'upload-choice-now',
-            'accept': 'application/pdf'
-        })
-    )
     upload_by = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={
@@ -108,6 +100,17 @@ class TicketForm(forms.ModelForm):
             'number_of_tickets', 'section', 'row',
             'face_value', 'ticket_type', 'benefits_and_Restrictions', 'sell_price', 'sell_together'
         ]
+        widgets = {
+            # ... your existing widgets ...
+            
+            # Add the multiple attribute safely in the Meta class!
+            'upload_file': forms.ClearableFileInput(attrs={
+                'class': 'form-control ticket-input conditional-field',
+                'data-conditional': 'upload-choice-now',
+                'accept': 'application/pdf',
+                'multiple': True  # Use the Python boolean True here
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         
