@@ -18,14 +18,19 @@ class TicketForm(forms.ModelForm):
             'data-behavior': 'upload-choice'
         })
     )
+    
+    # --- FIX 1: Changed ClearableFileInput to FileInput and added 'multiple': True ---
     upload_file = forms.FileField(
         required=False,
-        widget=forms.ClearableFileInput(attrs={
+        widget=forms.FileInput(attrs={
             'class': 'form-control ticket-input conditional-field',
             'data-conditional': 'upload-choice-now',
-            'accept': 'application/pdf'
+            'accept': 'application/pdf',
+            'multiple': True 
         })
     )
+    # -------------------------------------------------------------------------------
+    
     upload_by = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={
@@ -83,6 +88,7 @@ class TicketForm(forms.ModelForm):
             'data-behavior': 'restrictions-select'
         })
     )
+    
     sell_price = forms.DecimalField(
         max_digits=8, decimal_places=2,
         widget=forms.NumberInput(attrs={
@@ -110,7 +116,6 @@ class TicketForm(forms.ModelForm):
         ]
 
     def __init__(self, *args, **kwargs):
-        
         event = kwargs.pop('event', None)
         user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
@@ -122,8 +127,6 @@ class TicketForm(forms.ModelForm):
             self.fields['section'].queryset = EventSection.objects.filter(event=event)
             max_date = event.date - timedelta(days=1)
             self.fields['upload_by'].widget.attrs['max'] = max_date.isoformat()
-
-        
 
     def clean(self):
         cleaned = super().clean()
@@ -141,8 +144,4 @@ class TicketForm(forms.ModelForm):
 
         return cleaned
         
-    def save(self, commit=True):
-        if self.cleaned_data.get('upload_file'):
-            self.instance.upload_file = self.cleaned_data['upload_file']
-        return super().save(commit=commit)
-       
+    # FIX 2: I completely removed the buggy `def save(self):` method from here!
