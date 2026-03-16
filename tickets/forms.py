@@ -23,8 +23,7 @@ class TicketForm(forms.ModelForm):
         widget=forms.ClearableFileInput(attrs={
             'class': 'form-control ticket-input conditional-field',
             'data-conditional': 'upload-choice-now',
-            'accept': 'application/pdf',
-            'multiple': 'multiple'  # <--- REQUIRED
+            'accept': 'application/pdf'
         })
     )
     upload_by = forms.DateField(
