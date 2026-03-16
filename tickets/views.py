@@ -29,9 +29,10 @@ import logging
 import stripe
 import requests
 from .stripe_utils import StripeAPI
-from tickets.models import Ticket
+from tickets.models import Ticket, TicketPDF
 from accounts.models import User # <-- Add this import
 from django.core.exceptions import ValidationError
+
 
 logger = logging.getLogger(__name__)
 
@@ -156,7 +157,29 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
                     del self.request.session[session_key]
                 ticket.bundle_id = None
             
+            # --- 🚀 NEW: STRICT QUANTITY VALIDATION & INDIVIDUAL SAVING ---
+            upload_choice = form.cleaned_data.get('upload_choice')
+            files = self.request.FILES.getlist('upload_file')
+            
+            if upload_choice == 'now':
+                # RULE 1: File count MUST match ticket quantity exactly
+                if len(files) != ticket.number_of_tickets:
+                    messages.error(
+                        self.request, 
+                        f"Quantity mismatch! You listed {ticket.number_of_tickets} tickets, so you MUST upload exactly {ticket.number_of_tickets} PDF files. You uploaded {len(files)}."
+                    )
+                    return self.form_invalid(form)
+
+            # Save the main listing first so we have an ID to attach the PDFs to
             ticket.save()
+            
+            # RULE 2: Save each file individually into the new inventory table
+            if upload_choice == 'now' and files:
+                for pdf_file in files:
+                    TicketPDF.objects.create(
+                        ticket=ticket,
+                        file=pdf_file
+                    )
 
             subject = f"Ticket Listing Created for {self.event.name}"
             marketplace_url = self.request.build_absolute_uri(
@@ -194,6 +217,7 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
             import traceback
             error_msg = str(e)
             logger.error(f"Error creating ticket listing: {str(e)}")
+            messages.error(self.request, f"Error creating ticket listing: {str(e)}")
             logger.error(f"Traceback: {traceback.format_exc()}")
             
             # Provide user-friendly error messages
