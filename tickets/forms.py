@@ -101,14 +101,14 @@ class TicketForm(forms.ModelForm):
             'face_value', 'ticket_type', 'benefits_and_Restrictions', 'sell_price', 'sell_together'
         ]
         widgets = {
-            # ... your existing widgets ...
+            # ... keep your other widgets the same ...
             
-            # Add the multiple attribute safely in the Meta class!
-            'upload_file': forms.ClearableFileInput(attrs={
+            # FIX: Use FileInput instead of ClearableFileInput
+            'upload_file': forms.FileInput(attrs={
                 'class': 'form-control ticket-input conditional-field',
                 'data-conditional': 'upload-choice-now',
                 'accept': 'application/pdf',
-                'multiple': True  # Use the Python boolean True here
+                'multiple': True  
             }),
         }
 
