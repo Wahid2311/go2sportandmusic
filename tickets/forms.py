@@ -141,8 +141,3 @@ class TicketForm(forms.ModelForm):
 
         return cleaned
 
-    def save(self, commit=True):
-        if self.cleaned_data.get('upload_file'):
-            self.instance.upload_file = self.cleaned_data['upload_file']
-        return super().save(commit=commit)
-
