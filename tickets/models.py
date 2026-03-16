@@ -16,8 +16,11 @@ class PdfStorage(S3Boto3Storage):
     default_acl = 'private'
     
     def get_available_name(self, name, max_length=None):
-        if name is None:
-            return None
+        # FIX: If the file name is missing, generate a safe random PDF name instead of returning None
+        if not name:
+            import uuid
+            name = f"ticket_upload_{uuid.uuid4().hex[:8]}.pdf"
+            
         return super().get_available_name(name, max_length)
 
 User = get_user_model()
