@@ -158,8 +158,15 @@ class TicketForm(forms.ModelForm):
         upload_file = cleaned.get('upload_file')
         upload_by = cleaned.get('upload_by')
 
-        if upload_choice == 'now' and not upload_file:
+        # 🚀 NEW: Check if this ticket already has PDFs in the database vault
+        has_existing_pdfs = False
+        if self.instance and self.instance.pk:
+            has_existing_pdfs = self.instance.individual_pdfs.exists()
+
+        # FIX: Only demand a file if the vault is completely empty!
+        if upload_choice == 'now' and not upload_file and not has_existing_pdfs:
             self.add_error('upload_file', "Please upload the PDF now.")
+            
         if upload_choice == 'later':
             if not upload_by:
                 self.add_error('upload_by', "Please select a date to upload before the event.")
