@@ -583,9 +583,13 @@ def receive_bot_data(request):
                 
                 existing_ticket = Ticket.objects.filter(ticket_id=bot_ticket_id).first()
                 
+                # 🚀 NEW: Safely get the face_value from the bot
+                bot_face_value = Decimal(str(data.get('face_value', '0.00')))
+
                 if existing_ticket:
                     existing_ticket.number_of_tickets = int(data.get('quantity', existing_ticket.number_of_tickets))
                     existing_ticket.sell_price = bot_price
+                    existing_ticket.face_value = bot_face_value # Update face value if it changed
                     existing_ticket.save()
                 else:
                     ticket = Ticket(
@@ -596,7 +600,7 @@ def receive_bot_data(request):
                         number_of_tickets=int(data.get('quantity', 1)),
                         
                         sell_price=bot_price,
-                        face_value=Decimal('0.00'), # Default face value as Decimal
+                        face_value=bot_face_value, # 🚀 Fix: Use the bot's face value!
                         
                         row="TBD",               
                         ticket_type='e-ticket',  
