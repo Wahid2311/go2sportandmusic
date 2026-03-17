@@ -139,8 +139,8 @@ class Ticket(models.Model):
         
 
     def clean(self):
-        if self.upload_choice == 'now' and not self.upload_file:
-            raise ValidationError("PDF file must be uploaded if 'Upload Now' is selected.")
+        #if self.upload_choice == 'now' and not self.upload_file:
+            #raise ValidationError("PDF file must be uploaded if 'Upload Now' is selected.")
         if self.upload_choice == 'later' and not self.upload_by:
             raise ValidationError("Upload by date is required if 'Upload Later' is selected.")
         if self.upload_by and self.upload_by >= self.event.date:
