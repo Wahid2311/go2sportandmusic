@@ -345,42 +345,47 @@ class ResellerTicketUpdateView(ResellerRequiredMixin, UpdateView):
             files = self.request.FILES.getlist('upload_file')
             upload_choice = form.cleaned_data.get('upload_choice')
 
-            # Check if vault was empty before this update (for the buyer email logic)
             had_pdfs_before = ticket.individual_pdfs.exists()
+            existing_pdf_count = ticket.individual_pdfs.count()
 
-            # 🚀 IF THEY UPLOADED BRAND NEW FILES TO REPLACE THE OLD ONES:
-            if upload_choice == 'now' and files:
+            if upload_choice == 'now':
                 
-                # 1. Enforce the strict quantity rule
-                if len(files) != ticket.number_of_tickets:
-                    messages.error(
-                        self.request, 
-                        f"Quantity mismatch! You selected {ticket.number_of_tickets} tickets, so you MUST upload exactly {ticket.number_of_tickets} PDF files."
-                    )
-                    return self.form_invalid(form)
-                
-                # 2. Delete the old incorrect PDFs from the vault
-                ticket.individual_pdfs.all().delete()
-                
-                # 3. Stop S3 double-upload
-                ticket.upload_file = None 
-                ticket.save()
+                # 🚀 IF THEY UPLOADED NEW FILES:
+                if files:
+                    if len(files) != ticket.number_of_tickets:
+                        messages.error(
+                            self.request, 
+                            f"Quantity mismatch! You selected {ticket.number_of_tickets} tickets, so you MUST upload exactly {ticket.number_of_tickets} PDF files."
+                        )
+                        return self.form_invalid(form)
+                    
+                    # Delete old mistakes, save new ones
+                    ticket.individual_pdfs.all().delete()
+                    ticket.upload_file = None 
+                    ticket.save()
 
-                # 4. Save the brand new PDFs to the vault
-                from .models import TicketPDF
-                for pdf_file in files:
-                    TicketPDF.objects.create(
-                        ticket=ticket,
-                        file=pdf_file
-                    )
+                    from .models import TicketPDF
+                    for pdf_file in files:
+                        TicketPDF.objects.create(ticket=ticket, file=pdf_file)
 
-                # 5. If ticket was sold and they just uploaded the missing PDFs, email the buyer!
-                if ticket.sold and ticket.buyer and not had_pdfs_before:
-                    self.send_pdf_to_buyer(ticket)
+                    if ticket.sold and ticket.buyer and not had_pdfs_before:
+                        self.send_pdf_to_buyer(ticket)
 
-                messages.success(self.request, "Listing updated and new tickets securely stored!")
-                
-            # 🚀 IF THEY JUST CHANGED THE PRICE (NO NEW FILES UPLOADED):
+                    messages.success(self.request, "Listing updated and new tickets securely replaced!")
+                    
+                # 🚀 IF THEY DID NOT UPLOAD NEW FILES:
+                else:
+                    if existing_pdf_count > 0 and ticket.number_of_tickets != existing_pdf_count:
+                        messages.error(
+                            self.request, 
+                            f"Quantity mismatch! Your vault has {existing_pdf_count} tickets, but you requested {ticket.number_of_tickets}. Please upload {ticket.number_of_tickets} new PDFs."
+                        )
+                        return self.form_invalid(form)
+
+                    ticket.upload_file = None
+                    ticket.save()
+                    messages.success(self.request, "Listing details updated successfully!")
+
             else:
                 ticket.upload_file = None
                 ticket.save()
