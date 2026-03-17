@@ -9,6 +9,10 @@ from datetime import timedelta
 from .models import Ticket, BENEFITS_CHOICES, RESTRICTIONS_CHOICES, TICKET_TYPES
 from events.models import Event, EventSection
 
+# --- 🚀 NEW FIX: Tell Django we explicitly allow multiple files! ---
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+# -------------------------------------------------------------------
 
 class TicketForm(forms.ModelForm):
     upload_choice = forms.ChoiceField(
@@ -19,17 +23,16 @@ class TicketForm(forms.ModelForm):
         })
     )
     
-    # --- FIX 1: Changed ClearableFileInput to FileInput and added 'multiple': True ---
+    # --- FIX: Apply the custom widget. (We don't need 'multiple': True anymore 
+    # because our custom widget automatically handles it!) ---
     upload_file = forms.FileField(
         required=False,
-        widget=forms.FileInput(attrs={
+        widget=MultipleFileInput(attrs={
             'class': 'form-control ticket-input conditional-field',
             'data-conditional': 'upload-choice-now',
-            'accept': 'application/pdf',
-            'multiple': True 
+            'accept': 'application/pdf'
         })
     )
-    # -------------------------------------------------------------------------------
     
     upload_by = forms.DateField(
         required=False,
@@ -143,5 +146,3 @@ class TicketForm(forms.ModelForm):
                 self.add_error('upload_by', "Upload date must be before the event date.")
 
         return cleaned
-        
-    # FIX 2: I completely removed the buggy `def save(self):` method from here!
