@@ -9,10 +9,32 @@ from datetime import timedelta
 from .models import Ticket, BENEFITS_CHOICES, RESTRICTIONS_CHOICES, TICKET_TYPES
 from events.models import Event, EventSection
 
-# --- 🚀 NEW FIX: Tell Django we explicitly allow multiple files! ---
+# --- 🚀 NEW FIX: Custom Multiple File Field 🚀 ---
 class MultipleFileInput(forms.ClearableFileInput):
     allow_multiple_selected = True
-# -------------------------------------------------------------------
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("widget", MultipleFileInput())
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        
+        # FIX: Django Models crash if you try to save a list to a single legacy field.
+        # We return just the first file here to keep the form validation happy.
+        # Don't worry, your views.py uses request.FILES.getlist() to securely grab ALL of them!
+        if isinstance(result, list):
+            if result:
+                return result[0]
+            return None
+        return result
+# -------------------------------------------------
+
 
 class TicketForm(forms.ModelForm):
     upload_choice = forms.ChoiceField(
@@ -23,9 +45,8 @@ class TicketForm(forms.ModelForm):
         })
     )
     
-    # --- FIX: Apply the custom widget. (We don't need 'multiple': True anymore 
-    # because our custom widget automatically handles it!) ---
-    upload_file = forms.FileField(
+    # FIX: Applied the new MultipleFileField!
+    upload_file = MultipleFileField(
         required=False,
         widget=MultipleFileInput(attrs={
             'class': 'form-control ticket-input conditional-field',
