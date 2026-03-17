@@ -155,18 +155,36 @@ class TicketForm(forms.ModelForm):
     def clean(self):
         cleaned = super().clean()
         upload_choice = cleaned.get('upload_choice')
-        upload_file = cleaned.get('upload_file')
         upload_by = cleaned.get('upload_by')
+        number_of_tickets = cleaned.get('number_of_tickets')
+        
+        # 🚀 NEW: Get the exact count of files they are trying to upload right now
+        files = self.files.getlist('upload_file') if self.files else []
 
-        # 🚀 NEW: Check if this ticket already has PDFs in the database vault
-        has_existing_pdfs = False
+        # 🚀 NEW: Get the exact count of files currently locked in the vault
+        existing_pdf_count = 0
         if self.instance and self.instance.pk:
-            has_existing_pdfs = self.instance.individual_pdfs.exists()
+            existing_pdf_count = self.instance.individual_pdfs.count()
 
-        # FIX: Only demand a file if the vault is completely empty!
-        if upload_choice == 'now' and not upload_file and not has_existing_pdfs:
-            self.add_error('upload_file', "Please upload the PDF now.")
+        if upload_choice == 'now':
+            # SCENARIO 1: They actually clicked "Choose Files" and attached new PDFs
+            if files:
+                if len(files) != number_of_tickets:
+                    self.add_error(
+                        'upload_file', 
+                        f"Mismatch! You set the quantity to {number_of_tickets}, but uploaded {len(files)} files."
+                    )
             
+            # SCENARIO 2: They left the file box empty (checking the vault)
+            else:
+                if existing_pdf_count == 0:
+                    self.add_error('upload_file', "Please upload the PDF now.")
+                elif number_of_tickets != existing_pdf_count:
+                    self.add_error(
+                        'number_of_tickets', 
+                        f"Vault mismatch! You have {existing_pdf_count} tickets saved in your vault, but changed the quantity to {number_of_tickets}. You must upload {number_of_tickets} new PDFs to replace the old ones."
+                    )
+                    
         if upload_choice == 'later':
             if not upload_by:
                 self.add_error('upload_by', "Please select a date to upload before the event.")
