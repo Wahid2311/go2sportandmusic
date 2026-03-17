@@ -157,7 +157,7 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
                     del self.request.session[session_key]
                 ticket.bundle_id = None
             
-            # --- 🚀 NEW: STRICT QUANTITY VALIDATION & INDIVIDUAL SAVING ---
+            # --- 🚀 STRICT QUANTITY VALIDATION & INDIVIDUAL SAVING ---
             upload_choice = form.cleaned_data.get('upload_choice')
             files = self.request.FILES.getlist('upload_file')
             
@@ -169,10 +169,13 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
                         f"Quantity mismatch! You listed {ticket.number_of_tickets} tickets, so you MUST upload exactly {ticket.number_of_tickets} PDF files. You uploaded {len(files)}."
                     )
                     return self.form_invalid(form)
+                
+                # ---> 🚀 NEW FIX: Prevent the double-upload to S3! <---
+                ticket.upload_file = None
 
-            # Save the main listing first so we have an ID to attach the PDFs to
+            # Save the main listing first (It will no longer upload a duplicate file!)
             ticket.save()
-            
+
             # RULE 2: Save each file individually into the new inventory table
             if upload_choice == 'now' and files:
                 for pdf_file in files:
@@ -180,6 +183,7 @@ class CreateListingView(ResellerRequiredMixin, CreateView):
                         ticket=ticket,
                         file=pdf_file
                     )
+            # -------------------------------------------------------------
 
             subject = f"Ticket Listing Created for {self.event.name}"
             marketplace_url = self.request.build_absolute_uri(
