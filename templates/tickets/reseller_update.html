@@ -23,31 +23,38 @@
       <div class="col-md-6 conditional-field" data-conditional="upload-choice-now">
         <label class="form-label">{{ form.upload_file.label }}</label>
         {{ form.upload_file }}
-        
-        {% if ticket.individual_pdfs.exists %}
-            <div class="mt-3 p-3 bg-light border rounded">
-                <h6 class="mb-2"><strong>Stored Tickets ({{ ticket.individual_pdfs.count }})</strong></h6>
-                <ul class="list-group">
-                    {% for pdf in ticket.individual_pdfs.all %}
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            <a href="{{ pdf.file.url }}" target="_blank" class="text-decoration-none">
-                                <i class="bi bi-file-earmark-pdf-fill text-danger"></i> Ticket #{{ forloop.counter }}
-                            </a>
-                            {% if pdf.is_sold %}
-                                <span class="badge bg-danger">SOLD</span>
-                            {% else %}
-                                <span class="badge bg-success">AVAILABLE</span>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-                <small class="text-muted mt-2 d-block">
-                    * If you upload new files, they will be added to this inventory.
-                </small>
-            </div>
-        {% endif %}
-        </div>
-      
+      </div>
+
+      {% if ticket.individual_pdfs.exists %}
+      <div class="col-12 mt-3">
+          <div class="p-3 bg-light border rounded">
+              <h6 class="mb-3 text-secondary"><strong>Stored Tickets ({{ ticket.individual_pdfs.count }})</strong></h6>
+              
+              <div style="max-height: 250px; overflow-y: auto; overflow-x: hidden; border: 1px solid #dee2e6; border-radius: 5px;">
+                  <ul class="list-group list-group-flush">
+                      {% for pdf in ticket.individual_pdfs.all %}
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                              
+                              <a href="{{ pdf.file.url }}" target="_blank" class="text-decoration-none text-truncate" style="max-width: 80%;" title="{{ pdf.file.name|cut:'tickets/pdfs/' }}">
+                                  <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> 
+                                  {{ pdf.file.name|cut:"tickets/pdfs/" }}
+                              </a>
+                              
+                              {% if pdf.is_sold %}
+                                  <span class="badge bg-danger rounded-pill">SOLD</span>
+                              {% else %}
+                                  <span class="badge bg-success rounded-pill">AVAILABLE</span>
+                              {% endif %}
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+              <small class="text-muted mt-2 d-block">
+                  * If you upload new files, they will be added to this inventory securely.
+              </small>
+          </div>
+      </div>
+      {% endif %}
       <div class="col-md-6 conditional-field" data-conditional="upload-choice-later">
         <label class="form-label">{{ form.upload_by.label }}</label>
         {{ form.upload_by }}
