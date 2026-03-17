@@ -19,45 +19,49 @@
         <label class="form-label">{{ form.upload_choice.label }}</label>
         {{ form.upload_choice }}
       </div>
+      
       <div class="col-md-6 conditional-field" data-conditional="upload-choice-now">
         <label class="form-label">{{ form.upload_file.label }}</label>
         {{ form.upload_file }}
       </div>
+
+      {% if ticket.individual_pdfs.exists %}
+      <div class="col-12 mt-3">
+          <div class="p-3 bg-light border rounded">
+              <h6 class="mb-3 text-secondary"><strong>Stored Tickets ({{ ticket.individual_pdfs.count }})</strong></h6>
+              
+              <div style="max-height: 250px; overflow-y: auto; overflow-x: hidden; border: 1px solid #dee2e6; border-radius: 5px;">
+                  <ul class="list-group list-group-flush">
+                      {% for pdf in ticket.individual_pdfs.all %}
+                          <li class="list-group-item d-flex justify-content-between align-items-center">
+                              
+                              <a href="{{ pdf.file.url }}" target="_blank" class="text-decoration-none text-truncate" style="max-width: 80%;" title="{{ pdf.file.name|cut:'tickets/pdfs/' }}">
+                                  <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> 
+                                  {{ pdf.file.name|cut:"tickets/pdfs/" }}
+                              </a>
+                              
+                              {% if pdf.is_sold %}
+                                  <span class="badge bg-danger rounded-pill">SOLD</span>
+                              {% else %}
+                                  <span class="badge bg-success rounded-pill">AVAILABLE</span>
+                              {% endif %}
+                          </li>
+                      {% endfor %}
+                  </ul>
+              </div>
+          </div>
+      </div>
+      {% endif %}
       <div class="col-md-6 conditional-field" data-conditional="upload-choice-later">
         <label class="form-label">{{ form.upload_by.label }}</label>
         {{ form.upload_by }}
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.number_of_tickets.label }}</label>
         {{ form.number_of_tickets }}
-        {% if ticket.individual_pdfs.exists %}
-        <div class="col-12 mt-3">
-            <div class="p-3 bg-light border rounded">
-                <h6 class="mb-3 text-secondary"><strong>Stored Tickets ({{ ticket.individual_pdfs.count }})</strong></h6>
-                
-                <div style="max-height: 250px; overflow-y: auto; overflow-x: hidden; border: 1px solid #dee2e6; border-radius: 5px;">
-                    <ul class="list-group list-group-flush">
-                        {% for pdf in ticket.individual_pdfs.all %}
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                
-                                <a href="{{ pdf.file.url }}" target="_blank" class="text-decoration-none text-truncate" style="max-width: 80%;" title="{{ pdf.file.name|cut:'tickets/pdfs/' }}">
-                                    <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> 
-                                    {{ pdf.file.name|cut:"tickets/pdfs/" }}
-                                </a>
-                                
-                                {% if pdf.is_sold %}
-                                    <span class="badge bg-danger rounded-pill">SOLD</span>
-                                {% else %}
-                                    <span class="badge bg-success rounded-pill">AVAILABLE</span>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            </div>
-        </div>
-      {% endif %}
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.section.label }}</label>
         {{ form.section }}
@@ -65,10 +69,12 @@
           <small>Price Range: <span id="price-range">–</span></small>
         </div>
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.face_value.label }}</label>
         {{ form.face_value }}
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.sell_price.label }}</label>
         {{ form.sell_price }}
@@ -77,10 +83,12 @@
           <small>Reseller Buyer Pays: £<span id="proj-reseller">0.00</span></small>
         </div>
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.row.label }}</label>
         {{ form.row }}
       </div>
+      
       <div class="col-md-6">
         <label class="form-label">{{ form.seats.label }}</label>
         {{ form.seats }}
@@ -90,6 +98,7 @@
         <label class="form-label">{{ form.ticket_type.label }}</label>
         {{ form.ticket_type }}
       </div>
+      
       <div class="col-12">
         <h5 class="checkbox-group-title">{{ form.benefits_and_Restrictions.label }}</h5>
         <div class="checkbox-grid benefits-grid">
@@ -109,6 +118,7 @@
     </div>
   </form>
 </div>
+
 <script>
   document.addEventListener('DOMContentLoaded', () => {
   const uploadChoice = document.querySelector('[name="upload_choice"]');
