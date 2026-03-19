@@ -22,7 +22,7 @@ from accounts.utils import api_login_required, require_user_type, authenticate_v
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 from tickets.models import Ticket
-
+from tickets.email_templates import EmailTemplates
 
 class SuperAdminMixin(UserPassesTestMixin):
     def test_func(self):
