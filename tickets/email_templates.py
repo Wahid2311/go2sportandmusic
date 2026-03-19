@@ -98,7 +98,58 @@ class ProfessionalEmailTemplates:
             </a>
         </div>
         """
-    
+    @staticmethod
+    def event_created(event, user_email):
+        """STUNNING event creation email for superadmin"""
+        details_html = ""
+        details = [
+            ("🎫", "Event Name", event.name),
+            ("📅", "Date", event.date.strftime('%B %d, %Y')),
+            ("🕐", "Time", event.time.strftime('%I:%M %p')),
+            ("🏟️", "Stadium", event.stadium_name),
+            ("🏷️", "Category", event.category_legacy or event.category),
+        ]
+        
+        for icon, label, value in details:
+            details_html += ProfessionalEmailTemplates.get_detail_box(label, value, icon)
+            
+        html_content = f"""
+        <html>
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <style>
+                body {{ font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; color: #333; line-height: 1.6; }}
+                a {{ color: #FFC107; }}
+                .container {{ max-width: 600px; margin: 0 auto; background: white; }}
+            </style>
+        </head>
+        <body style="margin: 0; padding: 0; background-color: #f5f5f5;">
+            <div class="container" style="max-width: 600px; margin: 20px auto; background-color: white; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 40px rgba(0,0,0,0.1);">
+                {ProfessionalEmailTemplates.get_header_with_logo()}
+                
+                {ProfessionalEmailTemplates.get_hero_section('Event Created!', 'Your new event has been successfully published.', '🎉')}
+                
+                <div style="padding: 40px 30px;">
+                    <p style="font-size: 16px; color: #1a1a1a; margin: 0 0 30px 0;">
+                        Hello Admin,<br><br>
+                        You have successfully created a new event on TicketHouse. It is now ready for ticket listings.
+                    </p>
+                    
+                    <h3 style="color: #1a1a1a; font-size: 18px; margin: 30px 0 20px 0; font-weight: 900; text-transform: uppercase; letter-spacing: 1px;">📋 Event Details</h3>
+                    {details_html}
+                    
+                    {ProfessionalEmailTemplates.get_cta_button('View Event List', 'https://tickethouse.net/superadmin/events/')}
+                    
+                </div>
+                
+                {ProfessionalEmailTemplates.get_footer()}
+            </div>
+        </body>
+        </html>
+        """
+        return html_content
+        
     @staticmethod
     def payment_successful_buyer(order, ticket):
         """STUNNING payment success email for buyer"""
