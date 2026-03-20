@@ -178,5 +178,83 @@
             updateSectionsData();
         }
     });
+    // ==========================================
+    // STADIUM DROPDOWN & AUTO-IMAGE LOGIC
+    // ==========================================
+    const stadiumNameInput = document.getElementById('id_stadium_name');
+    const stadiumImageInput = document.getElementById('id_stadium_image');
+
+    if (stadiumNameInput && stadiumImageInput) {
+        // 1. Create the dropdown element
+        const select = document.createElement('select');
+        select.className = 'form-control event-form-input mb-2';
+        select.id = 'stadium_preset';
+
+        // 2. Add the default and custom options
+        select.innerHTML = `
+            <option value="">-- Select a predefined Stadium --</option>
+            <option value="custom">✏️ Custom / Type manually...</option>
+        `;
+
+        // 3. Your Database of Stadiums and GitHub Image URLs
+        // You can add as many as you want to this list!
+        const stadiumDatabase = [
+            { name: "Etihad Stadium - Manchester City FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/manchester-city.png?raw=true" },
+            { name: "Anfield - Liverpool FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/liverpool.png?raw=true" },
+            { name: "Emirates Stadium - Arsenal FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/arsenal.png?raw=true" },
+            { name: "Stamford Bridge - Chelsea FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/chelsea.png?raw=true" },
+            { name: "Old Trafford - Manchester United", image: "https://github.com/Wahid2311/stadium_go/blob/main/manchester-united.png?raw=true" },
+            { name: "Tottenham Hotspur Stadium", image: "https://github.com/Wahid2311/stadium_go/blob/main/tottenham.png?raw=true" },
+            { name: "Villa Park - Aston Villa", image: "https://github.com/Wahid2311/stadium_go/blob/main/aston-villa.png?raw=true" },
+            { name: "St James' Park - Newcastle United", image: "https://github.com/Wahid2311/stadium_go/blob/main/newcastle.png?raw=true" },
+            { name: "Turf Moor - Burnley FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/burnley.png?raw=true" },
+            { name: "Santiago Bernabéu - Real Madrid", image: "https://github.com/Wahid2311/stadium_go/blob/main/real-madrid.png?raw=true" },
+            { name: "Camp Nou - FC Barcelona", image: "https://github.com/Wahid2311/stadium_go/blob/main/barcelona.png?raw=true" },
+            { name: "Celtic Park - Celtic FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/celtic.png?raw=true" },
+            { name: "Ibrox Stadium - Rangers FC", image: "https://github.com/Wahid2311/stadium_go/blob/main/rangers.png?raw=true" }
+        ];
+
+        // 4. Populate the dropdown with the database
+        stadiumDatabase.forEach(stad => {
+            const opt = document.createElement('option');
+            opt.value = stad.name;
+            opt.textContent = stad.name;
+            opt.dataset.image = stad.image;
+            select.appendChild(opt);
+        });
+
+        // 5. Insert the dropdown directly above the standard text input
+        stadiumNameInput.parentNode.insertBefore(select, stadiumNameInput);
+
+        // 6. Hide the text input by default to keep the UI clean
+        stadiumNameInput.style.display = 'none';
+
+        // 7. Listen for the user picking a stadium
+        select.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                // If they want a custom stadium: Show the text box, clear the image so they can type
+                stadiumNameInput.style.display = 'block';
+                stadiumNameInput.value = '';
+                stadiumImageInput.value = '';
+                stadiumNameInput.focus();
+            } else if (this.value === '') {
+                // If they reset the dropdown
+                stadiumNameInput.style.display = 'none';
+                stadiumNameInput.value = '';
+                stadiumImageInput.value = '';
+            } else {
+                // If they pick a preset stadium: Auto-fill both inputs!
+                stadiumNameInput.style.display = 'none';
+                stadiumNameInput.value = this.value;
+                
+                const selectedOpt = this.options[this.selectedIndex];
+                stadiumImageInput.value = selectedOpt.dataset.image;
+                
+                // Add a cool little flash effect to show it worked
+                stadiumImageInput.style.backgroundColor = '#e8f5e9';
+                setTimeout(() => stadiumImageInput.style.backgroundColor = '', 500);
+            }
+        });
+    }
 </script>
 {% endblock %}
