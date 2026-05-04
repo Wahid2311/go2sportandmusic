@@ -40,7 +40,7 @@ POSTGRES_CREATE_MISSING_TABLES = [
         expires_at          TIMESTAMPTZ NOT NULL,
         is_expired          BOOLEAN NOT NULL DEFAULT FALSE,
         buyer_id            UUID NOT NULL REFERENCES accounts_user(id) ON DELETE CASCADE,
-        order_id            INTEGER UNIQUE REFERENCES tickets_order(id) ON DELETE CASCADE,
+        order_id            UUID UNIQUE REFERENCES tickets_order(id) ON DELETE CASCADE,
         ticket_id           INTEGER NOT NULL REFERENCES tickets_ticket(id) ON DELETE CASCADE
     )
     """,
