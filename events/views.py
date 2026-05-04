@@ -258,11 +258,11 @@ This action was performed by {self.request.user.email}'''
                 fail_silently=False
             )
         except Exception as e:
-            messages.error(f'Failed to send deletion email: {str(e)}')
+            messages.error(self.request, f'Failed to send deletion email: {str(e)}')
 
 class SuperadminEventListView(SuperAdminMixin, View):
     def get(self, request):
-        events = Event.objects.filter(superadmin=request.user).order_by('-date', '-time')
+        events = Event.objects.all().order_by('-date', '-time')
         
         page = int(request.GET.get('page', 1))
         per_page = int(request.GET.get('per_page', 10))
@@ -886,7 +886,7 @@ class EventDeleteAPIView(View):
             return JsonResponse({'error': 'Only superadmins can delete events'}, status=403)
 
         try:
-            event = Event.objects.get(event_id=event_id, superadmin=request.user)
+            event = Event.objects.get(event_id=event_id)
             event_name = event.name
             event_id = event.event_id
             event.delete()
@@ -897,7 +897,7 @@ class EventDeleteAPIView(View):
             })
 
         except Event.DoesNotExist:
-            return JsonResponse({'error': 'Event not found or access denied'}, status=404)
+            return JsonResponse({'error': 'Event not found'}, status=404)
         except Exception as e:
             return JsonResponse({'error': f'Error deleting event: {str(e)}'}, status=500)
 
