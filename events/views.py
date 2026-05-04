@@ -349,38 +349,84 @@ class EventUpdateAPIView(View):
         except json.JSONDecodeError:
             return JsonResponse({'error': 'Invalid JSON data'}, status=400)
 
-        form_data = data.copy()
-        sections_data = form_data.pop('sections', [])
+        sections_data = data.get('sections', [])
 
-        form = EventCreationForm(form_data, instance=event)
-        if not form.is_valid():
-            return JsonResponse({'error': form.errors}, status=400)
+        # Map category value to display name for category_legacy (same as EventCreateAPIView)
+        CATEGORY_DISPLAY_MAP = {
+            'football': 'Football',
+            'Football': 'Football',
+            'sports': 'Sports',
+            'Sports': 'Sports',
+            'concert': 'Concert',
+            'Concert': 'Concert',
+            'theater': 'Theater',
+            'Theater': 'Theater',
+            'conference': 'Conference',
+            'Conference': 'Conference',
+            'festival': 'Festival',
+            'Festival': 'Festival',
+            'other': 'Other',
+            'Other': 'Other',
+        }
 
         try:
             with transaction.atomic():
-                event = form.save()
+                # Update fields directly on the model (bypass EventCreationForm category issue)
+                if 'name' in data:
+                    event.name = data['name']
+                if 'category' in data:
+                    event.category_legacy = CATEGORY_DISPLAY_MAP.get(data['category'], data['category'])
+                if 'sports_type' in data:
+                    event.sports_type = data['sports_type'] or ''
+                if 'country' in data:
+                    event.country = data['country'] or ''
+                if 'team' in data:
+                    event.team = data['team'] or ''
+                if 'stadium_name' in data:
+                    event.stadium_name = data['stadium_name']
+                if 'stadium_image' in data:
+                    event.stadium_image = data['stadium_image']
+                if 'event_logo' in data:
+                    event.event_logo = data['event_logo']
+                if 'stadium_svg_key' in data:
+                    event.stadium_svg_key = data['stadium_svg_key'] or None
+                if 'date' in data:
+                    from datetime import date as date_type
+                    event.date = data['date']
+                if 'time' in data:
+                    event.time = data['time']
+                if 'normal_service_charge' in data:
+                    event.normal_service_charge = data['normal_service_charge']
+                if 'reseller_service_charge' in data:
+                    event.reseller_service_charge = data['reseller_service_charge']
 
-                existing_sections = {str(s.id): s for s in event.sections.all()}
+                try:
+                    event.full_clean()
+                except ValidationError as e:
+                    return JsonResponse({'error': f'Validation error: {str(e)}'}, status=400)
 
-                for section_data in sections_data:
-                    section_form = SectionForm(section_data)
-                    if section_form.is_valid():
-                        if 'id' in section_data and section_data['id'] in existing_sections:
-                            section = existing_sections.pop(section_data['id'])
-                            section.name = section_form.cleaned_data['name']
-                            section.color = section_form.cleaned_data['color']
-                            section.save()
+                event.save()
+
+                # Update sections if provided
+                if sections_data:
+                    existing_sections = {str(s.id): s for s in event.sections.all()}
+
+                    for section_data in sections_data:
+                        section_form = SectionForm(section_data)
+                        if section_form.is_valid():
+                            if 'id' in section_data and section_data['id'] in existing_sections:
+                                section = existing_sections.pop(section_data['id'])
+                                section.name = section_form.cleaned_data['name']
+                                section.color = section_form.cleaned_data['color']
+                                section.save()
+                            else:
+                                EventSection.objects.create(
+                                    event=event,
+                                    name=section_form.cleaned_data['name'],
+                                    color=section_form.cleaned_data['color']
+                                )
                         else:
-                            EventSection.objects.create(
-                                event=event,
-                                name=section_form.cleaned_data['name'],
-                                color=section_form.cleaned_data['color']
-                            )
-                    else:
-                        return JsonResponse({'error': section_form.errors}, status=400)
-
-                for section in existing_sections.values():
-                    section.delete()
+                            return JsonResponse({'error': section_form.errors}, status=400)
 
                 return JsonResponse({
                     'success': True,
