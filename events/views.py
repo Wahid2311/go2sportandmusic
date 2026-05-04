@@ -107,7 +107,7 @@ class EventCreateAPIView(View):
                 event = Event(
                     superadmin=request.user,
                     name=data.get('name'),
-                    category=data.get('category'),
+                    category_legacy=data.get('category'),
                     sports_type=data.get('sports_type') or '',
                     country=data.get('country') or '',
                     team=data.get('team') or '',
@@ -118,8 +118,8 @@ class EventCreateAPIView(View):
                     time=parsed_time,
                     normal_service_charge=data.get('normal_service_charge', 0),
                     reseller_service_charge=data.get('reseller_service_charge', 0),
-                    total_tickets=data.get('total_tickets', 0),  
-                    sold_tickets=data.get('sold_tickets', 0),   
+                    total_tickets=data.get('total_tickets', 0),
+                    sold_tickets=data.get('sold_tickets', 0),
                 )
                 
                 # Validate the event before saving
