@@ -35,6 +35,7 @@ class Event(BaseModel):
     EVENT_CATEGORIES = [
         ('concert', 'Concert'),
         ('sports', 'Sports'),
+        ('football', 'Football'),
         ('theater', 'Theater'),
         ('conference', 'Conference'),
         ('festival', 'Festival'),

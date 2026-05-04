@@ -103,17 +103,31 @@ class EventCreateAPIView(View):
                     'error': f'Invalid category. Must be one of: {", ".join(valid_categories)}'
                 }, status=400)
             
+            # Map category value to display name for category_legacy
+            # This ensures events appear under the correct EventCategory tab
+            CATEGORY_DISPLAY_MAP = {
+                'football': 'Football',
+                'sports': 'Sports',
+                'concert': 'Concert',
+                'theater': 'Theater',
+                'conference': 'Conference',
+                'festival': 'Festival',
+                'other': 'Other',
+            }
+            category_legacy_value = CATEGORY_DISPLAY_MAP.get(data.get('category'), data.get('category'))
+
             with transaction.atomic():
                 event = Event(
                     superadmin=request.user,
                     name=data.get('name'),
-                    category_legacy=data.get('category'),
+                    category_legacy=category_legacy_value,
                     sports_type=data.get('sports_type') or '',
                     country=data.get('country') or '',
                     team=data.get('team') or '',
                     stadium_name=data.get('stadium_name'),
                     stadium_image=data.get('stadium_image'),
                     event_logo=data.get('event_logo'),
+                    stadium_svg_key=data.get('stadium_svg_key') or None,
                     date=parsed_date,
                     time=parsed_time,
                     normal_service_charge=data.get('normal_service_charge', 0),
