@@ -294,7 +294,7 @@ class SuperadminEventListView(SuperAdminMixin, View):
                 events_data.append({
                     'event_id': event.event_id,
                     'name': event.name,
-                    'category': event.category,
+                    'category': event.category_legacy or '',
                     'stadium_name': event.stadium_name,
                     'date': event.date.isoformat(),
                     'time': event.time.strftime('%H:%M:%S'),
@@ -874,7 +874,7 @@ class EventSearchAPIView(View):
             events_data.append({
                 'event_id': event.event_id,
                 'name': event.name,
-                'category': event.category,
+                'category': event.category_legacy or '',
                 'stadium_name': event.stadium_name,
                 'stadium_image': event.stadium_image or '',
                 'event_logo': event.event_logo or '',
@@ -926,7 +926,7 @@ class ExpiredEventsAPIView(View):
             events_data.append({
                 'event_id': event.event_id,
                 'name': event.name,
-                'category': event.category,
+                'category': event.category_legacy or '',
                 'stadium_name': event.stadium_name,
                 'date': event.date.isoformat(),
                 'time': event.time.strftime('%H:%M:%S'),
@@ -1010,10 +1010,10 @@ class EventSectionsAPIView(View):
             'event': {
                 'event_id': event.event_id,
                 'name': event.name,
-                'category': event.category,
-                'sports_type': event.sports_type,
-                'country': event.country,
-                'team': event.team,
+                'category': event.category_legacy or '',
+                'sports_type': event.sports_type or '',
+                'country': event.country or '',
+                'team': event.team or '',
                 'stadium_name': event.stadium_name,
                 'date': event.date.isoformat(),
                 'time': event.time.strftime('%H:%M:%S'),
