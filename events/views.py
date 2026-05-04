@@ -412,21 +412,26 @@ class EventUpdateAPIView(View):
                     existing_sections = {str(s.id): s for s in event.sections.all()}
 
                     for section_data in sections_data:
-                        section_form = SectionForm(section_data)
-                        if section_form.is_valid():
-                            if 'id' in section_data and section_data['id'] in existing_sections:
-                                section = existing_sections.pop(section_data['id'])
-                                section.name = section_form.cleaned_data['name']
-                                section.color = section_form.cleaned_data['color']
-                                section.save()
-                            else:
-                                EventSection.objects.create(
-                                    event=event,
-                                    name=section_form.cleaned_data['name'],
-                                    color=section_form.cleaned_data['color']
-                                )
+                        if not isinstance(section_data, dict):
+                            return JsonResponse({'error': 'Each section must be an object with name and color'}, status=400)
+                        section_name = section_data.get('name')
+                        section_color = section_data.get('color')
+                        if not section_name or not section_color:
+                            return JsonResponse({'error': 'Each section must have name and color'}, status=400)
+                        if not section_color.startswith('#') or len(section_color) not in [4, 7]:
+                            return JsonResponse({'error': f'Invalid color format: {section_color}'}, status=400)
+                        section_id = str(section_data.get('id', ''))
+                        if section_id and section_id in existing_sections:
+                            section = existing_sections.pop(section_id)
+                            section.name = section_name
+                            section.color = section_color
+                            section.save()
                         else:
-                            return JsonResponse({'error': section_form.errors}, status=400)
+                            EventSection.objects.create(
+                                event=event,
+                                name=section_name,
+                                color=section_color
+                            )
 
                 return JsonResponse({
                     'success': True,
